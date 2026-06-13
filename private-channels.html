@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Channels - GHOSTwire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f0f15;
+            --bg-tertiary: #15151d;
+            --bg-card: #1a1a24;
+            --bg-code: #0d0d12;
+            --accent-primary: #6719ff;
+            --accent-secondary: #8a4dff;
+            --accent-gradient: linear-gradient(135deg, #6719ff, #8a4dff);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-tertiary: #6e6e80;
+            --border-primary: #22222e;
+            --border-secondary: #1a1a22;
+            --success: #4ecca3;
+            --warning: #ffc107;
+            --danger: #e94560;
+            --sidebar-width: 260px;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --bg-tertiary: #f0f0f0;
+            --bg-card: #ffffff;
+            --bg-code: #f5f5f5;
+            --text-primary: #1a1a2e;
+            --text-secondary: #5a5a6e;
+            --text-tertiary: #8a8a9e;
+            --border-primary: #e0e0e8;
+            --border-secondary: #ececf0;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        /* Layout */
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-primary);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 28px 20px;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #6719ff, #8a4dff);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: white;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            color: var(--text-primary);
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+
+        .sidebar-section-title {
+            padding: 6px 20px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-tertiary);
+            font-weight: 600;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .sidebar-link.active {
+            color: var(--accent-primary);
+            background: rgba(103, 25, 255, 0.08);
+        }
+
+        .sidebar-link .icon {
+            font-size: 0.95rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 48px 64px;
+            min-height: 100vh;
+            width: calc(100% - var(--sidebar-width));
+            background: var(--bg-primary);
+        }
+
+        .content-container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            background: var(--bg-code);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #a67cff;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 0 32px 0;
+            gap: 16px;
+        }
+
+        .search-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            width: 220px;
+            transition: all 0.2s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .search-box::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .open-bot-btn {
+            padding: 8px 16px;
+            background: var(--accent-gradient);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+        }
+
+        .open-bot-btn:hover {
+            opacity: 0.9;
+            text-decoration: none;
+        }
+
+        /* Callouts */
+        .callout {
+            border-left: 3px solid;
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin: 24px 0;
+            background: var(--bg-card);
+        }
+
+        .callout-info {
+            border-color: #6719ff;
+            background: rgba(103, 25, 255, 0.05);
+        }
+
+        .callout-warning {
+            border-color: #ffc107;
+            background: rgba(255, 193, 7, 0.05);
+        }
+
+        .callout-success {
+            border-color: #4ecca3;
+            background: rgba(78, 204, 163, 0.05);
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .callout-info .callout-title { color: #6719ff; }
+        .callout-warning .callout-title { color: #ffc107; }
+        .callout-success .callout-title { color: #4ecca3; }
+
+        /* Bot Preview */
+        .bot-preview {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .bot-preview-header {
+            background: var(--bg-tertiary);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .bot-preview-header .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #6719ff; }
+        .dot-yellow { background: #ffc107; }
+        .dot-green { background: #4ecca3; }
+
+        .bot-preview-body {
+            padding: 16px;
+        }
+
+        .bot-message {
+            background: var(--bg-code);
+            border-radius: 10px;
+            padding: 14px;
+            margin: 8px 0;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border: 1px solid var(--border-secondary);
+        }
+
+        .bot-message.success {
+            border-color: #4ecca3;
+        }
+
+        .bot-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .bot-button {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            cursor: default;
+            transition: all 0.2s;
+        }
+
+        .bot-button:hover {
+            border-color: var(--accent-primary);
+        }
+
+        /* Step with Preview */
+        .step-with-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .step-with-preview > div {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        /* Steps */
+        .steps {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .step {
+            counter-increment: step;
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 16px;
+        }
+
+        .step::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 26px;
+            height: 26px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: white;
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 2px;
+        }
+
+        .step p {
+            font-size: 0.8rem;
+            margin-bottom: 0;
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 200px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .card-desc {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.5;
+        }
+
+        /* Warning, Success, Info Boxes */
+        .warning-box {
+            background: rgba(233, 69, 96, 0.08);
+            border-left: 3px solid #e94560;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .success-box {
+            background: rgba(78, 204, 163, 0.08);
+            border-left: 3px solid #4ecca3;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .info-box {
+            background: rgba(103, 25, 255, 0.08);
+            border-left: 3px solid #6719ff;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--bg-code);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            margin: 10px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border: 1px solid var(--border-secondary);
+        }
+
+        /* Two Factor Note */
+        .twofa-note {
+            background: rgba(255, 193, 7, 0.08);
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 14px;
+            margin: 16px 0;
+        }
+
+        /* QR Code Placeholder */
+        .qr-code {
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        /* Collapsible */
+        .collapsible {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+
+        .collapsible-header {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: 600;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .collapsible-header:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .collapsible-content {
+            padding: 0 16px 16px 16px;
+            display: none;
+            border: 1px solid var(--border-primary);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .collapsible.open .collapsible-content {
+            display: block;
+        }
+
+        .collapsible.open .collapsible-header {
+            border-radius: 10px 10px 0 0;
+            border-bottom: none;
+        }
+
+        /* Lists */
+        ul {
+            color: var(--text-secondary);
+            padding-left: 20px;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        li {
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        /* Page Footer */
+        .page-footer {
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .footer-nav a:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Search Results */
+        #search-results {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 280px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            margin-top: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        #search-results a {
+            display: block;
+            padding: 10px 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        #search-results a:hover {
+            background: var(--bg-tertiary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 24px;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            .top-nav {
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            .search-box {
+                width: 180px;
+            }
+            .step-with-preview {
+                flex-direction: column;
+            }
+            .step-with-preview > div {
+                min-width: 100%;
+            }
+            .card-grid {
+                flex-direction: column;
+            }
+            .card {
+                min-width: 100%;
+            }
+            .footer-nav {
+                flex-direction: column;
+                width: 100%;
+            }
+            .footer-nav a {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;"></div>
+    
+    <div class="page-wrapper">
+        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        
+        <aside class="sidebar" id="sidebar">
+           <div class="sidebar-header">
+    <a href="/index.html" class="logo">
+        <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
+        <span class="logo-text">GHOSTwire</span>
+    </a>
+</div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Getting Started</div>
+                    <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
+                    <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Core Features</div>
+                    <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
+                    <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
+                    <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
+                    <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
+                    <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
+                </div>
+               <div class="sidebar-section">
+    <div class="sidebar-section-title">Configuration</div>
+    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+</div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Resources</div>
+                    <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
+                    <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
+                </div>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <div class="content-container">
+                <div class="top-nav">
+                    <div style="position: relative;">
+                        <input type="text" class="search-box" id="search-box" placeholder="Search documentation...">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <a href="https://t.me/GHOSTwirescrap_bot" target="_blank" class="open-bot-btn">👻 Open Bot</a>
+                        <button class="theme-toggle" id="theme-toggle">🌙</button>
+                    </div>
+                </div>
+
+                <h1>Private Channels Setup</h1>
+                <p>GHOSTwire can monitor <strong>private Telegram channels and groups</strong> where you're a member. You'll need to authenticate your Telegram account once — the bot will then use YOUR session to read messages.</p>
+
+                <!-- Critical 2FA Warning -->
+                <div class="warning-box">
+                    <strong>IMPORTANT: 2FA (Two-Factor Authentication)</strong>
+                    <p style="margin-top: 8px;">If you have 2FA enabled on your Telegram account:</p>
+                    <ol style="margin-left: 20px; margin-top: 8px;">
+                        <li><strong>Temporarily disable 2FA</strong> before connecting (<a href="https://my.telegram.org" target="_blank">my.telegram.org</a> → Privacy & Security → Two-Step Verification → Disable)</li>
+                        <li>Complete the QR or OTP login process below</li>
+                        <li><strong>Re-enable 2FA</strong> after successful connection</li>
+                    </ol>
+                    <p style="margin-top: 8px; color: #ffc107;">The bot will KEEP scraping the private channel even after you re-enable 2FA!</p>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- STEP 1: Get API Credentials                   -->
+                <!-- ============================================ -->
+                <h2>Step 1: Get API Credentials</h2>
+                <p>First, you need to create an app on <a href="https://my.telegram.org" target="_blank">my.telegram.org</a> to get API ID and API Hash.</p>
+
+                <div class="step-with-preview">
+                    <div>
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-title">Go to my.telegram.org</div>
+                                <p>Log in with your Telegram phone number</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Go to API Development Tools</div>
+                                <p>Click on "API Development Tools"</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Create App</div>
+                                <p>Fill in: App title (e.g., "GHOSTwire"), Short name</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Copy Credentials</div>
+                                <p>Copy <code>api_id</code> and <code>api_hash</code></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+🔐 Step 1/3
+
+Enter your API ID (from my.telegram.org):
+
+Type cancel to abort.
+
+« Back
+                            </div>
+                            <div class="bot-buttons">
+                                <div class="bot-button" style="width: 100%;">« Back</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- STEP 2: Setup Credentials in Bot              -->
+                <!-- ============================================ -->
+                <h2>Step 2: Enter Credentials in GHOSTwire</h2>
+                <p>Go to <strong>TG Auth → Setup Credentials</strong> and enter your API ID, API Hash, and phone number.</p>
+
+                <div class="step-with-preview">
+                    <div>
+                        <div class="callout callout-info">
+                            <div class="callout-title">Phone Number Format</div>
+                            <p>Use international format: <code>+1234567890</code></p>
+                        </div>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+🔐 Step 2/3
+
+Enter your API Hash:
+
+« Back
+                            </div>
+                            <div class="bot-message">
+🔐 Step 3/3
+
+Enter your Phone (+1234567890):
+
+« Back
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <strong>✅ Credentials Saved!</strong>
+                    <p style="margin-top: 8px;">Now click <strong>Connect Session</strong> to authenticate.</p>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- STEP 3: Choose Login Method                   -->
+                <!-- ============================================ -->
+                <h2>Step 3: Choose Login Method</h2>
+                <p>GHOSTwire offers two ways to authenticate:</p>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-icon">📱</div>
+                        <div class="card-title">QR Code Login (Recommended)</div>
+                        <div class="card-desc">Scan with Telegram mobile app. No OTP needed. Quickest method.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔢</div>
+                        <div class="card-title">OTP Login</div>
+                        <div class="card-desc">Receive 5-digit code via Telegram. Works on any device.</div>
+                    </div>
+                </div>
+
+                <div class="bot-preview">
+                    <div class="bot-preview-header">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                        <span>@GHOSTwirescrap_bot</span>
+                    </div>
+                    <div class="bot-preview-body">
+                        <div class="bot-message">
+🔐 Telegram Auth
+
+Status: ❌ Not configured
+
+📋 Public channels work automatically
+🔒 Private channels need your Telegram account
+
+Get API credentials at my.telegram.org
+
+📱 QR Login (Easy)
+🔢 OTP Login
+🔄 Setup Credentials
+
+« Back
+                        </div>
+                        <div class="bot-buttons">
+                            <div class="bot-button">📱 QR Login (Easy)</div>
+                            <div class="bot-button">🔢 OTP Login</div>
+                            <div class="bot-button">🔄 Setup Credentials</div>
+                            <div class="bot-button">« Back</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- METHOD A: QR CODE LOGIN                       -->
+                <!-- ============================================ -->
+                <h2>Method A: QR Code Login (Recommended)</h2>
+
+                <div class="step-with-preview">
+                    <div>
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-title">Click "QR Login"</div>
+                                <p>Bot generates a QR code</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Open Telegram on Phone</div>
+                                <p>Go to Settings → Devices → Link Desktop Device</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Scan QR Code</div>
+                                <p>Point your phone at the screen</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Wait for Connection</div>
+                                <p>Bot confirms successful login</p>
+                            </div>
+                        </div>
+                        <div class="twofa-note">
+                            <strong>If you have 2FA enabled:</strong>
+                            <p style="margin-top: 8px;">After scanning QR, you'll be prompted for your 2FA password. Enter it to complete login.</p>
+                        </div>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+⏳ Generating QR code...
+                            </div>
+                            <div class="bot-message" style="text-align: center;">
+                                <div class="qr-code">
+                                    [████████████████████]<br>
+                                    [████ QR CODE HERE ████]<br>
+                                    [████████████████████]
+                                </div>
+                                📱 Scan this QR code
+
+Open Telegram → Settings → Devices → Link Desktop Device
+
+⚠️ Disable 2FA first if you have it enabled
+                            </div>
+                            <div class="bot-message success">
+✅ Connected as @username!
+
+Session saved. Private channels will be activated.
+Add a private channel to start monitoring.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- METHOD B: OTP LOGIN                           -->
+                <!-- ============================================ -->
+                <h2>Method B: OTP Login</h2>
+
+                <div class="step-with-preview">
+                    <div>
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-title">Click "OTP Login"</div>
+                                <p>Bot sends verification code to your Telegram</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Enter 5-Digit Code</div>
+                                <p>Type the code you received</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Enter 2FA Password (if enabled)</div>
+                                <p>If you have 2FA, enter password after code</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Connection Complete</div>
+                                <p>Bot confirms successful login</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+⏳ Sending OTP...
+                            </div>
+                            <div class="bot-message">
+📱 OTP Sent!
+
+Enter the 5-digit code from Telegram:
+
+⚠️ Enter it quickly - codes expire soon!
+
+« Back
+                            </div>
+                            <div class="bot-message success">
+✅ Connected as @username!
+
+Session saved. Private channels will be activated.
+Add a private channel to start monitoring.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- STEP 4: Add Private Channel                    -->
+                <!-- ============================================ -->
+                <h2>Step 4: Add a Private Channel</h2>
+                <p>After successful authentication, you can add private channels.</p>
+
+                <div class="info-box">
+                    <strong>What to enter as channel name:</strong>
+                    <div class="code-block" style="margin-top: 8px;">
+                        For private channels, enter the numeric ID: <strong>-1002174372523</strong><br>
+                        For private groups, enter the numeric ID: <strong>-1001548932765</strong><br><br>
+                        ⚠️ Do NOT add @ symbol for numeric IDs. Just the number with -100 prefix.
+                    </div>
+                </div>
+
+                <!-- Collapsible: How to get Channel ID -->
+                <div class="collapsible" id="how-to-get-id">
+                    <div class="collapsible-header" onclick="toggleCollapsible(this)">
+                        <span>How to get Private Channel/Group ID? (Click to expand)</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p>Private channels often don't have usernames. You need to use their numeric ID in the format <code>-100XXXXXXXXXXXXX</code>.</p>
+                        
+                        <h4 style="margin-top: 16px;">Method 1: Using @userinfobot (Easiest)</h4>
+                        <div class="step-with-preview" style="margin: 16px 0;">
+                            <div>
+                                <div class="steps" style="margin: 0;">
+                                    <div class="step" style="margin-bottom: 12px;">
+                                        <div class="step-title">Message @userinfobot</div>
+                                        <p>Search for <code>@userinfobot</code> on Telegram and start it</p>
+                                    </div>
+                                    <div class="step" style="margin-bottom: 12px;">
+                                        <div class="step-title">Forward a Message</div>
+                                        <p>Forward ANY message from your private channel/group to @userinfobot</p>
+                                    </div>
+                                    <div class="step" style="margin-bottom: 12px;">
+                                        <div class="step-title">Copy the ID</div>
+                                        <p>The bot will reply with channel/group info including the ID</p>
+                                    </div>
+                                </div>
+                                <div class="code-block">
+                                    📱 Example response from @userinfobot:<br><br>
+                                    Channel: My Private Channel<br>
+                                    <strong>ID: -1002174372523</strong><br>
+                                    Type: Channel<br>
+                                    Members: 1,234
+                                </div>
+                            </div>
+                            <div class="bot-preview" style="margin: 0;">
+                                <div class="bot-preview-header">
+                                    <span class="dot dot-red"></span>
+                                    <span class="dot dot-yellow"></span>
+                                    <span class="dot dot-green"></span>
+                                    <span>📱 @userinfobot</span>
+                                </div>
+                                <div class="bot-preview-body">
+                                    <div class="bot-message">
+<b>You:</b> [Forwarded message from Private Channel]
+                                    </div>
+                                    <div class="bot-message">
+Channel: VIP Signals
+ID: <strong>-1002174372523</strong>
+Type: Channel (Private)
+Members: 2,547
+Created: 2024-01-15
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>Method 2: Using Telegram Web</h4>
+                        <div class="step-with-preview" style="margin: 16px 0;">
+                            <div>
+                                <div class="steps" style="margin: 0;">
+                                    <div class="step" style="margin-bottom: 12px;">
+                                        <div class="step-title">Open Telegram Web</div>
+                                        <p>Go to <a href="https://web.telegram.org" target="_blank">web.telegram.org</a> and log in</p>
+                                    </div>
+                                    <div class="step" style="margin-bottom: 12px;">
+                                        <div class="step-title">Open the Channel/Group</div>
+                                        <p>Click on your private channel/group</p>
+                                    </div>
+                                    <div class="step" style="margin-bottom: 12px;">
+                                        <div class="step-title">Check the URL</div>
+                                        <p>The URL will show the ID: <code>https://web.telegram.org/k/#-1002174372523</code></p>
+                                    </div>
+                                </div>
+                                <div class="code-block">
+                                    🌐 URL format:<br>
+                                    https://web.telegram.org/k/#<strong>-1002174372523</strong>
+                                </div>
+                            </div>
+                            <div class="bot-preview" style="margin: 0;">
+                                <div class="bot-preview-header">
+                                    <span class="dot dot-red"></span>
+                                    <span class="dot dot-yellow"></span>
+                                    <span class="dot dot-green"></span>
+                                    <span>🌐 Telegram Web</span>
+                                </div>
+                                <div class="bot-preview-body">
+                                    <div class="bot-message">
+🔗 URL: https://web.telegram.org/k/#-1002174372523
+
+Channel: VIP Signals
+ID extracted: -1002174372523
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>Method 3: Other Telegram Bots</h4>
+                        <div class="card-grid" style="margin: 16px 0;">
+                            <div class="card">
+                                <div class="card-icon">🤖</div>
+                                <div class="card-title">@getidsbot</div>
+                                <div class="card-desc">Message @getidsbot → Forward a message from your private channel → Get channel ID</div>
+                            </div>
+                            <div class="card">
+                                <div class="card-icon">📊</div>
+                                <div class="card-title">@chatIDBot</div>
+                                <div class="card-desc">Add @chatIDBot to your group/channel → It will send the ID</div>
+                            </div>
+                            <div class="card">
+                                <div class="card-icon">🔧</div>
+                                <div class="card-title">@missrose_bot</div>
+                                <div class="card-desc">Send <code>/id</code> in the group/channel (if bot is added)</div>
+                            </div>
+                        </div>
+
+                        <div class="info-box" style="margin-top: 16px;">
+                            <strong>ID Format Examples:</strong>
+                            <div class="code-block" style="margin-top: 8px;">
+                                ✅ Valid private channel IDs:<br>
+                                -1002174372523<br>
+                                -1001876543210<br>
+                                -1001548932765<br><br>
+                                ❌ Invalid IDs (missing -100 prefix):<br>
+                                2174372523 (won't work)<br>
+                                1876543210 (won't work)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-with-preview">
+                    <div>
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-title">Click "Add Channel"</div>
+                                <p>From main menu</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Select "Private"</div>
+                                <p>Choose private channel option</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Enter Channel ID or Username</div>
+                                <p>e.g., <code>-1002174372523</code> or <code>@channelname</code></p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Select Wallet</div>
+                                <p>Choose which wallet to use for this channel</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Configure Settings</div>
+                                <p>Buy amount, slippage, take profit %</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bot-preview">
+                            <div class="bot-preview-header">
+                                <span class="dot dot-red"></span>
+                                <span class="dot dot-yellow"></span>
+                                <span class="dot dot-green"></span>
+                                <span>@GHOSTwirescrap_bot</span>
+                            </div>
+                            <div class="bot-preview-body">
+                                <div class="bot-message">
+➕ Add Channel
+
+🌐 Public — Anyone can view
+🔒 Private — Requires TG Auth
+
+🌐 Public
+🔒 Private
+
+« Back
+                                </div>
+                                <div class="bot-message">
+🔒 Add Private Channel
+
+Send the channel/group identifier:
+
+• Username: `@channelname`
+• Numeric ID: `-1002174372523`
+
+📌 How to get numeric ID:
+Forward a message from the channel to `@userinfobot`
+
+Type cancel to abort.
+
+« Back
+                                </div>
+                                <div class="bot-message success">
+✅ Channel Added! (🔒 Private)
+
+📋 -1002174372523
+💼 Wallet: W1
+
+💰 Buy: 0.01 SOL
+📊 Slippage: 10.0%
+🎯 Take Profit: 50%
+🤖 Auto-Sell: ✅ ON
+
+📡 Monitoring started!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- HOW PRIVATE CHANNEL MONITORING WORKS          -->
+                <!-- ============================================ -->
+                <h2>How Private Channel Monitoring Works</h2>
+
+                <div class="step-with-preview">
+                    <div>
+                        <div class="callout callout-success">
+                            <div class="callout-title">Behind the Scenes</div>
+                            <p>Once authenticated, GHOSTwire:</p>
+                            <ul style="margin-top: 8px; margin-left: 20px;">
+                                <li>Saves your encrypted session string to database</li>
+                                <li>Uses YOUR session to read private channels by ID</li>
+                                <li>Monitors 24/7 even when you're offline</li>
+                                <li>Works even after you re-enable 2FA</li>
+                                <li>Session persists across bot restarts</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>🔒 Private Channel Activity</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+📨 [14:32:15] Monitoring -1002174372523 (🔒 Private)
+   📝 🚀 NEW SIGNAL! CA: GNL7MQSz...
+                            </div>
+                            <div class="bot-message">
+🔥 Sniping token!
+
+GNL7MQSz...pump
+Amount: 0.01 SOL (W1)
+💰 Fee: 0.05%
+
+⏳ Executing buy...
+                            </div>
+                            <div class="bot-message success">
+🟢 BUY EXECUTED!
+
+Token: LUCY
+Amount: 12,096.07
+TX: 4TEoNH4n9ae73gz6DFWB...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- SESSION MANAGEMENT                            -->
+                <!-- ============================================ -->
+                <h2>Session Management</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-icon">💾</div>
+                        <div class="card-title">Session Persistence</div>
+                        <div class="card-desc">Your session is saved encrypted in the database. The bot reconnects automatically on restart.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔄</div>
+                        <div class="card-title">Reconnect</div>
+                        <div class="card-desc">If session expires, click "Connect Session" again. Credentials remain saved.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🚪</div>
+                        <div class="card-title">Logout</div>
+                        <div class="card-desc">To disconnect, remove your API credentials or contact admin.</div>
+                    </div>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- TROUBLESHOOTING                               -->
+                <!-- ============================================ -->
+                <h2>Troubleshooting</h2>
+
+                <div class="callout callout-warning">
+                    <div class="callout-title">"Code expired" error</div>
+                    <p>OTP codes expire quickly. Click "Connect Session" again to get a fresh code and enter it immediately.</p>
+                </div>
+
+                <div class="callout callout-warning">
+                    <div class="callout-title">"2FA Required" after QR scan</div>
+                    <p>You have 2FA enabled. Enter your 2FA password when prompted. For easier setup, temporarily disable 2FA first.</p>
+                </div>
+
+                <div class="callout callout-warning">
+                    <div class="callout-title">Private channel not receiving messages</div>
+                    <p>Make sure you are a member of the private channel. Also verify you're using the correct ID format: <code>-100XXXXXXXXXXXXX</code></p>
+                </div>
+
+                <div class="callout callout-warning">
+                    <div class="callout-title">"Cannot resolve channel" error</div>
+                    <p>This usually means the channel ID is incorrect or you're not a member. Double-check the ID using @userinfobot (expand the "How to get ID" section above).</p>
+                </div>
+
+                <div class="callout callout-warning">
+                    <div class="callout-title">Session expired after 2FA re-enable</div>
+                    <p>This is rare. If it happens, simply click "Connect Session" again and re-authenticate (2FA can stay enabled this time).</p>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- SECURITY NOTES                                -->
+                <!-- ============================================ -->
+                <div class="callout callout-info">
+                    <div class="callout-title">Security Notes</div>
+                    <ul style="margin-left: 20px;">
+                        <li>GHOSTwire <strong>never stores</strong> your password or 2FA code</li>
+                        <li>Only the encrypted session string is saved</li>
+                        <li>The bot cannot send messages as you — it only reads channels</li>
+                        <li>You can revoke access anytime via Telegram Settings → Devices</li>
+                        <li>Use a dedicated Telegram account for trading if concerned</li>
+                    </ul>
+                </div>
+
+                <!-- ============================================ -->
+                <!-- QUICK REFERENCE CARD                          -->
+                <!-- ============================================ -->
+                <div class="success-box">
+                    <strong>Quick Reference: Adding Private Channels</strong>
+                    <ol style="margin-left: 20px; margin-top: 12px;">
+                        <li>Get channel ID using <strong>@userinfobot</strong> (expand the section above)</li>
+                        <li>Go to <a href="https://my.telegram.org" target="_blank">my.telegram.org</a> → Create app → Get API ID & Hash</li>
+                        <li><strong>Temporarily disable 2FA</strong> (if enabled)</li>
+                        <li>In GHOSTwire: TG Auth → Setup Credentials → Enter API ID, Hash, Phone</li>
+                        <li>Click "QR Login" or "OTP Login" → Authenticate</li>
+                        <li><strong>Re-enable 2FA</strong> on your Telegram account</li>
+                        <li>Go to Add Channel → Private → Enter <strong>-100XXXXXXXXXXXXX</strong></li>
+                        <li>Done! Bot now monitors your private channel</li>
+                    </ol>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a href="/settings.html">← Settings</a>
+                        <a href="/referrals.html">Referral System →</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleCollapsible(element) {
+            const parent = element.parentElement;
+            parent.classList.toggle('open');
+            const arrow = element.querySelector('span:last-child');
+            if (parent.classList.contains('open')) {
+                arrow.innerHTML = '▲';
+            } else {
+                arrow.innerHTML = '▼';
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const toggleBtn = document.getElementById('theme-toggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    const next = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', next);
+                    localStorage.setItem('theme', next);
+                    toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️';
+                });
+                toggleBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+            }
+        }
+
+        function initSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                    if (overlay) overlay.style.display = 'block';
+                });
+            }
+            
+            if (overlay) {
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+
+        function initSearch() {
+            const searchBox = document.getElementById('search-box');
+            if (!searchBox) return;
+            
+            const searchData = [
+                { title: 'Overview', url: '/index.html' },
+                { title: 'Quick Start', url: '/getting-started.html' },
+                { title: 'Wallet Setup', url: '/wallet.html' },
+                { title: 'Channel Monitoring', url: '/channels.html' },
+                { title: 'Buying & Selling', url: '/trading.html' },
+                { title: 'Portfolio Tracking', url: '/portfolio.html' },
+                { title: 'Transfers', url: '/transfers.html' },
+                { title: 'Settings', url: '/settings.html' },
+                { title: 'Private Channels', url: '/private-channels.html' },
+                { title: 'Referral System', url: '/referrals.html' },
+                { title: 'Fee System', url: '/fees.html' },
+                { title: 'FAQ', url: '/faq.html' },
+                { title: 'Commands', url: '/commands.html' },
+            ];
+            
+            let dropdown = null;
+            
+            searchBox.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                
+                if (!dropdown) {
+                    dropdown = document.createElement('div');
+                    dropdown.id = 'search-results';
+                    searchBox.parentElement.style.position = 'relative';
+                    searchBox.parentElement.appendChild(dropdown);
+                }
+                
+                if (query) {
+                    const results = searchData.filter(d => d.title.toLowerCase().includes(query));
+                    if (results.length > 0) {
+                        dropdown.innerHTML = results.map(r => `<a href="${r.url}">${r.title}</a>`).join('');
+                        dropdown.style.display = 'block';
+                    } else {
+                        dropdown.style.display = 'none';
+                    }
+                } else {
+                    dropdown.style.display = 'none';
+                }
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (dropdown && !searchBox.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initSidebar();
+            initSearch();
+        });
+    </script>
+</body>
+</html>

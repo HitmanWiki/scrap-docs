@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Setup - GHOSTwire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f0f15;
+            --bg-tertiary: #15151d;
+            --bg-card: #1a1a24;
+            --bg-code: #0d0d12;
+            --accent-primary: #6719ff;
+            --accent-secondary: #8a4dff;
+            --accent-gradient: linear-gradient(135deg, #6719ff, #8a4dff);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-tertiary: #6e6e80;
+            --border-primary: #22222e;
+            --border-secondary: #1a1a22;
+            --success: #4ecca3;
+            --warning: #ffc107;
+            --danger: #e94560;
+            --sidebar-width: 260px;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --bg-tertiary: #f0f0f0;
+            --bg-card: #ffffff;
+            --bg-code: #f5f5f5;
+            --text-primary: #1a1a2e;
+            --text-secondary: #5a5a6e;
+            --text-tertiary: #8a8a9e;
+            --border-primary: #e0e0e8;
+            --border-secondary: #ececf0;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        /* Layout */
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-primary);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 28px 20px;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #6719ff, #8a4dff);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: white;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            color: var(--text-primary);
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+
+        .sidebar-section-title {
+            padding: 6px 20px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-tertiary);
+            font-weight: 600;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .sidebar-link.active {
+            color: var(--accent-primary);
+            background: rgba(103, 25, 255, 0.08);
+        }
+
+        .sidebar-link .icon {
+            font-size: 0.95rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 48px 64px;
+            min-height: 100vh;
+            width: calc(100% - var(--sidebar-width));
+            background: var(--bg-primary);
+        }
+
+        .content-container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            background: var(--bg-code);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #a67cff;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 0 32px 0;
+            gap: 16px;
+        }
+
+        .search-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            width: 220px;
+            transition: all 0.2s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .search-box::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .open-bot-btn {
+            padding: 8px 16px;
+            background: var(--accent-gradient);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+        }
+
+        .open-bot-btn:hover {
+            opacity: 0.9;
+            text-decoration: none;
+        }
+
+        /* Callouts */
+        .callout {
+            border-left: 3px solid;
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin: 24px 0;
+            background: var(--bg-card);
+        }
+
+        .callout-info {
+            border-color: #6719ff;
+            background: rgba(103, 25, 255, 0.05);
+        }
+
+        .callout-warning {
+            border-color: #ffc107;
+            background: rgba(255, 193, 7, 0.05);
+        }
+
+        .callout-danger {
+            border-color: #e94560;
+            background: rgba(233, 69, 96, 0.05);
+        }
+
+        .callout-success {
+            border-color: #4ecca3;
+            background: rgba(78, 204, 163, 0.05);
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .callout-info .callout-title { color: #6719ff; }
+        .callout-warning .callout-title { color: #ffc107; }
+        .callout-danger .callout-title { color: #e94560; }
+        .callout-success .callout-title { color: #4ecca3; }
+
+        /* Bot Preview */
+        .bot-preview {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .bot-preview-header {
+            background: var(--bg-tertiary);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .bot-preview-header .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #6719ff; }
+        .dot-yellow { background: #ffc107; }
+        .dot-green { background: #4ecca3; }
+
+        .bot-preview-body {
+            padding: 16px;
+        }
+
+        .bot-message {
+            background: var(--bg-code);
+            border-radius: 10px;
+            padding: 14px;
+            margin: 8px 0;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border: 1px solid var(--border-secondary);
+        }
+
+        .bot-message.success {
+            border-color: #4ecca3;
+        }
+
+        .bot-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .bot-button {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            cursor: default;
+            transition: all 0.2s;
+        }
+
+        .bot-button:hover {
+            border-color: var(--accent-primary);
+        }
+
+        /* Steps */
+        .steps {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .step {
+            counter-increment: step;
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 16px;
+        }
+
+        .step::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 26px;
+            height: 26px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: white;
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 2px;
+        }
+
+        .step p {
+            font-size: 0.8rem;
+            margin-bottom: 0;
+        }
+
+        /* Step with Preview */
+        .step-with-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .step-with-preview > div {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 200px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .card-desc {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.5;
+        }
+
+        /* Private Key Box */
+        .private-key-box {
+            background: var(--bg-code);
+            border-radius: 10px;
+            padding: 14px;
+            border: 1px solid #e94560;
+        }
+
+        .sensitive-placeholder {
+            background: var(--bg-tertiary);
+            padding: 10px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-tertiary);
+            text-align: center;
+            letter-spacing: 1px;
+            margin: 10px 0;
+        }
+
+        /* Lists */
+        ul {
+            color: var(--text-secondary);
+            padding-left: 20px;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        li {
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        /* Page Footer */
+        .page-footer {
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .footer-nav a:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Search Results */
+        #search-results {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 280px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            margin-top: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        #search-results a {
+            display: block;
+            padding: 10px 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        #search-results a:hover {
+            background: var(--bg-tertiary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 24px;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            .top-nav {
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            .search-box {
+                width: 180px;
+            }
+            .step-with-preview {
+                flex-direction: column;
+            }
+            .step-with-preview > div {
+                min-width: 100%;
+            }
+            .card-grid {
+                flex-direction: column;
+            }
+            .card {
+                min-width: 100%;
+            }
+            .footer-nav {
+                flex-direction: column;
+                width: 100%;
+            }
+            .footer-nav a {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;"></div>
+    
+    <div class="page-wrapper">
+        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+    <a href="/index.html" class="logo">
+        <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
+        <span class="logo-text">GHOSTwire</span>
+    </a>
+</div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Getting Started</div>
+                    <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
+                    <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Core Features</div>
+                    <a href="/wallet.html" class="sidebar-link active"><span class="icon">💼</span> Wallet Setup</a>
+                    <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
+                    <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
+                    <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
+                    <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
+                </div>
+                <div class="sidebar-section">
+    <div class="sidebar-section-title">Configuration</div>
+    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+</div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Resources</div>
+                    <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
+                    <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <p>© 2026 GHOSTwire</p>
+                <p><a href="https://t.me/ghostwire_bot" target="_blank">@ghostwire_bot</a></p>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <div class="content-container">
+                <div class="top-nav">
+                    <div style="position: relative;">
+                        <input type="text" class="search-box" id="search-box" placeholder="Search documentation...">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <a href="https://t.me/GHOSTwirescrap_bot" target="_blank" class="open-bot-btn">👻 Open Bot</a>
+                        <button class="theme-toggle" id="theme-toggle">🌙</button>
+                    </div>
+                </div>
+
+                <h1>Wallet Setup</h1>
+                <p>GHOSTwire uses <strong>derived wallets</strong> — your private keys are never stored on any server. Each user gets up to 5 wallets (W1, W2, W3, W4, W5) with independent settings.</p>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">How Derived Wallets Work</div>
+                    <p>Your wallet is mathematically derived from your Telegram ID + a secret + wallet number. The same input always produces the same wallet. No private keys are ever stored in our database — only you can access your keys via the Export feature.</p>
+                </div>
+
+                <!-- STEP 1: View Your Wallets -->
+                <h2>Step 1: View Your Wallets</h2>
+                <p>Click <strong>Wallets</strong> from the main menu to see all your wallets.</p>
+
+                <div class="step-with-preview">
+                    <div>
+                        <h4>What you'll see:</h4>
+                        <ul>
+                            <li>List of all your wallets (W1, W2, etc.)</li>
+                            <li>Truncated wallet address for each</li>
+                            <li>Current SOL balance</li>
+                            <li>Option to create new wallets (max 5)</li>
+                        </ul>
+                        <p>Tap any wallet to view details or export the private key.</p>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+Your Wallets
+
+W1 - 74BoTqMb...MFSL (0.0025 SOL)
+W2 - 5swz5Qhh...qFhC (0.0000 SOL)
+
+W1 (74BoTqMb...)
+W2 (5swz5Qhh...)
+
+➕ Create New Wallet
+« Back
+                            </div>
+                            <div class="bot-buttons">
+                                <div class="bot-button">W1 - View/Export</div>
+                                <div class="bot-button">W2 - View/Export</div>
+                                <div class="bot-button" style="width: 100%;">« Back</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Fund Your Wallet -->
+                <h2>Step 2: Fund Your Wallet</h2>
+                <p>Click <strong>Wallet</strong> to view your wallet address, then send SOL to it.</p>
+
+                <div class="step-with-preview">
+                    <div>
+                        <h4>How to fund:</h4>
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-title">Copy Address</div>
+                                <p>Click <strong>Copy Address</strong></p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Send SOL</div>
+                                <p>From exchange or Phantom/Backpack</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Verify</div>
+                                <p>Check Balance after 30 seconds</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+W1
+
+74BoTqMbXNeaeF63wLzkKmRyn5S1NxKTdZsJznGAnMFSL
+
+Balance: 0.002535 SOL
+Buy: 0.01 SOL
+Slippage: 10.0%
+                            </div>
+                            <div class="bot-buttons">
+                                <div class="bot-button">📋 Copy Address</div>
+                                <div class="bot-button">🔑 Export Private Key</div>
+                                <div class="bot-button" style="width: 100%;">« Back</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Export Private Key (MASKED) -->
+                <h2>Step 3: Export Private Key</h2>
+                <p>Need to import your wallet into Phantom? Click <strong>Export Private Key</strong>.</p>
+
+                <div class="step-with-preview">
+                    <div>
+                        <div class="callout callout-danger">
+                            <div class="callout-title">SECURITY WARNING</div>
+                            <p>Your private key gives FULL access to your wallet. Never share it with anyone. Delete the message after saving.</p>
+                        </div>
+                        <h4>To import into Phantom:</h4>
+                        <div class="steps">
+                            <div class="step"><div class="step-title">Copy Key</div><p>Copy the base58 private key</p></div>
+                            <div class="step"><div class="step-title">Open Phantom</div><p>Go to Settings → Add Wallet</p></div>
+                            <div class="step"><div class="step-title">Import</div><p>Select "Import Private Key" → Paste</p></div>
+                        </div>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message private-key-box">
+# PRIVATE KEY
+
+Wallet: W1
+
+<div class="sensitive-placeholder">
+••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+YOUR PRIVATE KEY WILL APPEAR HERE (Masked for documentation)
+••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+</div>
+
+⚠️ IMPORTANT:
+• Derived from Telegram ID
+• NEVER stored on servers
+• Delete this after saving!
+
+Public: 74BoTqMbXNeaeF63wLzkKmRyn5S1NxKTdZsJznGAnMFSL
+                            </div>
+                            <div class="bot-buttons">
+                                <div class="bot-button">🗑️ Delete Message</div>
+                                <div class="bot-button" style="width: 100%;">« Back</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Create New Wallet -->
+                <h2>Step 4: Create Additional Wallets</h2>
+                <p>You can have up to 5 wallets. Click <strong>Create New Wallet</strong> from the wallets list.</p>
+
+                <div class="step-with-preview">
+                    <div>
+                        <h4>Why use multiple wallets?</h4>
+                        <ul>
+                            <li><strong>Risk Segregation:</strong> Separate high-risk from conservative trades</li>
+                            <li><strong>Channel Segmentation:</strong> Different wallets for different signal channels</li>
+                            <li><strong>Strategy Testing:</strong> Test new settings on a small wallet first</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="bot-preview">
+                            <div class="bot-preview-header">
+                                <span class="dot dot-red"></span>
+                                <span class="dot dot-yellow"></span>
+                                <span class="dot dot-green"></span>
+                                <span>@GHOSTwirescrap_bot</span>
+                            </div>
+                            <div class="bot-preview-body">
+                                <div class="bot-message" style="border-color: #4ecca3;">
+✅ W3 created!
+
+Address: Gpd4SG2W...LNwK
+
+Fund this wallet to start trading.
+                                </div>
+                                <div class="bot-buttons">
+                                    <div class="bot-button" style="width: 100%;">« Back</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-Wallet Strategies -->
+                <h2>Multi-Wallet Strategies</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="card-icon">🚀</div>
+                        <div class="card-title">W1 - Conservative</div>
+                        <div class="card-desc">0.005 SOL buys, 5% slippage, 30% take profit — for established tokens and blue chips.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">⚡</div>
+                        <div class="card-title">W2 - Aggressive</div>
+                        <div class="card-desc">0.025 SOL buys, 15% slippage, 100%+ take profit — for meme coins and high-risk plays.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🤖</div>
+                        <div class="card-title">W3 - Auto Only</div>
+                        <div class="card-desc">0.01 SOL buys, 10% slippage, auto-sell at 50% — fully automated from high-signal channels.</div>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div class="callout callout-warning">
+                    <div class="callout-title">Security First</div>
+                    <p>GHOSTwire <strong>NEVER</strong> stores private keys in any database — they are derived on-demand. Only YOU can access your private key via the Export feature. Use a dedicated trading wallet — never use your main exchange wallet.</p>
+                </div>
+
+                <!-- FAQ -->
+                <h2>Wallet FAQ</h2>
+                
+                <div class="callout callout-info">
+                    <div class="callout-title">How do I import my GHOSTwire wallet into Phantom?</div>
+                    <p>Click <strong>Export Private Key</strong> → Copy the base58 private key → Open Phantom → Add Wallet → Import Private Key → Paste.</p>
+                </div>
+                
+                <div class="callout callout-info">
+                    <div class="callout-title">Can I have more than 5 wallets?</div>
+                    <p>Currently max 5 wallets per user (W1, W2, W3, W4, W5).</p>
+                </div>
+                
+                <div class="callout callout-warning">
+                    <div class="callout-title">Can someone else access my wallet if they know my Telegram ID?</div>
+                    <p>No! The derivation uses a secret <code>WALLET_DERIVATION_SECRET</code> that only the bot operator knows. Without this secret, no one can derive your wallet.</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a href="/getting-started.html">← Getting Started</a>
+                        <a href="/channels.html">Channel Monitoring →</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const toggleBtn = document.getElementById('theme-toggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    const next = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', next);
+                    localStorage.setItem('theme', next);
+                    toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️';
+                });
+                toggleBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+            }
+        }
+
+        function initSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                    if (overlay) overlay.style.display = 'block';
+                });
+            }
+            
+            if (overlay) {
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+
+        function initSearch() {
+            const searchBox = document.getElementById('search-box');
+            if (!searchBox) return;
+            
+            const searchData = [
+                { title: 'Overview', url: '/index.html' },
+                { title: 'Quick Start', url: '/getting-started.html' },
+                { title: 'Wallet Setup', url: '/wallet.html' },
+                { title: 'Channel Monitoring', url: '/channels.html' },
+                { title: 'Buying & Selling', url: '/trading.html' },
+                { title: 'Portfolio Tracking', url: '/portfolio.html' },
+                { title: 'Transfers', url: '/transfers.html' },
+                { title: 'Settings', url: '/settings.html' },
+                { title: 'Private Channels', url: '/private-channels.html' },
+                { title: 'Referral System', url: '/referrals.html' },
+                { title: 'Fee System', url: '/fees.html' },
+                { title: 'FAQ', url: '/faq.html' },
+                { title: 'Commands', url: '/commands.html' },
+            ];
+            
+            let dropdown = null;
+            
+            searchBox.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                
+                if (!dropdown) {
+                    dropdown = document.createElement('div');
+                    dropdown.id = 'search-results';
+                    searchBox.parentElement.style.position = 'relative';
+                    searchBox.parentElement.appendChild(dropdown);
+                }
+                
+                if (query) {
+                    const results = searchData.filter(d => d.title.toLowerCase().includes(query));
+                    if (results.length > 0) {
+                        dropdown.innerHTML = results.map(r => `<a href="${r.url}">${r.title}</a>`).join('');
+                        dropdown.style.display = 'block';
+                    } else {
+                        dropdown.style.display = 'none';
+                    }
+                } else {
+                    dropdown.style.display = 'none';
+                }
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (dropdown && !searchBox.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initSidebar();
+            initSearch();
+        });
+    </script>
+</body>
+</html>

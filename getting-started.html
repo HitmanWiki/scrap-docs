@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - GHOSTwire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f0f15;
+            --bg-tertiary: #15151d;
+            --bg-card: #1a1a24;
+            --bg-code: #0d0d12;
+            --accent-primary: #6719ff;
+            --accent-secondary: #8a4dff;
+            --accent-gradient: linear-gradient(135deg, #6719ff, #8a4dff);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-tertiary: #6e6e80;
+            --border-primary: #22222e;
+            --border-secondary: #1a1a22;
+            --success: #4ecca3;
+            --warning: #ffc107;
+            --sidebar-width: 260px;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --bg-tertiary: #f0f0f0;
+            --bg-card: #ffffff;
+            --bg-code: #f5f5f5;
+            --text-primary: #1a1a2e;
+            --text-secondary: #5a5a6e;
+            --text-tertiary: #8a8a9e;
+            --border-primary: #e0e0e8;
+            --border-secondary: #ececf0;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        /* Layout */
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-primary);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 28px 20px;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #6719ff, #8a4dff);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: white;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            color: var(--text-primary);
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+
+        .sidebar-section-title {
+            padding: 6px 20px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-tertiary);
+            font-weight: 600;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+
+        .sidebar-link:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .sidebar-link.active {
+            color: var(--accent-primary);
+            background: rgba(103, 25, 255, 0.08);
+        }
+
+        .sidebar-link .icon {
+            font-size: 0.95rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 48px 64px;
+            min-height: 100vh;
+            width: calc(100% - var(--sidebar-width));
+            background: var(--bg-primary);
+        }
+
+        .content-container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            background: var(--bg-code);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #a67cff;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 0 32px 0;
+            gap: 16px;
+        }
+
+        .search-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 8px 14px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            width: 220px;
+            transition: all 0.2s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .search-box::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .open-bot-btn {
+            padding: 8px 16px;
+            background: var(--accent-gradient);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+        }
+
+        .open-bot-btn:hover {
+            opacity: 0.9;
+            text-decoration: none;
+        }
+
+        /* Callouts */
+        .callout {
+            border-left: 3px solid;
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin: 24px 0;
+            background: var(--bg-card);
+        }
+
+        .callout-info {
+            border-color: #6719ff;
+            background: rgba(103, 25, 255, 0.05);
+        }
+
+        .callout-warning {
+            border-color: #ffc107;
+            background: rgba(255, 193, 7, 0.05);
+        }
+
+        .callout-success {
+            border-color: #4ecca3;
+            background: rgba(78, 204, 163, 0.05);
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .callout-info .callout-title { color: #6719ff; }
+        .callout-warning .callout-title { color: #ffc107; }
+        .callout-success .callout-title { color: #4ecca3; }
+
+        /* Bot Preview */
+        .bot-preview {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .bot-preview-header {
+            background: var(--bg-tertiary);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .bot-preview-header .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #6719ff; }
+        .dot-yellow { background: #ffc107; }
+        .dot-green { background: #4ecca3; }
+
+        .bot-preview-body {
+            padding: 16px;
+        }
+
+        .bot-message {
+            background: var(--bg-code);
+            border-radius: 10px;
+            padding: 14px;
+            margin: 8px 0;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border: 1px solid var(--border-secondary);
+        }
+
+        .bot-message.success {
+            border-color: #4ecca3;
+        }
+
+        .bot-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .bot-button {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            cursor: default;
+            transition: all 0.2s;
+        }
+
+        .bot-button:hover {
+            border-color: var(--accent-primary);
+        }
+
+        /* Steps */
+        .steps {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+        }
+
+        .step {
+            counter-increment: step;
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 16px;
+        }
+
+        .step::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 26px;
+            height: 26px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: white;
+        }
+
+        .step-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 2px;
+        }
+
+        .step p {
+            font-size: 0.8rem;
+            margin-bottom: 0;
+        }
+
+        /* Step with Preview */
+        .step-with-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        .step-with-preview > div {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        /* Lists */
+        ul {
+            color: var(--text-secondary);
+            padding-left: 20px;
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        li {
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        /* Page Footer */
+        .page-footer {
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .footer-nav a:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 200;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Search Results */
+        #search-results {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 280px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            margin-top: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        #search-results a {
+            display: block;
+            padding: 10px 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        #search-results a:hover {
+            background: var(--bg-tertiary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 24px;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            .top-nav {
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            .search-box {
+                width: 180px;
+            }
+            .step-with-preview {
+                flex-direction: column;
+            }
+            .step-with-preview > div {
+                min-width: 100%;
+            }
+            .footer-nav {
+                flex-direction: column;
+                width: 100%;
+            }
+            .footer-nav a {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;"></div>
+    
+    <div class="page-wrapper">
+        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        
+        <aside class="sidebar" id="sidebar">
+           <div class="sidebar-header">
+    <a href="/index.html" class="logo">
+        <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
+        <span class="logo-text">GHOSTwire</span>
+    </a>
+</div>
+            <nav class="sidebar-nav">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Getting Started</div>
+                    <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
+                    <a href="/getting-started.html" class="sidebar-link active"><span class="icon">🚀</span> Quick Start</a>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Core Features</div>
+                    <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
+                    <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
+                    <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
+                    <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
+                    <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
+                </div>
+                <div class="sidebar-section">
+    <div class="sidebar-section-title">Configuration</div>
+    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+</div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Resources</div>
+                    <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
+                    <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <p>© 2026 GHOSTwire</p>
+                <p><a href="https://t.me/ghostwire_bot" target="_blank">@ghostwire_bot</a></p>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <div class="content-container">
+                <div class="top-nav">
+                    <div style="position: relative;">
+                        <input type="text" class="search-box" id="search-box" placeholder="Search documentation...">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <a href="https://t.me/GHOSTwirescrap_bot" target="_blank" class="open-bot-btn">👻 Open Bot</a>
+                        <button class="theme-toggle" id="theme-toggle">🌙</button>
+                    </div>
+                </div>
+
+                <h1>Getting Started</h1>
+                <p>Follow this step-by-step guide to set up GHOSTwire and execute your first trade. Each step shows exactly what you'll see in the bot.</p>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">What You Need</div>
+                    <p>• A Telegram account<br>• 0.01+ SOL in your wallet<br>• A Telegram channel that posts token addresses</p>
+                </div>
+
+                <!-- STEP 1 -->
+                <h2>Step 1: Start GHOSTwire</h2>
+                <p>Open <a href="https://t.me/GHOSTwirescrap_bot" target="_blank">@GHOSTwirescrap_bot</a> on Telegram and send <code>/start</code>.</p>
+
+                <div class="step-with-preview">
+                    <div>
+                        <h4>What happens:</h4>
+                        <ul>
+                            <li>Bot creates your <strong>W1 wallet</strong> automatically</li>
+                            <li>Wallet is derived from your Telegram ID</li>
+                            <li>No private keys stored on any server</li>
+                            <li>You get a welcome message with all options</li>
+                        </ul>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+<b>You:</b> /start
+                            </div>
+                            <div class="bot-message">
+╔═══════════════════════════╗
+║        👻 GHOSTwire      ║
+╚═══════════════════════════╝
+
+👤 <b>Your Name</b>
+
+┌─────────────────────────┐
+│ 💳 74BoTq...MFSL │
+│ 💰 0.0000 SOL           │
+│ 📊 0 positions | 📋 0 channels │
+└─────────────────────────┘
+
+🔐 Derived Wallet — No keys stored!
+
+👇 Select an option:
+                            </div>
+                            <div class="bot-buttons">
+                                <div class="bot-button">💼 Wallet</div>
+                                <div class="bot-button">💰 Balance</div>
+                                <div class="bot-button">📈 Buy Token</div>
+                                <div class="bot-button">📉 Sell Token</div>
+                                <div class="bot-button">📊 Positions</div>
+                                <div class="bot-button">📊 Portfolio</div>
+                                <div class="bot-button">📋 Channels</div>
+                                <div class="bot-button">➕ Add Channel</div>
+                                <div class="bot-button">⚙️ Settings</div>
+                                <div class="bot-button">💼 Wallets</div>
+                                <div class="bot-button">🔑 Export Key</div>
+                                <div class="bot-button">🔐 TG Auth</div>
+                                <div class="bot-button">💸 Transfers</div>
+                                <div class="bot-button">🔗 Referral</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout callout-success">
+                    <div class="callout-title">You're all set!</div>
+                    <p>Your wallet is created and ready. Now let's fund it and start sniping.</p>
+                </div>
+
+                <!-- STEP 2 -->
+                <h2>Step 2: Fund Your Wallet</h2>
+                <p>Click <strong>💼 Wallet</strong> to view your wallet address, then send SOL to it.</p>
+
+                <div class="step-with-preview">
+                    <div>
+                        <h4>How to fund:</h4>
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-title">Copy Address</div>
+                                <p>Click <strong>Copy Address</strong></p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Send SOL</div>
+                                <p>From exchange or Phantom/Backpack</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Verify</div>
+                                <p>Check Balance after 30 seconds</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+💼 WALLET
+
+Address:
+74BoTqMbXNeaeF63wLzkKmRyn5S1NxKTdZsJznGAnMFSL
+
+Balance: 0.020016 SOL
+
+🔐 Derived from Telegram ID
+                            </div>
+                            <div class="bot-buttons">
+                                <div class="bot-button">📋 Copy Address</div>
+                                <div class="bot-button">🔑 Export Key</div>
+                                <div class="bot-button">« Back</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout callout-warning">
+                    <div class="callout-title">Minimum Balance</div>
+                    <p>Keep at least 0.01 SOL in your wallet for gas fees and trades.</p>
+                </div>
+
+                <!-- STEP 3 -->
+                <h2>Step 3: Add Your First Channel</h2>
+                <p>Click <strong>➕ Add Channel</strong> → <strong>Public Channel</strong> → Enter channel username.</p>
+
+                <div class="step-with-preview">
+                    <div>
+                        <h4>Channel Setup Flow:</h4>
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-title">Enter Channel</div>
+                                <p>Type <code>@channelname</code></p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Select Wallet</div>
+                                <p>Choose W1 or other wallet</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Set Buy Amount</div>
+                                <p>How much SOL per trade</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Set Slippage</div>
+                                <p>10-15% for memecoins</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-title">Set Take Profit</div>
+                                <p>Auto-sell at this profit %</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bot-preview" style="margin-bottom:16px;">
+                            <div class="bot-preview-header">
+                                <span class="dot dot-red"></span>
+                                <span class="dot dot-yellow"></span>
+                                <span class="dot dot-green"></span>
+                                <span>@GHOSTwirescrap_bot</span>
+                            </div>
+                            <div class="bot-preview-body">
+                                <div class="bot-message">
+📋 Channel: @crypto_signals
+
+💵 Buy Amount (SOL)
+
+Enter amount or skip for default: 0.01 SOL
+                                </div>
+                                <div class="bot-buttons">
+                                    <div class="bot-button" style="width: 100%;">« Back</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bot-preview">
+                            <div class="bot-preview-header">
+                                <span class="dot dot-red"></span>
+                                <span class="dot dot-yellow"></span>
+                                <span class="dot dot-green"></span>
+                                <span>@GHOSTwirescrap_bot</span>
+                            </div>
+                            <div class="bot-preview-body">
+                                <div class="bot-message" style="border-color: #4ecca3;">
+✅ Channel Added!
+
+📋 @crypto_signals
+💼 Wallet: W1
+
+💰 Buy: 0.01 SOL
+📊 Slippage: 10.0%
+🎯 Take Profit: 50%
+🤖 Auto-Sell: ✅ ON
+
+📡 Monitoring started!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4 -->
+                <h2>Step 4: Your First Auto-Snipe</h2>
+                <p>Once a channel is added, GHOSTwire monitors it 24/7. Here's what happens when a signal appears:</p>
+
+                <div class="bot-preview">
+                    <div class="bot-preview-header">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                        <span>@GHOSTwirescrap_bot</span>
+                    </div>
+                    <div class="bot-preview-body">
+                        <div class="bot-message">
+🔥 <b>Sniping token!</b>
+
+GNL7MQSz...pump
+Amount: 0.01 SOL
+💰 Fee: 0.05%
+
+⏳ Executing buy...
+                        </div>
+                        <div class="bot-message" style="border-color: #4ecca3;">
+🟢 <b>BUY EXECUTED!</b>
+
+Token: LUCY
+GNL7MQSz...pump
+Amount: 12,096.07
+Spent: 0.010000 SOL
+💰 Fee: 0.000005 SOL (0.05%)
+TX: 4TEoNH4n9ae73gz6DFWB...
+MC: $67,384
+                        </div>
+                        <div class="bot-message">
+📊 <b>Portfolio Overview</b>
+
+• LUCY — 12,096.07
+
+💰 SOL: $0.01
+💎 Total: $0.01
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 5 -->
+                <h2>Step 5: Manage Your Position</h2>
+                
+                <h3>View Positions</h3>
+                <div class="step-with-preview">
+                    <div>
+                        <p>Click <strong>📊 Positions</strong> to see all active positions with real-time P&L.</p>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+📊 <b>Your Positions</b>
+
+🔹 <b>LUCY</b>
+   GNL7MQSz...pump
+   Amount: 12,096.07
+   MC: $67,384
+
+💰 SOL: 0.0099 SOL (on-chain)
+💎 Total Value: $0.01
+                            </div>
+                            <div class="bot-buttons">
+                                <div class="bot-button">🔄 Refresh</div>
+                                <div class="bot-button">📉 Sell</div>
+                                <div class="bot-button" style="width: 100%;">« Back</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Sell Your Tokens</h3>
+                <div class="step-with-preview">
+                    <div>
+                        <p>Click <strong>📉 Sell Token</strong>, select your token, choose percentage or custom amount.</p>
+                    </div>
+                    <div class="bot-preview">
+                        <div class="bot-preview-header">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                            <span>@GHOSTwirescrap_bot</span>
+                        </div>
+                        <div class="bot-preview-body">
+                            <div class="bot-message">
+📉 <b>Sell LUCY</b>
+
+Balance: 13,427.44
+
+Select percentage or enter custom amount:
+                            </div>
+                            <div class="bot-buttons">
+                                <div class="bot-button">💰 100%</div>
+                                <div class="bot-button">📊 50%</div>
+                                <div class="bot-button">📉 25%</div>
+                                <div class="bot-button">📝 10%</div>
+                                <div class="bot-button" style="width: 100%;">✏️ Custom Amount</div>
+                                <div class="bot-button" style="width: 100%;">« Cancel</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout callout-success">
+                    <div class="callout-title">You're Ready!</div>
+                    <p>You now know how to:<br>
+                    ✅ Start GHOSTwire and create your wallet<br>
+                    ✅ Fund your wallet with SOL<br>
+                    ✅ Add channels for auto-sniping<br>
+                    ✅ Monitor positions and P&L<br>
+                    ✅ Sell manually with custom amounts<br>
+                    ✅ Set auto-sell for hands-free profit taking</p>
+                </div>
+
+                <div class="page-footer">
+                    <div class="footer-nav">
+                        <a href="/index.html">← Overview</a>
+                        <a href="/wallet.html">Wallet Setup →</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const toggleBtn = document.getElementById('theme-toggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    const next = current === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', next);
+                    localStorage.setItem('theme', next);
+                    toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️';
+                });
+                toggleBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+            }
+        }
+
+        function initSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (menuBtn && sidebar) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                    if (overlay) overlay.style.display = 'block';
+                });
+            }
+            
+            if (overlay) {
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                    overlay.style.display = 'none';
+                });
+            }
+        }
+
+        function initSearch() {
+            const searchBox = document.getElementById('search-box');
+            if (!searchBox) return;
+            
+            const searchData = [
+                { title: 'Overview', url: '/index.html' },
+                { title: 'Quick Start', url: '/getting-started.html' },
+                { title: 'Wallet Setup', url: '/wallet.html' },
+                { title: 'Channel Monitoring', url: '/channels.html' },
+                { title: 'Buying & Selling', url: '/trading.html' },
+                { title: 'Portfolio Tracking', url: '/portfolio.html' },
+                { title: 'Transfers', url: '/transfers.html' },
+                { title: 'Settings', url: '/settings.html' },
+                { title: 'Private Channels', url: '/private-channels.html' },
+                { title: 'Referral System', url: '/referrals.html' },
+                { title: 'Fee System', url: '/fees.html' },
+                { title: 'FAQ', url: '/faq.html' },
+                { title: 'Commands', url: '/commands.html' },
+            ];
+            
+            let dropdown = null;
+            
+            searchBox.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                
+                if (!dropdown) {
+                    dropdown = document.createElement('div');
+                    dropdown.id = 'search-results';
+                    searchBox.parentElement.style.position = 'relative';
+                    searchBox.parentElement.appendChild(dropdown);
+                }
+                
+                if (query) {
+                    const results = searchData.filter(d => d.title.toLowerCase().includes(query));
+                    if (results.length > 0) {
+                        dropdown.innerHTML = results.map(r => `<a href="${r.url}">${r.title}</a>`).join('');
+                        dropdown.style.display = 'block';
+                    } else {
+                        dropdown.style.display = 'none';
+                    }
+                } else {
+                    dropdown.style.display = 'none';
+                }
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (dropdown && !searchBox.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initSidebar();
+            initSearch();
+        });
+    </script>
+</body>
+</html>
