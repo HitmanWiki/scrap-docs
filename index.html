@@ -64,11 +64,13 @@
             display: flex;
             min-height: 100vh;
             width: 100%;
+            position: relative;
         }
 
         /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
             background: var(--bg-secondary);
             border-right: 1px solid var(--border-primary);
             position: fixed;
@@ -76,7 +78,7 @@
             left: 0;
             bottom: 0;
             overflow-y: auto;
-            z-index: 100;
+            z-index: 1000;
             transition: transform 0.3s ease;
         }
 
@@ -93,19 +95,14 @@
         }
 
         .logo-icon {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             background: linear-gradient(135deg, #6719ff, #8a4dff);
-            border-radius: 8px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .logo-icon svg {
-            width: 16px;
-            height: 16px;
-            stroke: white;
+            font-size: 18px;
         }
 
         .logo-text {
@@ -159,7 +156,6 @@
             text-align: center;
         }
 
-        /* Sidebar Footer */
         .sidebar-footer {
             padding: 20px;
             border-top: 1px solid var(--border-primary);
@@ -240,6 +236,14 @@
             align-items: center;
             padding: 0 0 32px 0;
             gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+            max-width: 300px;
+            min-width: 200px;
         }
 
         .search-box {
@@ -249,7 +253,7 @@
             padding: 8px 14px;
             color: var(--text-primary);
             font-size: 0.85rem;
-            width: 220px;
+            width: 100%;
             transition: all 0.2s;
         }
 
@@ -262,6 +266,48 @@
             color: var(--text-tertiary);
         }
 
+        .search-results-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            margin-top: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 500;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .search-results-dropdown a {
+            display: block;
+            padding: 10px 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border-secondary);
+            transition: all 0.2s;
+        }
+
+        .search-results-dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .search-results-dropdown a:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .top-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .theme-toggle {
             background: var(--bg-tertiary);
             border: 1px solid var(--border-primary);
@@ -270,6 +316,7 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 0.9rem;
+            white-space: nowrap;
         }
 
         .open-bot-btn {
@@ -281,6 +328,7 @@
             font-weight: 600;
             font-size: 0.85rem;
             border: none;
+            white-space: nowrap;
         }
 
         .open-bot-btn:hover {
@@ -508,19 +556,93 @@
             text-decoration: none;
         }
 
-        /* Mobile Menu */
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 20px 0 40px;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6719ff, #8a4dff);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-primary);
+        }
+
+        .btn-secondary:hover {
+            border-color: #6719ff;
+        }
+
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Mobile Menu Button */
         .mobile-menu-btn {
             display: none;
             position: fixed;
             top: 16px;
             left: 16px;
-            z-index: 200;
+            z-index: 1100;
             background: var(--bg-card);
             border: 1px solid var(--border-primary);
             color: var(--text-primary);
-            padding: 10px;
+            padding: 10px 14px;
             border-radius: 8px;
             cursor: pointer;
+            font-size: 1.2rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Responsive */
@@ -532,25 +654,41 @@
                 transform: translateX(0);
             }
             .main-content {
-                margin-left: 0;
-                padding: 24px;
-                width: 100%;
+                margin-left: 0 !important;
+                padding: 20px !important;
+                width: 100% !important;
             }
             .mobile-menu-btn {
+                display: flex !important;
+            }
+            .sidebar-overlay.active {
                 display: block;
+            }
+            .top-nav {
+                padding-left: 60px !important;
+                padding-top: 8px !important;
             }
         }
 
         @media (max-width: 768px) {
             .main-content {
-                padding: 20px;
+                padding: 16px !important;
             }
             .top-nav {
-                justify-content: space-between;
-                flex-wrap: wrap;
+                flex-direction: column;
+                align-items: stretch;
+                padding-left: 60px !important;
+                padding-top: 8px !important;
+                gap: 10px;
             }
-            .search-box {
-                width: 180px;
+            .search-wrapper {
+                max-width: 100%;
+                width: 100%;
+                order: 1;
+            }
+            .top-nav-actions {
+                order: 2;
+                justify-content: flex-end;
             }
             .features-grid {
                 flex-direction: column;
@@ -565,23 +703,64 @@
             .footer-nav a {
                 justify-content: center;
             }
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 12px !important;
+            }
+            .top-nav {
+                padding-left: 56px !important;
+                padding-top: 6px !important;
+                gap: 8px;
+            }
+            .search-wrapper {
+                max-width: 100%;
+                width: 100%;
+            }
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .hero-buttons a {
+                width: 100%;
+                text-align: center;
+            }
+            .mobile-menu-btn {
+                top: 12px;
+                left: 12px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Desktop - hide mobile menu button */
+        @media (min-width: 1025px) {
+            .mobile-menu-btn {
+                display: none !important;
+            }
+            .top-nav {
+                padding-left: 0 !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="sidebar-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;"></div>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     
     <div class="page-wrapper">
-        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">☰</button>
         
         <aside class="sidebar" id="sidebar">
-           <div class="sidebar-header">
-    <a href="/index.html" class="logo">
-        <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
-        <span class="logo-text">GHOSTwire</span>
-    </a>
-</div>
-            <nav class="sidebar-nav">
+            <div class="sidebar-header">
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon">👻</div>
+                    <span class="logo-text">GHOSTwire</span>
+                </a>
+            </div>
             <nav class="sidebar-nav">
                 <div class="sidebar-section">
                     <div class="sidebar-section-title">Getting Started</div>
@@ -619,26 +798,25 @@
         <main class="main-content">
             <div class="content-container">
                 <div class="top-nav">
-                    <div style="position: relative;">
+                    <div class="search-wrapper">
                         <input type="text" class="search-box" id="search-box" placeholder="Search documentation...">
+                        <div class="search-results-dropdown" id="search-results"></div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="top-nav-actions">
                         <a href="https://t.me/ghowr_bot" target="_blank" class="open-bot-btn">👻 Open Bot</a>
-                        <button class="theme-toggle" id="theme-toggle">🌙</button>
+                        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
                     </div>
                 </div>
 
-                <!-- Hero -->
                 <div class="hero">
                     <h1>GHOSTwire</h1>
                     <p>Auto-snipe tokens from Telegram channels, track your portfolio, and automate your trading strategy — all from Telegram.</p>
                     <div class="hero-buttons" style="margin-top: 24px;">
-                        <a href="/getting-started.html" class="btn-primary" style="display: inline-block; padding: 10px 20px; background: linear-gradient(135deg, #6719ff, #8a4dff); color: white; border-radius: 8px; font-weight: 600; font-size: 0.85rem;">Get Started</a>
-                        <a href="/wallet.html" class="btn-secondary" style="display: inline-block; padding: 10px 20px; background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-primary); border-radius: 8px; font-weight: 600; font-size: 0.85rem;">Documentation</a>
+                        <a href="/getting-started.html" class="btn-primary">Get Started</a>
+                        <a href="/wallet.html" class="btn-secondary">Documentation</a>
                     </div>
                 </div>
 
-                <!-- /start Command Preview -->
                 <div class="quick-start">
                     <h2 style="margin-top: 0;">/start Command</h2>
                     <p style="margin-bottom: 20px;">When you first start the bot, you'll see this clean welcome message:</p>
@@ -651,28 +829,15 @@
                             <span>@ghowr_bot</span>
                         </div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-<b>You:</b> /start
-                            </div>
+                            <div class="bot-message"><b>You:</b> /start</div>
                             <div class="bot-message">
 GHOSTwire Bot - Solana Sniper Bot
 
-Auto-snipe tokens from Telegram channels, track your portfolio, and automate your trading strategy.
-
 User: John
-
 Wallet: 74BoTq...MFSL
 Balance: 0.0200 SOL
 Positions: 0
 Channels: 0
-Auto-Sell: OFF
-Auto-Buy: ON
-Referrals: 0
-Referral Earnings: 0.0000 SOL
-
-Derived Wallet — No keys stored.
-
-<a href="https://scrap-docs.vercel.app/">Documentation</a>
 
 Select an option:
                             </div>
@@ -682,21 +847,14 @@ Select an option:
                                 <div class="bot-button">Buy Token</div>
                                 <div class="bot-button">Sell Token</div>
                                 <div class="bot-button">Positions</div>
-                                <div class="bot-button">Portfolio</div>
                                 <div class="bot-button">Channels</div>
-                                <div class="bot-button">Add Channel</div>
                                 <div class="bot-button">Settings</div>
-                                <div class="bot-button">Wallets</div>
-                                <div class="bot-button">Export Key</div>
-                                <div class="bot-button">TG Auth</div>
-                                <div class="bot-button">Transfers</div>
                                 <div class="bot-button">Referral</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Stats -->
                 <div class="stats-row">
                     <div class="stat-card">
                         <div class="stat-number">24/7</div>
@@ -716,7 +874,6 @@ Select an option:
                     </div>
                 </div>
 
-                <!-- Features -->
                 <h2>All Features</h2>
                 <div class="features-grid">
                     <a href="/wallet.html" class="feature-card">
@@ -764,56 +921,37 @@ Select an option:
                     </a>
                 </div>
 
-                <!-- Real Trade Example -->
                 <h2>Real Trade Example</h2>
                 <p>From signal to sell — complete flow</p>
-                
                 <div class="two-column">
                     <div class="bot-preview">
                         <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
+                            <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
                             <span>📡 Channel Signal</span>
                         </div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-<b>@crypto_signals:</b>
+                            <div class="bot-message"><b>@crypto_signals:</b>
 🚀 New Gem!
-GNL7MQSzzksbfuquHTJuiDPVXvXpfxBfHfu1mQGhpump
-                            </div>
+GNL7MQSzzksbfuquHTJuiDPVXvXpfxBfHfu1mQGhpump</div>
                         </div>
                     </div>
-                    
                     <div class="bot-preview">
                         <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
+                            <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
                             <span>👻 GHOSTwire</span>
                         </div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-🔥 Sniping token!
-
+                            <div class="bot-message">🔥 Sniping token!
 GNL7MQSz...pump
-Amount: 0.01 SOL
-Fee: 0.5%
-
-⏳ Executing buy...
-                            </div>
-                            <div class="bot-message success">
-🟢 BUY EXECUTED!
-
+Amount: 0.01 SOL</div>
+                            <div class="bot-message success">🟢 BUY EXECUTED!
 Token: LUCY
 Amount: 12,096.07
-TX: 4TEoNH4n9ae73gz6DFWB...
-                            </div>
+TX: 4TEoNH4n9ae73gz6DFWB...</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- CTA -->
                 <div class="quick-start" style="margin-top: 40px;">
                     <h2 style="margin-top: 0;">Ready to Start Sniping?</h2>
                     <p>Open GHOSTwire on Telegram and start trading in minutes.</p>
@@ -822,7 +960,6 @@ TX: 4TEoNH4n9ae73gz6DFWB...
                     </div>
                 </div>
 
-                <!-- Footer -->
                 <div class="page-footer">
                     <div class="footer-nav">
                         <a href="/getting-started.html">Quick Start →</a>
@@ -832,59 +969,15 @@ TX: 4TEoNH4n9ae73gz6DFWB...
         </main>
     </div>
 
-    <style>
-        .hero h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-        .hero p {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            max-width: 550px;
-            margin: 0 auto;
-        }
-        .hero-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .btn-primary, .btn-secondary {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #6719ff, #8a4dff);
-            color: white;
-        }
-        .btn-primary:hover {
-            opacity: 0.9;
-        }
-        .btn-secondary {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 1px solid var(--border-primary);
-        }
-        .btn-secondary:hover {
-            border-color: #6719ff;
-        }
-    </style>
-
     <script>
         function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
+            var savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
-            const toggleBtn = document.getElementById('theme-toggle');
+            var toggleBtn = document.getElementById('theme-toggle');
             if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => {
-                    const current = document.documentElement.getAttribute('data-theme');
-                    const next = current === 'dark' ? 'light' : 'dark';
+                toggleBtn.addEventListener('click', function() {
+                    var current = document.documentElement.getAttribute('data-theme');
+                    var next = current === 'dark' ? 'light' : 'dark';
                     document.documentElement.setAttribute('data-theme', next);
                     localStorage.setItem('theme', next);
                     toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️';
@@ -894,30 +987,52 @@ TX: 4TEoNH4n9ae73gz6DFWB...
         }
 
         function initSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const menuBtn = document.getElementById('mobile-menu-btn');
-            const overlay = document.getElementById('sidebar-overlay');
+            var sidebar = document.getElementById('sidebar');
+            var menuBtn = document.getElementById('mobile-menu-btn');
+            var overlay = document.getElementById('sidebar-overlay');
             
-            if (menuBtn && sidebar) {
-                menuBtn.addEventListener('click', () => {
-                    sidebar.classList.toggle('open');
-                    if (overlay) overlay.style.display = 'block';
-                });
+            function openSidebar() {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            if (menuBtn) {
+                menuBtn.addEventListener('click', openSidebar);
             }
             
             if (overlay) {
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('open');
-                    overlay.style.display = 'none';
-                });
+                overlay.addEventListener('click', closeSidebar);
             }
+            
+            var sidebarLinks = sidebar.querySelectorAll('.sidebar-link');
+            sidebarLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 1024) {
+                        closeSidebar();
+                    }
+                });
+            });
+            
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 1024) {
+                    closeSidebar();
+                }
+            });
         }
 
         function initSearch() {
-            const searchBox = document.getElementById('search-box');
-            if (!searchBox) return;
+            var searchBox = document.getElementById('search-box');
+            var searchResults = document.getElementById('search-results');
+            if (!searchBox || !searchResults) return;
             
-            const searchData = [
+            var searchData = [
                 { title: 'Overview', url: '/index.html' },
                 { title: 'Quick Start', url: '/getting-started.html' },
                 { title: 'Wallet Setup', url: '/wallet.html' },
@@ -931,42 +1046,55 @@ TX: 4TEoNH4n9ae73gz6DFWB...
                 { title: 'Referral System', url: '/referrals.html' },
                 { title: 'Fee System', url: '/fees.html' },
                 { title: 'FAQ', url: '/faq.html' },
-                { title: 'Commands', url: '/commands.html' },
+                { title: 'Commands', url: '/commands.html' }
             ];
             
-            let dropdown = null;
-            
-            searchBox.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
+            searchBox.addEventListener('input', function(e) {
+                var query = e.target.value.toLowerCase().trim();
                 
-                if (!dropdown) {
-                    dropdown = document.createElement('div');
-                    dropdown.id = 'search-results';
-                    searchBox.parentElement.style.position = 'relative';
-                    searchBox.parentElement.appendChild(dropdown);
-                }
-                
-                if (query) {
-                    const results = searchData.filter(d => d.title.toLowerCase().includes(query));
+                if (query.length > 0) {
+                    var results = searchData.filter(function(d) {
+                        return d.title.toLowerCase().indexOf(query) !== -1;
+                    });
+                    
                     if (results.length > 0) {
-                        dropdown.innerHTML = results.map(r => `<a href="${r.url}">${r.title}</a>`).join('');
-                        dropdown.style.display = 'block';
+                        var html = '';
+                        results.forEach(function(r) {
+                            html += '<a href="' + r.url + '">' + r.title + '</a>';
+                        });
+                        searchResults.innerHTML = html;
+                        searchResults.style.display = 'block';
                     } else {
-                        dropdown.style.display = 'none';
+                        searchResults.innerHTML = '<div style="padding: 12px; color: var(--text-tertiary); font-size: 0.85rem;">No results found</div>';
+                        searchResults.style.display = 'block';
                     }
                 } else {
-                    dropdown.style.display = 'none';
+                    searchResults.style.display = 'none';
                 }
             });
             
-            document.addEventListener('click', (e) => {
-                if (dropdown && !searchBox.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
+            document.addEventListener('click', function(e) {
+                if (!searchBox.contains(e.target) && !searchResults.contains(e.target)) {
+                    searchResults.style.display = 'none';
+                }
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    searchResults.style.display = 'none';
+                    searchBox.blur();
+                }
+            });
+            
+            searchBox.addEventListener('focus', function() {
+                if (searchBox.value.trim().length > 0) {
+                    var event = new Event('input');
+                    searchBox.dispatchEvent(event);
                 }
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
             initTheme();
             initSidebar();
             initSearch();

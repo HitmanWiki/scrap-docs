@@ -6,1353 +6,231 @@
     <title>Transfers - GHOSTwire</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #0f0f15;
-            --bg-tertiary: #15151d;
-            --bg-card: #1a1a24;
-            --bg-code: #0d0d12;
-            --accent-primary: #6719ff;
-            --accent-secondary: #8a4dff;
+            --bg-primary: #0a0a0f; --bg-secondary: #0f0f15; --bg-tertiary: #15151d;
+            --bg-card: #1a1a24; --bg-code: #0d0d12;
+            --accent-primary: #6719ff; --accent-secondary: #8a4dff;
             --accent-gradient: linear-gradient(135deg, #6719ff, #8a4dff);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --text-tertiary: #6e6e80;
-            --border-primary: #22222e;
-            --border-secondary: #1a1a22;
-            --success: #4ecca3;
-            --warning: #ffc107;
-            --danger: #e94560;
+            --text-primary: #ffffff; --text-secondary: #a0a0b0; --text-tertiary: #6e6e80;
+            --border-primary: #22222e; --border-secondary: #1a1a22;
+            --success: #4ecca3; --warning: #ffc107; --danger: #e94560;
             --sidebar-width: 260px;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #fafafa;
-            --bg-tertiary: #f0f0f0;
-            --bg-card: #ffffff;
-            --bg-code: #f5f5f5;
-            --text-primary: #1a1a2e;
-            --text-secondary: #5a5a6e;
-            --text-tertiary: #8a8a9e;
-            --border-primary: #e0e0e8;
-            --border-secondary: #ececf0;
+            --bg-primary: #ffffff; --bg-secondary: #fafafa; --bg-tertiary: #f0f0f0;
+            --bg-card: #ffffff; --bg-code: #f5f5f5;
+            --text-primary: #1a1a2e; --text-secondary: #5a5a6e; --text-tertiary: #8a8a9e;
+            --border-primary: #e0e0e8; --border-secondary: #ececf0;
         }
 
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            font-size: 15px;
-        }
-
-        /* Layout */
-        .page-wrapper {
-            display: flex;
-            min-height: 100vh;
-            width: 100%;
-        }
+        html, body { overflow-x: hidden; width: 100%; }
+        body { font-family: var(--font-sans); background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; font-size: 15px; }
+        .page-wrapper { display: flex; min-height: 100vh; width: 100%; position: relative; }
 
         /* Sidebar */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border-primary);
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            overflow-y: auto;
-            z-index: 100;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar-header {
-            padding: 28px 20px;
-            border-bottom: 1px solid var(--border-primary);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, #6719ff, #8a4dff);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-icon svg {
-            width: 16px;
-            height: 16px;
-            stroke: white;
-        }
-
-        .logo-text {
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 0.5px;
-            color: var(--text-primary);
-        }
-
-        .sidebar-nav {
-            padding: 20px 0;
-        }
-
-        .sidebar-section {
-            margin-bottom: 24px;
-        }
-
-        .sidebar-section-title {
-            padding: 6px 20px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-tertiary);
-            font-weight: 600;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 20px;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-            font-size: 0.85rem;
-            text-decoration: none;
-        }
-
-        .sidebar-link:hover {
-            color: var(--text-primary);
-            background: var(--bg-tertiary);
-        }
-
-        .sidebar-link.active {
-            color: var(--accent-primary);
-            background: rgba(103, 25, 255, 0.08);
-        }
-
-        .sidebar-link .icon {
-            font-size: 0.95rem;
-            width: 24px;
-            text-align: center;
-        }
+        .sidebar { width: var(--sidebar-width); min-width: var(--sidebar-width); background: var(--bg-secondary); border-right: 1px solid var(--border-primary); position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; z-index: 1000; transition: transform 0.3s ease; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 28px 20px; border-bottom: 1px solid var(--border-primary); }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #6719ff, #8a4dff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .logo-text { font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; color: var(--text-primary); }
+        .sidebar-nav { flex: 1; padding: 20px 0; }
+        .sidebar-section { margin-bottom: 24px; }
+        .sidebar-section-title { padding: 6px 20px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); font-weight: 600; }
+        .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 8px 20px; color: var(--text-secondary); transition: all 0.2s; font-size: 0.85rem; text-decoration: none; }
+        .sidebar-link:hover { color: var(--text-primary); background: var(--bg-tertiary); }
+        .sidebar-link.active { color: var(--accent-primary); background: rgba(103, 25, 255, 0.08); }
+        .sidebar-link .icon { font-size: 0.95rem; width: 24px; text-align: center; }
+        .sidebar-footer { padding: 20px; border-top: 1px solid var(--border-primary); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; }
+        .sidebar-footer a { color: var(--text-tertiary); text-decoration: none; }
+        .sidebar-footer a:hover { color: var(--accent-primary); }
 
         /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 48px 64px;
-            min-height: 100vh;
-            width: calc(100% - var(--sidebar-width));
-            background: var(--bg-primary);
-        }
-
-        .content-container {
-            max-width: 800px;
-            width: 100%;
-        }
-
-        /* Typography */
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            letter-spacing: -0.01em;
-            color: var(--text-primary);
-        }
-
-        h2 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-top: 40px;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-        }
-
-        h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-top: 24px;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
-        h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-top: 16px;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        a {
-            color: var(--accent-primary);
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        code {
-            font-family: var(--font-mono);
-            font-size: 0.85em;
-            background: var(--bg-code);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #a67cff;
-        }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 48px 64px; min-height: 100vh; width: calc(100% - var(--sidebar-width)); background: var(--bg-primary); }
+        .content-container { max-width: 800px; width: 100%; }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.01em; color: var(--text-primary); }
+        h2 { font-size: 1.3rem; font-weight: 600; margin-top: 40px; margin-bottom: 16px; color: var(--text-primary); }
+        h3 { font-size: 1rem; font-weight: 600; margin-top: 24px; margin-bottom: 12px; color: var(--text-primary); }
+        h4 { font-size: 0.9rem; font-weight: 600; margin-top: 16px; margin-bottom: 8px; color: var(--text-primary); }
+        p { margin-bottom: 16px; color: var(--text-secondary); line-height: 1.7; }
+        a { color: var(--accent-primary); text-decoration: none; } a:hover { text-decoration: underline; }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg-code); padding: 2px 6px; border-radius: 4px; color: #a67cff; }
 
         /* Top Navigation */
-        .top-nav {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 0 0 32px 0;
-            gap: 16px;
-        }
-
-        .search-box {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
-            padding: 8px 14px;
-            color: var(--text-primary);
-            font-size: 0.85rem;
-            width: 220px;
-            transition: all 0.2s;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-
-        .search-box::placeholder {
-            color: var(--text-tertiary);
-        }
-
-        .theme-toggle {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            color: var(--text-primary);
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .open-bot-btn {
-            padding: 8px 16px;
-            background: var(--accent-gradient);
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            border: none;
-        }
-
-        .open-bot-btn:hover {
-            opacity: 0.9;
-            text-decoration: none;
-        }
+        .top-nav { display: flex; justify-content: flex-end; align-items: center; padding: 0 0 32px 0; gap: 16px; flex-wrap: wrap; }
+        .search-wrapper { position: relative; flex: 1; max-width: 300px; min-width: 200px; }
+        .search-box { background: var(--bg-tertiary); border: 1px solid var(--border-primary); border-radius: 8px; padding: 8px 14px; color: var(--text-primary); font-size: 0.85rem; width: 100%; }
+        .search-box:focus { outline: none; border-color: var(--accent-primary); }
+        .search-box::placeholder { color: var(--text-tertiary); }
+        .search-results-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 8px; margin-top: 4px; max-height: 300px; overflow-y: auto; z-index: 500; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .search-results-dropdown a { display: block; padding: 10px 14px; color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; border-bottom: 1px solid var(--border-secondary); }
+        .search-results-dropdown a:last-child { border-bottom: none; }
+        .search-results-dropdown a:hover { background: var(--bg-tertiary); color: var(--text-primary); text-decoration: none; }
+        .top-nav-actions { display: flex; align-items: center; gap: 12px; }
+        .theme-toggle { background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-primary); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; white-space: nowrap; }
+        .open-bot-btn { padding: 8px 16px; background: var(--accent-gradient); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.85rem; white-space: nowrap; }
+        .open-bot-btn:hover { opacity: 0.9; text-decoration: none; }
 
         /* Callouts */
-        .callout {
-            border-left: 3px solid;
-            border-radius: 0 8px 8px 0;
-            padding: 16px 20px;
-            margin: 24px 0;
-            background: var(--bg-card);
-        }
-
-        .callout-info {
-            border-color: #6719ff;
-            background: rgba(103, 25, 255, 0.05);
-        }
-
-        .callout-warning {
-            border-color: #ffc107;
-            background: rgba(255, 193, 7, 0.05);
-        }
-
-        .callout-success {
-            border-color: #4ecca3;
-            background: rgba(78, 204, 163, 0.05);
-        }
-
-        .callout-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
-        .callout-info .callout-title { color: #6719ff; }
-        .callout-warning .callout-title { color: #ffc107; }
-        .callout-success .callout-title { color: #4ecca3; }
+        .callout { border-left: 3px solid; border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 24px 0; background: var(--bg-card); }
+        .callout-info { border-color: #6719ff; background: rgba(103, 25, 255, 0.05); }
+        .callout-warning { border-color: #ffc107; background: rgba(255, 193, 7, 0.05); }
+        .callout-success { border-color: #4ecca3; background: rgba(78, 204, 163, 0.05); }
+        .callout-title { font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+        .callout-info .callout-title { color: #6719ff; } .callout-warning .callout-title { color: #ffc107; } .callout-success .callout-title { color: #4ecca3; }
 
         /* Bot Preview */
-        .bot-preview {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
-
-        .bot-preview-header {
-            background: var(--bg-tertiary);
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            color: var(--text-tertiary);
-            border-bottom: 1px solid var(--border-primary);
-        }
-
-        .bot-preview-header .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-        .dot-red { background: #6719ff; }
-        .dot-yellow { background: #ffc107; }
-        .dot-green { background: #4ecca3; }
-
-        .bot-preview-body {
-            padding: 16px;
-        }
-
-        .bot-message {
-            background: var(--bg-code);
-            border-radius: 10px;
-            padding: 14px;
-            margin: 8px 0;
-            color: var(--text-secondary);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            white-space: pre-wrap;
-            word-break: break-word;
-            border: 1px solid var(--border-secondary);
-        }
-
-        .bot-message.success {
-            border-color: #4ecca3;
-        }
-
-        .bot-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 12px;
-        }
-
-        .bot-button {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            color: var(--text-primary);
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 10px;
-            cursor: default;
-            transition: all 0.2s;
-        }
-
-        .bot-button:hover {
-            border-color: var(--accent-primary);
-        }
-
-        /* Step with Preview */
-        .step-with-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 24px;
-            margin: 24px 0;
-        }
-
-        .step-with-preview > div {
-            flex: 1;
-            min-width: 240px;
-        }
+        .bot-preview { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 12px; overflow: hidden; margin: 20px 0; }
+        .bot-preview-header { background: var(--bg-tertiary); padding: 10px 16px; display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-tertiary); border-bottom: 1px solid var(--border-primary); }
+        .bot-preview-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-red { background: #6719ff; } .dot-yellow { background: #ffc107; } .dot-green { background: #4ecca3; }
+        .bot-preview-body { padding: 16px; }
+        .bot-message { background: var(--bg-code); border-radius: 10px; padding: 14px; margin: 8px 0; color: var(--text-secondary); font-family: var(--font-mono); font-size: 11px; white-space: pre-wrap; word-break: break-word; border: 1px solid var(--border-secondary); }
+        .bot-message.success { border-color: #4ecca3; }
+        .bot-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+        .bot-button { background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-primary); padding: 6px 10px; border-radius: 6px; font-size: 10px; cursor: default; }
+        .bot-button:hover { border-color: var(--accent-primary); }
 
         /* Steps */
-        .steps {
-            counter-reset: step;
-            list-style: none;
-            padding: 0;
-        }
-
-        .step {
-            counter-increment: step;
-            position: relative;
-            padding-left: 40px;
-            margin-bottom: 16px;
-        }
-
-        .step::before {
-            content: counter(step);
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 26px;
-            height: 26px;
-            background: var(--accent-gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.75rem;
-            color: white;
-        }
-
-        .step-title {
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-bottom: 2px;
-        }
-
-        .step p {
-            font-size: 0.8rem;
-            margin-bottom: 0;
-        }
+        .step-with-preview { display: flex; flex-wrap: wrap; gap: 24px; margin: 24px 0; }
+        .step-with-preview > div { flex: 1; min-width: 240px; }
+        .steps { counter-reset: step; list-style: none; padding: 0; }
+        .step { counter-increment: step; position: relative; padding-left: 40px; margin-bottom: 16px; }
+        .step::before { content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; color: white; }
+        .step-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 2px; }
+        .step p { font-size: 0.8rem; margin-bottom: 0; }
 
         /* Card Grid */
-        .card-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 32px 0;
-        }
+        .card-grid { display: flex; flex-wrap: wrap; gap: 20px; margin: 32px 0; }
+        .card { flex: 1; min-width: 200px; background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 10px; padding: 20px; }
+        .card:hover { border-color: var(--accent-primary); transform: translateY(-2px); }
+        .card-icon { font-size: 1.5rem; margin-bottom: 10px; }
+        .card-title { font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+        .card-desc { color: var(--text-secondary); font-size: 0.75rem; line-height: 1.5; }
 
-        .card {
-            flex: 1;
-            min-width: 200px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 10px;
-            padding: 20px;
-            transition: all 0.2s;
-        }
+        .transfer-summary { background: var(--bg-tertiary); border-radius: 8px; padding: 12px; margin: 10px 0; font-family: var(--font-mono); font-size: 0.7rem; border: 1px solid var(--border-secondary); }
 
-        .card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
-        }
+        ul { color: var(--text-secondary); padding-left: 20px; margin-bottom: 16px; line-height: 1.7; }
+        li { margin-bottom: 6px; font-size: 0.85rem; }
 
-        .card-icon {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
+        .page-footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border-primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .footer-nav { display: flex; gap: 20px; flex-wrap: wrap; }
+        .footer-nav a { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--border-primary); border-radius: 8px; text-decoration: none; color: var(--text-secondary); font-size: 0.8rem; }
+        .footer-nav a:hover { border-color: var(--accent-primary); color: var(--accent-primary); text-decoration: none; }
 
-        .card-title {
-            font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-        }
+        /* Sidebar Overlay */
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+        .sidebar-overlay.active { display: block; }
+        .mobile-menu-btn { display: none; position: fixed; top: 16px; left: 16px; z-index: 1100; background: var(--bg-card); border: 1px solid var(--border-primary); color: var(--text-primary); padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 1.2rem; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
 
-        .card-desc {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            line-height: 1.5;
-        }
-
-        /* Transfer Summary */
-        .transfer-summary {
-            background: var(--bg-tertiary);
-            border-radius: 8px;
-            padding: 12px;
-            margin: 10px 0;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            border: 1px solid var(--border-secondary);
-        }
-
-        /* Lists */
-        ul {
-            color: var(--text-secondary);
-            padding-left: 20px;
-            margin-bottom: 16px;
-            line-height: 1.7;
-        }
-
-        li {
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-        }
-
-        /* Page Footer */
-        .page-footer {
-            margin-top: 60px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border-primary);
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .footer-nav {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-nav a {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
-            transition: all 0.2s;
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-
-        .footer-nav a:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-            text-decoration: none;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            z-index: 200;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            color: var(--text-primary);
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        /* Search Results */
-        #search-results {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            width: 280px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
-            margin-top: 4px;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 1000;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        }
-
-        #search-results a {
-            display: block;
-            padding: 10px 14px;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-secondary);
-            text-decoration: none;
-            font-size: 0.8rem;
-        }
-
-        #search-results a:hover {
-            background: var(--bg-tertiary);
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 24px;
-                width: 100%;
-            }
-            .mobile-menu-btn {
-                display: block;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 20px;
-            }
-            .top-nav {
-                justify-content: space-between;
-                flex-wrap: wrap;
-            }
-            .search-box {
-                width: 180px;
-            }
-            .step-with-preview {
-                flex-direction: column;
-            }
-            .step-with-preview > div {
-                min-width: 100%;
-            }
-            .card-grid {
-                flex-direction: column;
-            }
-            .card {
-                min-width: 100%;
-            }
-            .footer-nav {
-                flex-direction: column;
-                width: 100%;
-            }
-            .footer-nav a {
-                justify-content: center;
-            }
-        }
+        @media (max-width: 1024px) { .sidebar { transform: translateX(-100%); } .sidebar.open { transform: translateX(0); } .main-content { margin-left: 0 !important; padding: 20px !important; width: 100% !important; } .mobile-menu-btn { display: flex !important; } .sidebar-overlay.active { display: block; } .top-nav { padding-left: 60px !important; padding-top: 8px !important; } }
+        @media (max-width: 768px) { .main-content { padding: 16px !important; } .top-nav { flex-direction: column; align-items: stretch; padding-left: 60px !important; padding-top: 8px !important; gap: 10px; } .search-wrapper { max-width: 100%; width: 100%; order: 1; } .top-nav-actions { order: 2; justify-content: flex-end; } .step-with-preview { flex-direction: column; } .step-with-preview > div { min-width: 100%; } .card-grid { flex-direction: column; } .card { min-width: 100%; } .footer-nav { flex-direction: column; width: 100%; } .footer-nav a { justify-content: center; } }
+        @media (max-width: 480px) { .main-content { padding: 12px !important; } .top-nav { padding-left: 56px !important; padding-top: 6px !important; gap: 8px; } .mobile-menu-btn { top: 12px; left: 12px; width: 40px; height: 40px; } }
+        @media (min-width: 1025px) { .mobile-menu-btn { display: none !important; } .top-nav { padding-left: 0 !important; } }
     </style>
 </head>
 <body>
-    <div id="sidebar-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;"></div>
-    
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     <div class="page-wrapper">
-        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">☰</button>
         
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-    <a href="/index.html" class="logo">
-        <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
-        <span class="logo-text">GHOSTwire</span>
-    </a>
-</div>
+            <div class="sidebar-header"><a href="/index.html" class="logo"><div class="logo-icon">👻</div><span class="logo-text">GHOSTwire</span></a></div>
             <nav class="sidebar-nav">
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Getting Started</div>
-                    <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
-                    <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Core Features</div>
-                    <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
-                    <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
-                    <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
-                    <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
-                    <a href="/transfers.html" class="sidebar-link active"><span class="icon">💸</span> Transfers</a>
-                </div>
-                <div class="sidebar-section">
-    <div class="sidebar-section-title">Configuration</div>
-    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
-    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
-    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
-    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
-    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
-</div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Resources</div>
-                    <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
-                    <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
-                </div>
+                <div class="sidebar-section"><div class="sidebar-section-title">Getting Started</div><a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a><a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a></div>
+                <div class="sidebar-section"><div class="sidebar-section-title">Core Features</div><a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a><a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a><a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a><a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a><a href="/transfers.html" class="sidebar-link active"><span class="icon">💸</span> Transfers</a></div>
+                <div class="sidebar-section"><div class="sidebar-section-title">Configuration</div><a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a><a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a><a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a><a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a><a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a></div>
+                <div class="sidebar-section"><div class="sidebar-section-title">Resources</div><a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a><a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a></div>
             </nav>
+            <div class="sidebar-footer"><p>© 2026 GHOSTwire</p><p><a href="https://t.me/ghowr_bot" target="_blank">@ghowr_bot</a></p></div>
         </aside>
         
         <main class="main-content">
             <div class="content-container">
                 <div class="top-nav">
-                    <div style="position: relative;">
-                        <input type="text" class="search-box" id="search-box" placeholder="Search documentation...">
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <a href="https://t.me/ghowr_bot" target="_blank" class="open-bot-btn">👻 Open Bot</a>
-                        <button class="theme-toggle" id="theme-toggle">🌙</button>
-                    </div>
+                    <div class="search-wrapper"><input type="text" class="search-box" id="search-box" placeholder="Search documentation..."><div class="search-results-dropdown" id="search-results"></div></div>
+                    <div class="top-nav-actions"><a href="https://t.me/ghowr_bot" target="_blank" class="open-bot-btn">👻 Open Bot</a><button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button></div>
                 </div>
 
                 <h1>Transfers</h1>
                 <p>GHOSTwire allows you to transfer SOL and tokens between your own wallets or to external addresses. All transfers are executed directly on Solana blockchain.</p>
 
-                <div class="callout callout-info">
-                    <div class="callout-title">Transfer Types Available</div>
-                    <p>• <strong>SOL: Between My Wallets</strong> — Move SOL between W1, W2, W3, etc.<br>
-                    • <strong>SOL: To External</strong> — Send SOL to any Solana address<br>
-                    • <strong>Token: Between My Wallets</strong> — Move tokens between your wallets<br>
-                    • <strong>Token: To External</strong> — Send tokens to any Solana address</p>
-                </div>
+                <div class="callout callout-info"><div class="callout-title">Transfer Types Available</div><p>• <strong>SOL: Between My Wallets</strong> — Move SOL between W1, W2, W3, etc.<br>• <strong>SOL: To External</strong> — Send SOL to any Solana address<br>• <strong>Token: Between My Wallets</strong> — Move tokens between your wallets<br>• <strong>Token: To External</strong> — Send tokens to any Solana address</p></div>
 
-                <!-- ============================================ -->
-                <!-- TRANSFER MENU                                 -->
-                <!-- ============================================ -->
                 <h2>Transfer Menu</h2>
                 <p>Click <strong>Transfers</strong> from the main menu to access all transfer options.</p>
-
                 <div class="step-with-preview">
-                    <div>
-                        <div class="steps">
-                            <div class="step">
-                                <div class="step-title">Click "Transfers"</div>
-                                <p>From main menu</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Select Transfer Type</div>
-                                <p>SOL or Token, Internal or External</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Follow Prompts</div>
-                                <p>Select wallets, enter amount, confirm</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
-                        <div class="bot-preview-body">
-                            <div class="bot-message">
-╔═══════════════════════════╗
-║      💸 TRANSFERS        ║
-╚═══════════════════════════╝
-
-Select transfer type:
-
-🔄 SOL: Between My Wallets
-📤 SOL: To External
-🔄 Token: Between My Wallets
-📤 Token: To External
-
-« Back
-                            </div>
-                            <div class="bot-buttons">
-                                <div class="bot-button">🔄 SOL: Between My Wallets</div>
-                                <div class="bot-button">📤 SOL: To External</div>
-                                <div class="bot-button">🔄 Token: Between My Wallets</div>
-                                <div class="bot-button">📤 Token: To External</div>
-                                <div class="bot-button">« Back</div>
-                            </div>
-                        </div>
-                    </div>
+                    <div><div class="steps"><div class="step"><div class="step-title">Click "Transfers"</div><p>From main menu</p></div><div class="step"><div class="step-title">Select Transfer Type</div><p>SOL or Token, Internal or External</p></div><div class="step"><div class="step-title">Follow Prompts</div><p>Select wallets, enter amount, confirm</p></div></div></div>
+                    <div class="bot-preview"><div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div><div class="bot-preview-body"><div class="bot-message">╔══════════════════╗ ║ 💸 TRANSFERS ║ ╚══════════════════╝ | 🔄 SOL: Between My Wallets | 📤 SOL: To External | 🔄 Token: Between My Wallets | 📤 Token: To External</div><div class="bot-buttons"><div class="bot-button">🔄 SOL: Between</div><div class="bot-button">📤 SOL: External</div><div class="bot-button">🔄 Token: Between</div><div class="bot-button">📤 Token: External</div><div class="bot-button">« Back</div></div></div></div>
                 </div>
 
-                <!-- ============================================ -->
-                <!-- TYPE 1: SOL INTERNAL TRANSFER                 -->
-                <!-- ============================================ -->
                 <h2>SOL Transfer (Between Your Wallets)</h2>
                 <p>Move SOL between your own wallets (W1, W2, W3, etc.) instantly.</p>
-
                 <div class="step-with-preview">
-                    <div>
-                        <div class="steps">
-                            <div class="step">
-                                <div class="step-title">Select Source Wallet</div>
-                                <p>Choose which wallet to send FROM</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Select Destination Wallet</div>
-                                <p>Choose which wallet to send TO</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Enter Amount</div>
-                                <p>Amount in SOL (or type "all")</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Confirm Transfer</div>
-                                <p>Review and confirm</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="bot-preview">
-                            <div class="bot-preview-header">
-                                <span class="dot dot-red"></span>
-                                <span class="dot dot-yellow"></span>
-                                <span class="dot dot-green"></span>
-                                <span>@ghowr_bot</span>
-                            </div>
-                            <div class="bot-preview-body">
-                                <div class="bot-message">
-🔄 SOL Transfer: Select Source Wallet
-
-💼 W1: 0.0450 SOL
-💼 W2: 0.0120 SOL
-
-From: W1 (0.0450 SOL)
-From: W2 (0.0120 SOL)
-
-« Back
-                                </div>
-                                <div class="bot-message">
-🔄 SOL Transfer
-From: W1
-
-Select destination:
-
-To: W2
-To: W3
-
-« Back
-                                </div>
-                                <div class="bot-message">
-🔄 SOL Transfer
-
-From: W1
-To: W2
-Available: 0.0450 SOL
-
-Enter amount (or all):
-
-« Back
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div><div class="steps"><div class="step"><div class="step-title">Select Source Wallet</div><p>Choose which wallet to send FROM</p></div><div class="step"><div class="step-title">Select Destination</div><p>Choose which wallet to send TO</p></div><div class="step"><div class="step-title">Enter Amount</div><p>Amount in SOL (or type "all")</p></div><div class="step"><div class="step-title">Confirm</div><p>Review and confirm</p></div></div></div>
+                    <div class="bot-preview"><div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div><div class="bot-preview-body"><div class="bot-message">🔄 SOL Transfer | Source: W1 (0.0450 SOL) | W2 (0.0120 SOL)</div><div class="bot-message">From: W1 | Destination: W2 | Available: 0.0450 SOL | Enter amount:</div><div class="bot-message success">✅ Transfer Complete! From: W1 → To: W2 | 0.0250 SOL | TX: 8xKp7Y...</div></div></div>
                 </div>
 
-                <div class="bot-preview">
-                    <div class="bot-preview-header">
-                        <span class="dot dot-red"></span>
-                        <span class="dot dot-yellow"></span>
-                        <span class="dot dot-green"></span>
-                        <span>@ghowr_bot</span>
-                    </div>
-                    <div class="bot-preview-body">
-                        <div class="bot-message success">
-✅ Transfer Complete!
-
-From: W1
-To: W2
-Amount: 0.0250 SOL
-
-TX: 8xKp7YqVzRcT2NmLw...
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ============================================ -->
-                <!-- TYPE 2: SOL EXTERNAL TRANSFER                 -->
-                <!-- ============================================ -->
                 <h2>SOL Transfer (To External Address)</h2>
                 <p>Send SOL to any Solana wallet address (exchange, Phantom, Backpack, etc.).</p>
-
                 <div class="step-with-preview">
-                    <div>
-                        <div class="steps">
-                            <div class="step">
-                                <div class="step-title">Select Source Wallet</div>
-                                <p>Choose which wallet to send FROM</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Enter Recipient Address</div>
-                                <p>Solana address (base58 format)</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Enter Amount</div>
-                                <p>Amount in SOL (or type "all")</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Confirm Transfer</div>
-                                <p>Review and confirm</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
-                        <div class="bot-preview-body">
-                            <div class="bot-message">
-📤 SOL: Send to External
-
-Select source wallet:
-
-💼 W1 (0.0450 SOL)
-💼 W2 (0.0120 SOL)
-
-« Back
-                            </div>
-                            <div class="bot-message">
-📤 SOL: Send to External
-
-Enter recipient SOL address:
-
-« Back
-                            </div>
-                            <div class="bot-message success">
-✅ Sent!
-
-0.0100 SOL to 8xKp7YqV...
-
-TX: 4TEoNH4n9ae73gz6DFWB...
-                            </div>
-                        </div>
-                    </div>
+                    <div><div class="steps"><div class="step"><div class="step-title">Select Source</div><p>Choose which wallet</p></div><div class="step"><div class="step-title">Enter Recipient</div><p>Solana address (base58)</p></div><div class="step"><div class="step-title">Enter Amount</div><p>SOL or "all"</p></div><div class="step"><div class="step-title">Confirm</div><p>Review and confirm</p></div></div></div>
+                    <div class="bot-preview"><div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div><div class="bot-preview-body"><div class="bot-message">📤 SOL: Send to External | Source: W1 (0.0450 SOL) | W2 (0.0120 SOL)</div><div class="bot-message">Enter recipient SOL address:</div><div class="bot-message success">✅ Sent! 0.0100 SOL to 8xKp7YqV... | TX: 4TEoNH...</div></div></div>
                 </div>
 
-                <!-- ============================================ -->
-                <!-- TYPE 3: TOKEN INTERNAL TRANSFER               -->
-                <!-- ============================================ -->
                 <h2>Token Transfer (Between Your Wallets)</h2>
                 <p>Move tokens (like LUCY, DOGE, etc.) between your own wallets.</p>
-
                 <div class="step-with-preview">
-                    <div>
-                        <div class="steps">
-                            <div class="step">
-                                <div class="step-title">Select Token</div>
-                                <p>Choose which token to transfer</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Select Source Wallet</div>
-                                <p>Choose which wallet holds the tokens</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Select Destination Wallet</div>
-                                <p>Choose which wallet to receive</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Enter Amount</div>
-                                <p>Amount (or type "all")</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="bot-preview">
-                            <div class="bot-preview-header">
-                                <span class="dot dot-red"></span>
-                                <span class="dot dot-yellow"></span>
-                                <span class="dot dot-green"></span>
-                                <span>@ghowr_bot</span>
-                            </div>
-                            <div class="bot-preview-body">
-                                <div class="bot-message">
-🔄 Token Transfer
-
-Select token:
-
-🔹 LUCY
-   W1: 12,096.07
-   W2: 0.00
-
-🔹 DOGE
-   W1: 0.00
-   W2: 5,000.00
-
-Transfer LUCY
-Transfer DOGE
-
-« Back
-                                </div>
-                                <div class="bot-message">
-🔄 Transfer LUCY
-
-From: W1 (12,096.07)
-
-Select destination:
-
-To: W2
-To: W3
-
-« Back
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div><div class="steps"><div class="step"><div class="step-title">Select Token</div><p>Choose which token</p></div><div class="step"><div class="step-title">Select Source</div><p>Which wallet holds it</p></div><div class="step"><div class="step-title">Select Destination</div><p>Where to send</p></div><div class="step"><div class="step-title">Enter Amount</div><p>Amount or "all"</p></div></div></div>
+                    <div class="bot-preview"><div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div><div class="bot-preview-body"><div class="bot-message">🔄 Token Transfer | 🔹 LUCY — W1: 12,096.07 | 🔹 DOGE — W2: 5,000.00</div><div class="bot-message">Transfer LUCY | From: W1 (12,096.07) | To: W2</div><div class="bot-message success">✅ Transfer Complete! LUCY: 5,000.00 | W1 → W2 | TX: 8xKp7Y...</div></div></div>
                 </div>
 
-                <div class="bot-preview">
-                    <div class="bot-preview-header">
-                        <span class="dot dot-red"></span>
-                        <span class="dot dot-yellow"></span>
-                        <span class="dot dot-green"></span>
-                        <span>@ghowr_bot</span>
-                    </div>
-                    <div class="bot-preview-body">
-                        <div class="bot-message">
-🔄 Transfer LUCY
-
-From: W1
-To: W2
-Available: 12,096.07
-
-Enter amount (or all):
-
-« Back
-                        </div>
-                        <div class="bot-message success">
-✅ Transfer Complete!
-
-LUCY: 5,000.00
-From: W1
-To: W2
-
-TX: 8xKp7YqVzRcT2NmLw...
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ============================================ -->
-                <!-- TYPE 4: TOKEN EXTERNAL TRANSFER               -->
-                <!-- ============================================ -->
                 <h2>Token Transfer (To External Address)</h2>
                 <p>Send tokens to any Solana wallet address.</p>
-
                 <div class="step-with-preview">
-                    <div>
-                        <div class="steps">
-                            <div class="step">
-                                <div class="step-title">Select Token & Source</div>
-                                <p>Choose token and which wallet holds it</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Enter Recipient Address</div>
-                                <p>Solana address (base58 format)</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Enter Amount</div>
-                                <p>Amount (or type "all")</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Confirm Transfer</div>
-                                <p>Review and confirm</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
-                        <div class="bot-preview-body">
-                            <div class="bot-message">
-📤 Token: Send to External
-
-Select token and source wallet:
-
-🔹 LUCY from W1 (12,096.07)
-🔹 DOGE from W2 (5,000.00)
-
-« Back
-                            </div>
-                            <div class="bot-message">
-📤 Send LUCY
-
-Enter recipient SOL address:
-
-« Back
-                            </div>
-                            <div class="bot-message success">
-✅ Sent!
-
-LUCY: 5,000.00 to 8xKp7YqV...
-
-TX: 4TEoNH4n9ae73gz6DFWB...
-                            </div>
-                        </div>
-                    </div>
+                    <div><div class="steps"><div class="step"><div class="step-title">Select Token & Source</div><p>Token and wallet</p></div><div class="step"><div class="step-title">Enter Recipient</div><p>Solana address</p></div><div class="step"><div class="step-title">Enter Amount</div><p>Amount or "all"</p></div><div class="step"><div class="step-title">Confirm</div><p>Review and confirm</p></div></div></div>
+                    <div class="bot-preview"><div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div><div class="bot-preview-body"><div class="bot-message">📤 Token: Send to External | 🔹 LUCY from W1 (12,096.07) | 🔹 DOGE from W2 (5,000.00)</div><div class="bot-message">Send LUCY | Enter recipient SOL address:</div><div class="bot-message success">✅ Sent! LUCY: 5,000.00 to 8xKp7YqV... | TX: 4TEoNH...</div></div></div>
                 </div>
 
-                <!-- ============================================ -->
-                <!-- IMPORTANT NOTES                              -->
-                <!-- ============================================ -->
                 <h2>Important Notes</h2>
                 <div class="card-grid">
-                    <div class="card">
-                        <div class="card-icon">⛽</div>
-                        <div class="card-title">Gas Fees</div>
-                        <div class="card-desc">SOL transfers require ~0.000005 SOL for gas. When sending "all", bot automatically reserves gas.</div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🪙</div>
-                        <div class="card-title">Token Decimals</div>
-                        <div class="card-desc">Bot auto-detects token decimals (6, 9, etc.) for accurate transfers.</div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">📝</div>
-                        <div class="card-title">Minimum Transfer</div>
-                        <div class="card-desc">Minimum transfer is 0.000001 SOL (1000 lamports). Smaller amounts will be rejected.</div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🔄</div>
-                        <div class="card-title">Position Updates</div>
-                        <div class="card-desc">After transferring tokens, click Positions → Refresh to update balances.</div>
-                    </div>
+                    <div class="card"><div class="card-icon">⛽</div><div class="card-title">Gas Fees</div><div class="card-desc">SOL transfers require ~0.000005 SOL for gas. Bot reserves gas when sending "all".</div></div>
+                    <div class="card"><div class="card-icon">🪙</div><div class="card-title">Token Decimals</div><div class="card-desc">Bot auto-detects token decimals (6, 9, etc.) for accurate transfers.</div></div>
+                    <div class="card"><div class="card-icon">📝</div><div class="card-title">Minimum Transfer</div><div class="card-desc">Minimum is 0.000001 SOL (1000 lamports). Smaller amounts rejected.</div></div>
+                    <div class="card"><div class="card-icon">🔄</div><div class="card-title">Position Updates</div><div class="card-desc">After transferring tokens, click Positions → Refresh to update balances.</div></div>
                 </div>
 
-                <!-- ============================================ -->
-                <!-- COMMAND REFERENCE                             -->
-                <!-- ============================================ -->
                 <h2>Amount Input Format</h2>
-                <div class="transfer-summary">
-                    <code>0.1</code> → Transfer 0.1 SOL/tokens<br>
-                    <code>all</code> → Transfer entire balance (minus gas for SOL)<br>
-                    <code>cancel</code> → Cancel the transfer
-                </div>
+                <div class="transfer-summary"><code>0.1</code> → Transfer 0.1 SOL/tokens<br><code>all</code> → Transfer entire balance (minus gas for SOL)<br><code>cancel</code> → Cancel the transfer</div>
 
-                <!-- ============================================ -->
-                <!-- EXAMPLE: FULL TRANSFER FLOW                   -->
-                <!-- ============================================ -->
                 <h2>Complete Transfer Flow Example</h2>
-                <p>Here's a complete example of transferring SOL from W1 to W2:</p>
+                <div class="bot-preview"><div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div><div class="bot-preview-body"><div class="bot-message"><b>You:</b> 💸 Transfers</div><div class="bot-message">💸 TRANSFERS | 🔄 SOL: Between | 📤 SOL: External | 🔄 Token: Between | 📤 Token: External</div><div class="bot-message"><b>You:</b> 🔄 SOL: Between My Wallets</div><div class="bot-message">Source: W1 (0.0450 SOL) | W2 (0.0120 SOL)</div><div class="bot-message"><b>You:</b> W1 → W2 | 0.025</div><div class="bot-message success">✅ Transfer Complete! 0.0250 SOL | W1 → W2 | TX: 8xKp7Y...</div></div></div>
 
-                <div class="bot-preview">
-                    <div class="bot-preview-header">
-                        <span class="dot dot-red"></span>
-                        <span class="dot dot-yellow"></span>
-                        <span class="dot dot-green"></span>
-                        <span>@ghowr_bot</span>
-                    </div>
-                    <div class="bot-preview-body">
-                        <div class="bot-message">
-<b>You:</b> 💸 Transfers
-                        </div>
-                        <div class="bot-message">
-╔═══════════════════════════╗
-║      💸 TRANSFERS        ║
-╚═══════════════════════════╝
-
-Select transfer type:
-
-🔄 SOL: Between My Wallets
-📤 SOL: To External
-🔄 Token: Between My Wallets
-📤 Token: To External
-                        </div>
-                        <div class="bot-message">
-<b>You:</b> 🔄 SOL: Between My Wallets
-                        </div>
-                        <div class="bot-message">
-🔄 SOL Transfer: Select Source Wallet
-
-💼 W1 (74BoTq...) — 0.0450 SOL
-💼 W2 (5swz5Q...) — 0.0120 SOL
-
-From: W1
-From: W2
-                        </div>
-                        <div class="bot-message">
-<b>You:</b> From: W1
-                        </div>
-                        <div class="bot-message">
-🔄 SOL Transfer
-From: W1
-
-Select destination:
-
-To: W2
-To: W3
-                        </div>
-                        <div class="bot-message">
-<b>You:</b> To: W2
-                        </div>
-                        <div class="bot-message">
-🔄 SOL Transfer
-
-From: W1
-To: W2
-Available: 0.0450 SOL
-
-Enter amount (or all):
-                        </div>
-                        <div class="bot-message">
-<b>You:</b> 0.025
-                        </div>
-                        <div class="bot-message success">
-✅ Transfer Complete!
-
-From: W1
-To: W2
-Amount: 0.0250 SOL
-
-TX: 8xKp7YqVzRcT2NmLw...
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ============================================ -->
-                <!-- TROUBLESHOOTING                              -->
-                <!-- ============================================ -->
                 <h2>Troubleshooting</h2>
+                <div class="callout callout-warning"><div class="callout-title">"Insufficient balance" error</div><p>Ensure enough SOL for transfer + gas (~0.000005 SOL). Try smaller amount or use "all".</p></div>
+                <div class="callout callout-warning"><div class="callout-title">"Invalid address" error</div><p>Solana addresses are base58, 32-44 characters. Double-check the address.</p></div>
+                <div class="callout callout-warning"><div class="callout-title">Token transfer failed</div><p>Ensure destination has ATA for that token. Bot creates it automatically if needed.</p></div>
 
-                <div class="callout callout-warning">
-                    <div class="callout-title">"Insufficient balance" error</div>
-                    <p>Make sure you have enough SOL for the transfer + gas fees (~0.000005 SOL). Try sending a smaller amount or use "all" to send everything minus gas.</p>
-                </div>
-
-                <div class="callout callout-warning">
-                    <div class="callout-title">"Invalid address" error</div>
-                    <p>Solana addresses are base58 encoded and 32-44 characters long. Double-check the address you're sending to.</p>
-                </div>
-
-                <div class="callout callout-warning">
-                    <div class="callout-title">Token transfer failed</div>
-                    <p>Make sure the destination wallet has an Associated Token Account (ATA) for that token. The bot creates it automatically if needed.</p>
-                </div>
-
-                <!-- ============================================ -->
-                <!-- FAQ                                           -->
-                <!-- ============================================ -->
                 <h2>Transfers FAQ</h2>
-                
-                <div class="callout callout-info">
-                    <div class="callout-title">How long do transfers take?</div>
-                    <p>Solana transfers complete in 2-5 seconds typically. The bot shows the TXID immediately.</p>
-                </div>
-                
-                <div class="callout callout-info">
-                    <div class="callout-title">Can I cancel a transfer?</div>
-                    <p>No, blockchain transactions are irreversible. Always double-check addresses and amounts before confirming.</p>
-                </div>
-                
-                <div class="callout callout-info">
-                    <div class="callout-title">Do I pay fees for transfers?</div>
-                    <p>Only standard Solana gas fees (~0.000005 SOL). No additional bot fees for transfers.</p>
-                </div>
-                
-                <div class="callout callout-info">
-                    <div class="callout-title">What happens to my positions after transferring tokens?</div>
-                    <p>Tokens transferred to another wallet will no longer show in the source wallet's positions. Click Refresh to update.</p>
-                </div>
+                <div class="callout callout-info"><div class="callout-title">How long do transfers take?</div><p>Solana transfers complete in 2-5 seconds. Bot shows TXID immediately.</p></div>
+                <div class="callout callout-info"><div class="callout-title">Can I cancel a transfer?</div><p>No, blockchain transactions are irreversible. Always double-check before confirming.</p></div>
+                <div class="callout callout-info"><div class="callout-title">Do I pay fees for transfers?</div><p>Only standard Solana gas fees (~0.000005 SOL). No additional bot fees.</p></div>
+                <div class="callout callout-info"><div class="callout-title">What happens to my positions after transferring tokens?</div><p>Tokens transferred to another wallet won't show in source wallet's positions. Click Refresh.</p></div>
 
-                <div class="page-footer">
-                    <div class="footer-nav">
-                        <a href="/portfolio.html">← Portfolio Tracking</a>
-                        <a href="/settings.html">Settings →</a>
-                    </div>
-                </div>
+                <div class="page-footer"><div class="footer-nav"><a href="/portfolio.html">← Portfolio Tracking</a><a href="/settings.html">Settings →</a></div></div>
             </div>
         </main>
     </div>
 
     <script>
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            const toggleBtn = document.getElementById('theme-toggle');
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => {
-                    const current = document.documentElement.getAttribute('data-theme');
-                    const next = current === 'dark' ? 'light' : 'dark';
-                    document.documentElement.setAttribute('data-theme', next);
-                    localStorage.setItem('theme', next);
-                    toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️';
-                });
-                toggleBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
-            }
-        }
-
-        function initSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const menuBtn = document.getElementById('mobile-menu-btn');
-            const overlay = document.getElementById('sidebar-overlay');
-            
-            if (menuBtn && sidebar) {
-                menuBtn.addEventListener('click', () => {
-                    sidebar.classList.toggle('open');
-                    if (overlay) overlay.style.display = 'block';
-                });
-            }
-            
-            if (overlay) {
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('open');
-                    overlay.style.display = 'none';
-                });
-            }
-        }
-
-        function initSearch() {
-            const searchBox = document.getElementById('search-box');
-            if (!searchBox) return;
-            
-            const searchData = [
-                { title: 'Overview', url: '/index.html' },
-                { title: 'Quick Start', url: '/getting-started.html' },
-                { title: 'Wallet Setup', url: '/wallet.html' },
-                { title: 'Channel Monitoring', url: '/channels.html' },
-                { title: 'Buying & Selling', url: '/trading.html' },
-                { title: 'Portfolio Tracking', url: '/portfolio.html' },
-                { title: 'Transfers', url: '/transfers.html' },
-                { title: 'Settings', url: '/settings.html' },
-                { title: 'Private Channels', url: '/private-channels.html' },
-                { title: 'Referral System', url: '/referrals.html' },
-                { title: 'Fee System', url: '/fees.html' },
-                { title: 'FAQ', url: '/faq.html' },
-                { title: 'Commands', url: '/commands.html' },
-            ];
-            
-            let dropdown = null;
-            
-            searchBox.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                
-                if (!dropdown) {
-                    dropdown = document.createElement('div');
-                    dropdown.id = 'search-results';
-                    searchBox.parentElement.style.position = 'relative';
-                    searchBox.parentElement.appendChild(dropdown);
-                }
-                
-                if (query) {
-                    const results = searchData.filter(d => d.title.toLowerCase().includes(query));
-                    if (results.length > 0) {
-                        dropdown.innerHTML = results.map(r => `<a href="${r.url}">${r.title}</a>`).join('');
-                        dropdown.style.display = 'block';
-                    } else {
-                        dropdown.style.display = 'none';
-                    }
-                } else {
-                    dropdown.style.display = 'none';
-                }
-            });
-            
-            document.addEventListener('click', (e) => {
-                if (dropdown && !searchBox.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            initSidebar();
-            initSearch();
-        });
+        function initTheme() { var savedTheme = localStorage.getItem('theme') || 'dark'; document.documentElement.setAttribute('data-theme', savedTheme); var toggleBtn = document.getElementById('theme-toggle'); if (toggleBtn) { toggleBtn.addEventListener('click', function() { var current = document.documentElement.getAttribute('data-theme'); var next = current === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next); toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️'; }); toggleBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️'; } }
+        function initSidebar() { var sidebar = document.getElementById('sidebar'); var menuBtn = document.getElementById('mobile-menu-btn'); var overlay = document.getElementById('sidebar-overlay'); function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; } function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; } if (menuBtn) menuBtn.addEventListener('click', openSidebar); if (overlay) overlay.addEventListener('click', closeSidebar); sidebar.querySelectorAll('.sidebar-link').forEach(function(link) { link.addEventListener('click', function() { if (window.innerWidth <= 1024) closeSidebar(); }); }); window.addEventListener('resize', function() { if (window.innerWidth > 1024) closeSidebar(); }); }
+        function initSearch() { var searchBox = document.getElementById('search-box'); var searchResults = document.getElementById('search-results'); if (!searchBox || !searchResults) return; var searchData = [{ title: 'Overview', url: '/index.html' }, { title: 'Quick Start', url: '/getting-started.html' }, { title: 'Wallet Setup', url: '/wallet.html' }, { title: 'Channel Monitoring', url: '/channels.html' }, { title: 'Buying & Selling', url: '/trading.html' }, { title: 'Portfolio Tracking', url: '/portfolio.html' }, { title: 'Transfers', url: '/transfers.html' }, { title: 'Settings', url: '/settings.html' }, { title: 'Private Channels', url: '/private-channels.html' }, { title: 'Referral System', url: '/referrals.html' }, { title: 'Fee System', url: '/fees.html' }, { title: 'FAQ', url: '/faq.html' }, { title: 'Commands', url: '/commands.html' }]; searchBox.addEventListener('input', function(e) { var query = e.target.value.toLowerCase().trim(); if (query.length > 0) { var results = searchData.filter(function(d) { return d.title.toLowerCase().indexOf(query) !== -1; }); if (results.length > 0) { var html = ''; results.forEach(function(r) { html += '<a href="'+r.url+'">'+r.title+'</a>'; }); searchResults.innerHTML = html; searchResults.style.display = 'block'; } else { searchResults.innerHTML = '<div style="padding:12px;color:var(--text-tertiary);font-size:0.85rem;">No results</div>'; searchResults.style.display = 'block'; } } else { searchResults.style.display = 'none'; } }); document.addEventListener('click', function(e) { if (!searchBox.contains(e.target) && !searchResults.contains(e.target)) searchResults.style.display = 'none'; }); document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { searchResults.style.display = 'none'; searchBox.blur(); } }); }
+        document.addEventListener('DOMContentLoaded', function() { initTheme(); initSidebar(); initSearch(); });
     </script>
 </body>
 </html>

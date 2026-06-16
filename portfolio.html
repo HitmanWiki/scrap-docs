@@ -6,659 +6,197 @@
     <title>Portfolio Tracking - GHOSTwire</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #0f0f15;
-            --bg-tertiary: #15151d;
-            --bg-card: #1a1a24;
-            --bg-code: #0d0d12;
-            --accent-primary: #6719ff;
-            --accent-secondary: #8a4dff;
+            --bg-primary: #0a0a0f; --bg-secondary: #0f0f15; --bg-tertiary: #15151d;
+            --bg-card: #1a1a24; --bg-code: #0d0d12;
+            --accent-primary: #6719ff; --accent-secondary: #8a4dff;
             --accent-gradient: linear-gradient(135deg, #6719ff, #8a4dff);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --text-tertiary: #6e6e80;
-            --border-primary: #22222e;
-            --border-secondary: #1a1a22;
-            --success: #4ecca3;
-            --warning: #ffc107;
-            --danger: #e94560;
+            --text-primary: #ffffff; --text-secondary: #a0a0b0; --text-tertiary: #6e6e80;
+            --border-primary: #22222e; --border-secondary: #1a1a22;
+            --success: #4ecca3; --warning: #ffc107; --danger: #e94560;
             --sidebar-width: 260px;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #fafafa;
-            --bg-tertiary: #f0f0f0;
-            --bg-card: #ffffff;
-            --bg-code: #f5f5f5;
-            --text-primary: #1a1a2e;
-            --text-secondary: #5a5a6e;
-            --text-tertiary: #8a8a9e;
-            --border-primary: #e0e0e8;
-            --border-secondary: #ececf0;
+            --bg-primary: #ffffff; --bg-secondary: #fafafa; --bg-tertiary: #f0f0f0;
+            --bg-card: #ffffff; --bg-code: #f5f5f5;
+            --text-primary: #1a1a2e; --text-secondary: #5a5a6e; --text-tertiary: #8a8a9e;
+            --border-primary: #e0e0e8; --border-secondary: #ececf0;
         }
 
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-        }
+        html, body { overflow-x: hidden; width: 100%; }
 
         body {
-            font-family: var(--font-sans);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            font-size: 15px;
+            font-family: var(--font-sans); background: var(--bg-primary);
+            color: var(--text-primary); line-height: 1.6; font-size: 15px;
         }
 
-        /* Layout */
-        .page-wrapper {
-            display: flex;
-            min-height: 100vh;
-            width: 100%;
-        }
+        .page-wrapper { display: flex; min-height: 100vh; width: 100%; position: relative; }
 
         /* Sidebar */
         .sidebar {
-            width: var(--sidebar-width);
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border-primary);
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            overflow-y: auto;
-            z-index: 100;
-            transition: transform 0.3s ease;
+            width: var(--sidebar-width); min-width: var(--sidebar-width);
+            background: var(--bg-secondary); border-right: 1px solid var(--border-primary);
+            position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto;
+            z-index: 1000; transition: transform 0.3s ease; display: flex; flex-direction: column;
         }
-
-        .sidebar-header {
-            padding: 28px 20px;
-            border-bottom: 1px solid var(--border-primary);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, #6719ff, #8a4dff);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-icon svg {
-            width: 16px;
-            height: 16px;
-            stroke: white;
-        }
-
-        .logo-text {
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 0.5px;
-            color: var(--text-primary);
-        }
-
-        .sidebar-nav {
-            padding: 20px 0;
-        }
-
-        .sidebar-section {
-            margin-bottom: 24px;
-        }
-
-        .sidebar-section-title {
-            padding: 6px 20px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-tertiary);
-            font-weight: 600;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 20px;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-            font-size: 0.85rem;
-            text-decoration: none;
-        }
-
-        .sidebar-link:hover {
-            color: var(--text-primary);
-            background: var(--bg-tertiary);
-        }
-
-        .sidebar-link.active {
-            color: var(--accent-primary);
-            background: rgba(103, 25, 255, 0.08);
-        }
-
-        .sidebar-link .icon {
-            font-size: 0.95rem;
-            width: 24px;
-            text-align: center;
-        }
+        .sidebar-header { padding: 28px 20px; border-bottom: 1px solid var(--border-primary); }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #6719ff, #8a4dff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .logo-text { font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; color: var(--text-primary); }
+        .sidebar-nav { flex: 1; padding: 20px 0; }
+        .sidebar-section { margin-bottom: 24px; }
+        .sidebar-section-title { padding: 6px 20px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); font-weight: 600; }
+        .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 8px 20px; color: var(--text-secondary); transition: all 0.2s; font-size: 0.85rem; text-decoration: none; }
+        .sidebar-link:hover { color: var(--text-primary); background: var(--bg-tertiary); }
+        .sidebar-link.active { color: var(--accent-primary); background: rgba(103, 25, 255, 0.08); }
+        .sidebar-link .icon { font-size: 0.95rem; width: 24px; text-align: center; }
+        .sidebar-footer { padding: 20px; border-top: 1px solid var(--border-primary); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; }
+        .sidebar-footer a { color: var(--text-tertiary); text-decoration: none; }
+        .sidebar-footer a:hover { color: var(--accent-primary); }
 
         /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 48px 64px;
-            min-height: 100vh;
-            width: calc(100% - var(--sidebar-width));
-            background: var(--bg-primary);
-        }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 48px 64px; min-height: 100vh; width: calc(100% - var(--sidebar-width)); background: var(--bg-primary); }
+        .content-container { max-width: 800px; width: 100%; }
 
-        .content-container {
-            max-width: 800px;
-            width: 100%;
-        }
-
-        /* Typography */
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            letter-spacing: -0.01em;
-            color: var(--text-primary);
-        }
-
-        h2 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-top: 40px;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-        }
-
-        h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-top: 24px;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
-        h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-top: 16px;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        a {
-            color: var(--accent-primary);
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        code {
-            font-family: var(--font-mono);
-            font-size: 0.85em;
-            background: var(--bg-code);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #a67cff;
-        }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.01em; color: var(--text-primary); }
+        h2 { font-size: 1.3rem; font-weight: 600; margin-top: 40px; margin-bottom: 16px; color: var(--text-primary); }
+        h3 { font-size: 1rem; font-weight: 600; margin-top: 24px; margin-bottom: 12px; color: var(--text-primary); }
+        h4 { font-size: 0.9rem; font-weight: 600; margin-top: 16px; margin-bottom: 8px; color: var(--text-primary); }
+        p { margin-bottom: 16px; color: var(--text-secondary); line-height: 1.7; }
+        a { color: var(--accent-primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg-code); padding: 2px 6px; border-radius: 4px; color: #a67cff; }
 
         /* Top Navigation */
-        .top-nav {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 0 0 32px 0;
-            gap: 16px;
-        }
-
-        .search-box {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
-            padding: 8px 14px;
-            color: var(--text-primary);
-            font-size: 0.85rem;
-            width: 220px;
-            transition: all 0.2s;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-
-        .search-box::placeholder {
-            color: var(--text-tertiary);
-        }
-
-        .theme-toggle {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            color: var(--text-primary);
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .open-bot-btn {
-            padding: 8px 16px;
-            background: var(--accent-gradient);
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            border: none;
-        }
-
-        .open-bot-btn:hover {
-            opacity: 0.9;
-            text-decoration: none;
-        }
+        .top-nav { display: flex; justify-content: flex-end; align-items: center; padding: 0 0 32px 0; gap: 16px; flex-wrap: wrap; }
+        .search-wrapper { position: relative; flex: 1; max-width: 300px; min-width: 200px; }
+        .search-box { background: var(--bg-tertiary); border: 1px solid var(--border-primary); border-radius: 8px; padding: 8px 14px; color: var(--text-primary); font-size: 0.85rem; width: 100%; transition: all 0.2s; }
+        .search-box:focus { outline: none; border-color: var(--accent-primary); }
+        .search-box::placeholder { color: var(--text-tertiary); }
+        .search-results-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 8px; margin-top: 4px; max-height: 300px; overflow-y: auto; z-index: 500; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .search-results-dropdown a { display: block; padding: 10px 14px; color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; border-bottom: 1px solid var(--border-secondary); }
+        .search-results-dropdown a:last-child { border-bottom: none; }
+        .search-results-dropdown a:hover { background: var(--bg-tertiary); color: var(--text-primary); text-decoration: none; }
+        .top-nav-actions { display: flex; align-items: center; gap: 12px; }
+        .theme-toggle { background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-primary); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; white-space: nowrap; }
+        .open-bot-btn { padding: 8px 16px; background: var(--accent-gradient); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.85rem; white-space: nowrap; }
+        .open-bot-btn:hover { opacity: 0.9; text-decoration: none; }
 
         /* Callouts */
-        .callout {
-            border-left: 3px solid;
-            border-radius: 0 8px 8px 0;
-            padding: 16px 20px;
-            margin: 24px 0;
-            background: var(--bg-card);
-        }
-
-        .callout-info {
-            border-color: #6719ff;
-            background: rgba(103, 25, 255, 0.05);
-        }
-
-        .callout-warning {
-            border-color: #ffc107;
-            background: rgba(255, 193, 7, 0.05);
-        }
-
-        .callout-success {
-            border-color: #4ecca3;
-            background: rgba(78, 204, 163, 0.05);
-        }
-
-        .callout-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
+        .callout { border-left: 3px solid; border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 24px 0; background: var(--bg-card); }
+        .callout-info { border-color: #6719ff; background: rgba(103, 25, 255, 0.05); }
+        .callout-warning { border-color: #ffc107; background: rgba(255, 193, 7, 0.05); }
+        .callout-success { border-color: #4ecca3; background: rgba(78, 204, 163, 0.05); }
+        .callout-title { font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
         .callout-info .callout-title { color: #6719ff; }
         .callout-warning .callout-title { color: #ffc107; }
         .callout-success .callout-title { color: #4ecca3; }
 
         /* Bot Preview */
-        .bot-preview {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 20px 0;
-        }
+        .bot-preview { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 12px; overflow: hidden; margin: 20px 0; }
+        .bot-preview-header { background: var(--bg-tertiary); padding: 10px 16px; display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-tertiary); border-bottom: 1px solid var(--border-primary); }
+        .bot-preview-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-red { background: #6719ff; } .dot-yellow { background: #ffc107; } .dot-green { background: #4ecca3; }
+        .bot-preview-body { padding: 16px; }
+        .bot-message { background: var(--bg-code); border-radius: 10px; padding: 14px; margin: 8px 0; color: var(--text-secondary); font-family: var(--font-mono); font-size: 11px; white-space: pre-wrap; word-break: break-word; border: 1px solid var(--border-secondary); }
+        .bot-message.success { border-color: #4ecca3; }
+        .bot-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+        .bot-button { background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-primary); padding: 6px 10px; border-radius: 6px; font-size: 10px; cursor: default; }
+        .bot-button:hover { border-color: var(--accent-primary); }
 
-        .bot-preview-header {
-            background: var(--bg-tertiary);
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            color: var(--text-tertiary);
-            border-bottom: 1px solid var(--border-primary);
-        }
-
-        .bot-preview-header .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-        .dot-red { background: #6719ff; }
-        .dot-yellow { background: #ffc107; }
-        .dot-green { background: #4ecca3; }
-
-        .bot-preview-body {
-            padding: 16px;
-        }
-
-        .bot-message {
-            background: var(--bg-code);
-            border-radius: 10px;
-            padding: 14px;
-            margin: 8px 0;
-            color: var(--text-secondary);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            white-space: pre-wrap;
-            word-break: break-word;
-            border: 1px solid var(--border-secondary);
-        }
-
-        .bot-message.success {
-            border-color: #4ecca3;
-        }
-
-        .bot-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 12px;
-        }
-
-        .bot-button {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            color: var(--text-primary);
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 10px;
-            cursor: default;
-            transition: all 0.2s;
-        }
-
-        .bot-button:hover {
-            border-color: var(--accent-primary);
-        }
-
-        /* Step with Preview */
-        .step-with-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 24px;
-            margin: 24px 0;
-        }
-
-        .step-with-preview > div {
-            flex: 1;
-            min-width: 240px;
-        }
+        /* Steps */
+        .step-with-preview { display: flex; flex-wrap: wrap; gap: 24px; margin: 24px 0; }
+        .step-with-preview > div { flex: 1; min-width: 240px; }
 
         /* Card Grid */
-        .card-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 32px 0;
-        }
-
-        .card {
-            flex: 1;
-            min-width: 200px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 10px;
-            padding: 20px;
-            transition: all 0.2s;
-        }
-
-        .card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
-        }
-
-        .card-icon {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .card-title {
-            font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-        }
-
-        .card-desc {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            line-height: 1.5;
-        }
+        .card-grid { display: flex; flex-wrap: wrap; gap: 20px; margin: 32px 0; }
+        .card { flex: 1; min-width: 200px; background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 10px; padding: 20px; transition: all 0.2s; }
+        .card:hover { border-color: var(--accent-primary); transform: translateY(-2px); }
+        .card-icon { font-size: 1.5rem; margin-bottom: 10px; }
+        .card-title { font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+        .card-desc { color: var(--text-secondary); font-size: 0.75rem; line-height: 1.5; }
 
         /* Stats Grid */
-        .stats-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin: 24px 0;
-        }
+        .stats-grid { display: flex; flex-wrap: wrap; gap: 16px; margin: 24px 0; }
+        .stat-card { flex: 1; min-width: 100px; background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 10px; padding: 16px; text-align: center; }
+        .stat-number { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); }
+        .stat-label { font-size: 0.65rem; color: var(--text-tertiary); margin-top: 4px; }
 
-        .stat-card {
-            flex: 1;
-            min-width: 100px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 10px;
-            padding: 16px;
-            text-align: center;
-        }
+        .fee-breakdown { background: var(--bg-tertiary); border-radius: 8px; padding: 12px; margin: 10px 0; font-family: var(--font-mono); font-size: 0.7rem; border: 1px solid var(--border-secondary); }
 
-        .stat-number {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
+        ul { color: var(--text-secondary); padding-left: 20px; margin-bottom: 16px; line-height: 1.7; }
+        li { margin-bottom: 6px; font-size: 0.85rem; }
 
-        .stat-label {
-            font-size: 0.65rem;
-            color: var(--text-tertiary);
-            margin-top: 4px;
-        }
+        .pnl-positive { color: #4ecca3; }
+        .pnl-negative { color: #e94560; }
 
-        /* Fee Breakdown (reused for sync log) */
-        .fee-breakdown {
-            background: var(--bg-tertiary);
-            border-radius: 8px;
-            padding: 12px;
-            margin: 10px 0;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            border: 1px solid var(--border-secondary);
-        }
+        .page-footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border-primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .footer-nav { display: flex; gap: 20px; flex-wrap: wrap; }
+        .footer-nav a { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--border-primary); border-radius: 8px; text-decoration: none; color: var(--text-secondary); font-size: 0.8rem; }
+        .footer-nav a:hover { border-color: var(--accent-primary); color: var(--accent-primary); text-decoration: none; }
 
-        /* Lists */
-        ul {
-            color: var(--text-secondary);
-            padding-left: 20px;
-            margin-bottom: 16px;
-            line-height: 1.7;
-        }
+        /* Sidebar Overlay */
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+        .sidebar-overlay.active { display: block; }
 
-        li {
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-        }
-
-        /* Page Footer */
-        .page-footer {
-            margin-top: 60px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border-primary);
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .footer-nav {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-nav a {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
-            transition: all 0.2s;
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-
-        .footer-nav a:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-            text-decoration: none;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            z-index: 200;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            color: var(--text-primary);
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        /* Search Results */
-        #search-results {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            width: 280px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
-            margin-top: 4px;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 1000;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        }
-
-        #search-results a {
-            display: block;
-            padding: 10px 14px;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-secondary);
-            text-decoration: none;
-            font-size: 0.8rem;
-        }
-
-        #search-results a:hover {
-            background: var(--bg-tertiary);
-        }
-
-        /* P&L Colors */
-        .pnl-positive {
-            color: #4ecca3;
-        }
-
-        .pnl-negative {
-            color: #e94560;
-        }
+        /* Mobile Menu Button */
+        .mobile-menu-btn { display: none; position: fixed; top: 16px; left: 16px; z-index: 1100; background: var(--bg-card); border: 1px solid var(--border-primary); color: var(--text-primary); padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 1.2rem; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 24px;
-                width: 100%;
-            }
-            .mobile-menu-btn {
-                display: block;
-            }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0 !important; padding: 20px !important; width: 100% !important; }
+            .mobile-menu-btn { display: flex !important; }
+            .sidebar-overlay.active { display: block; }
+            .top-nav { padding-left: 60px !important; padding-top: 8px !important; }
         }
 
         @media (max-width: 768px) {
-            .main-content {
-                padding: 20px;
-            }
-            .top-nav {
-                justify-content: space-between;
-                flex-wrap: wrap;
-            }
-            .search-box {
-                width: 180px;
-            }
-            .step-with-preview {
-                flex-direction: column;
-            }
-            .step-with-preview > div {
-                min-width: 100%;
-            }
-            .card-grid {
-                flex-direction: column;
-            }
-            .card {
-                min-width: 100%;
-            }
-            .stats-grid {
-                flex-direction: column;
-            }
-            .stat-card {
-                min-width: 100%;
-            }
-            .footer-nav {
-                flex-direction: column;
-                width: 100%;
-            }
-            .footer-nav a {
-                justify-content: center;
-            }
+            .main-content { padding: 16px !important; }
+            .top-nav { flex-direction: column; align-items: stretch; padding-left: 60px !important; padding-top: 8px !important; gap: 10px; }
+            .search-wrapper { max-width: 100%; width: 100%; order: 1; }
+            .top-nav-actions { order: 2; justify-content: flex-end; }
+            .step-with-preview { flex-direction: column; }
+            .step-with-preview > div { min-width: 100%; }
+            .card-grid { flex-direction: column; }
+            .card { min-width: 100%; }
+            .stats-grid { flex-direction: column; }
+            .stat-card { min-width: 100%; }
+            .footer-nav { flex-direction: column; width: 100%; }
+            .footer-nav a { justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .main-content { padding: 12px !important; }
+            .top-nav { padding-left: 56px !important; padding-top: 6px !important; gap: 8px; }
+            .mobile-menu-btn { top: 12px; left: 12px; width: 40px; height: 40px; }
+        }
+
+        @media (min-width: 1025px) {
+            .mobile-menu-btn { display: none !important; }
+            .top-nav { padding-left: 0 !important; }
         }
     </style>
 </head>
 <body>
-    <div id="sidebar-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;"></div>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     
     <div class="page-wrapper">
-        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">☰</button>
         
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-    <a href="/index.html" class="logo">
-        <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
-        <span class="logo-text">GHOSTwire</span>
-    </a>
-</div>
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon">👻</div>
+                    <span class="logo-text">GHOSTwire</span>
+                </a>
+            </div>
             <nav class="sidebar-nav">
                 <div class="sidebar-section">
                     <div class="sidebar-section-title">Getting Started</div>
@@ -674,13 +212,13 @@
                     <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
                 </div>
                 <div class="sidebar-section">
-    <div class="sidebar-section-title">Configuration</div>
-    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
-    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
-    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
-    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
-    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
-</div>
+                    <div class="sidebar-section-title">Configuration</div>
+                    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+                    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+                    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+                    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+                    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+                </div>
                 <div class="sidebar-section">
                     <div class="sidebar-section-title">Resources</div>
                     <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
@@ -696,12 +234,13 @@
         <main class="main-content">
             <div class="content-container">
                 <div class="top-nav">
-                    <div style="position: relative;">
+                    <div class="search-wrapper">
                         <input type="text" class="search-box" id="search-box" placeholder="Search documentation...">
+                        <div class="search-results-dropdown" id="search-results"></div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="top-nav-actions">
                         <a href="https://t.me/ghowr_bot" target="_blank" class="open-bot-btn">👻 Open Bot</a>
-                        <button class="theme-toggle" id="theme-toggle">🌙</button>
+                        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
                     </div>
                 </div>
 
@@ -713,7 +252,6 @@
                     <p>Portfolio automatically refreshes every 5 minutes. You can also manually refresh anytime via the Refresh button.</p>
                 </div>
 
-                <!-- SECTION 1: Pinned Portfolio Overview -->
                 <h2>Pinned Portfolio Message</h2>
                 <p>The bot pins a real-time portfolio overview at the top of your chat. This updates automatically every 5 minutes.</p>
 
@@ -730,15 +268,9 @@
                         <p>The message is <strong>pinned</strong> so it's always visible when you open the chat.</p>
                     </div>
                     <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
+                        <div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-📊 *Portfolio* (updated 14:32)
+                            <div class="bot-message">📊 *Portfolio* (updated 14:32)
 
 • *LUCY* — 12,096.07 ($24.19)
 • *DOGE* — 5,000.00 ($8.50)
@@ -746,19 +278,12 @@
 
 💰 SOL: 0.0450 SOL | 💎 $44.69
 
-📈 Buy  📉 Sell
-🔄 Refresh
-                            </div>
-                            <div class="bot-buttons">
-                                <div class="bot-button">📈 Buy</div>
-                                <div class="bot-button">📉 Sell</div>
-                                <div class="bot-button">🔄 Refresh</div>
-                            </div>
+📈 Buy  📉 Sell  🔄 Refresh</div>
+                            <div class="bot-buttons"><div class="bot-button">📈 Buy</div><div class="bot-button">📉 Sell</div><div class="bot-button">🔄 Refresh</div></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SECTION 2: Positions View -->
                 <h2>Detailed Positions View</h2>
                 <p>Click <strong>Positions</strong> from the main menu for detailed position information including P&L.</p>
 
@@ -776,45 +301,20 @@
                         </ul>
                     </div>
                     <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
+                        <div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-📊 *Your Positions*
+                            <div class="bot-message">📊 *Your Positions*
 
-🔹 *LUCY*
-   `GNL7MQSz...pump`
-   Amount: *12,096.07* ($24.19) 🟢+45.2%
-   MC: $67,384
-   [View TX](https://solscan.io/tx/4TEoNH4...)
+🔹 *LUCY* | GNL7MQSz...pump | 12,096.07 ($24.19) 🟢+45.2% | MC: $67,384
+🔹 *DOGE* | 8xKp7YqV...IoP | 5,000.00 ($8.50) 🔴-12.3%
 
-🔹 *DOGE*
-   `8xKp7YqV...IoP`
-   Amount: *5,000.00* ($8.50) 🔴-12.3%
-
-💰 SOL: 0.0450 SOL (on-chain)
-💎 Total Value: $44.69
-
-💳 `74BoTqMb...MFSL`
-🔗 [View on Solscan](https://solscan.io/account/74BoTq...)
-
-🔄 Refresh  📉 Sell
-« Back
-                            </div>
-                            <div class="bot-buttons">
-                                <div class="bot-button">🔄 Refresh</div>
-                                <div class="bot-button">📉 Sell</div>
-                                <div class="bot-button">« Back</div>
-                            </div>
+💰 SOL: 0.0450 SOL | 💎 Total: $44.69
+💳 74BoTqMb...MFSL | 🔗 View on Solscan</div>
+                            <div class="bot-buttons"><div class="bot-button">🔄 Refresh</div><div class="bot-button">📉 Sell</div><div class="bot-button">« Back</div></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SECTION 3: Portfolio Menu -->
                 <h2>Portfolio Analytics</h2>
                 <p>Click <strong>Portfolio</strong> from the main menu for advanced portfolio analytics.</p>
 
@@ -829,364 +329,161 @@
                         </ul>
                     </div>
                     <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
+                        <div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-╔═══════════════════════════╗
-║      📊 PORTFOLIO        ║
-╚═══════════════════════════╝
-
-Select view:
-
-💼 By Wallet
-📋 By Channel
-🪙 By Token
-📊 Overall Stats
-
-« Back
-                            </div>
-                            <div class="bot-buttons">
-                                <div class="bot-button">💼 By Wallet</div>
-                                <div class="bot-button">📋 By Channel</div>
-                                <div class="bot-button">🪙 By Token</div>
-                                <div class="bot-button">📊 Overall Stats</div>
-                                <div class="bot-button">« Back</div>
-                            </div>
+                            <div class="bot-message">╔══════════════════╗
+║  📊 PORTFOLIO    ║
+╚══════════════════╝
+Select view: 💼 By Wallet | 📋 By Channel | 🪙 By Token | 📊 Overall Stats</div>
+                            <div class="bot-buttons"><div class="bot-button">💼 By Wallet</div><div class="bot-button">📋 By Channel</div><div class="bot-button">🪙 By Token</div><div class="bot-button">📊 Overall Stats</div><div class="bot-button">« Back</div></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SUB-SECTION: By Wallet View -->
                 <h3>By Wallet View</h3>
                 <div class="step-with-preview">
                     <div>
                         <p>Shows breakdown per wallet with:</p>
-                        <ul>
-                            <li>Wallet name and truncated address</li>
-                            <li>SOL balance</li>
-                            <li>Number of trades</li>
-                            <li><strong>Total P&L</strong> for that wallet</li>
-                        </ul>
+                        <ul><li>Wallet name and truncated address</li><li>SOL balance</li><li>Number of trades</li><li><strong>Total P&L</strong> for that wallet</li></ul>
                     </div>
                     <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
+                        <div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-╔═══════════════════════════╗
-║     💼 WALLET SUMMARY    ║
-╚═══════════════════════════╝
-
-┌─────────────────────────┐
-│ 💼 *W1*                 │
-│ `74BoTqMb...MFSL`       │
-│ 💰 0.0450 SOL | 12 trades│
-│ PnL: 🟢 $24.19          │
-└─────────────────────────┘
-
-┌─────────────────────────┐
-│ 💼 *W2*                 │
-│ `8xKp7YqV...IoP`        │
-│ 💰 0.0120 SOL | 5 trades │
-│ PnL: 🔴 -$8.50          │
-└─────────────────────────┘
-
-💎 *Total SOL:* 0.0570 | *Trades:* 17
-                            </div>
+                            <div class="bot-message">╔══════════════════╗
+║ 💼 WALLET SUMMARY║
+╚══════════════════╝
+💼 W1 | 74BoTqMb...MFSL | 💰 0.0450 SOL | 12 trades | PnL: 🟢 $24.19
+💼 W2 | 8xKp7YqV...IoP | 💰 0.0120 SOL | 5 trades | PnL: 🔴 -$8.50
+💎 Total SOL: 0.0570 | Trades: 17</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SUB-SECTION: By Channel View -->
                 <h3>By Channel View</h3>
                 <div class="step-with-preview">
                     <div>
                         <p>Shows which Telegram channels are performing best:</p>
-                        <ul>
-                            <li>Channel name</li>
-                            <li>Number of buys and sells</li>
-                            <li>Win rate %</li>
-                            <li><strong>P&L from that channel</strong></li>
-                        </ul>
-                        <p>Helps you identify which signal sources to keep or remove.</p>
+                        <ul><li>Channel name</li><li>Number of buys and sells</li><li>Win rate %</li><li><strong>P&L from that channel</strong></li></ul>
                     </div>
                     <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
+                        <div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-╔═══════════════════════════╗
-║    📋 CHANNEL ANALYTICS  ║
-╚═══════════════════════════╝
-
-📡 `@crypto_signals`
-   📈 8 buys | 📉 6 sells
-   🎯 Win Rate: 67%
-   💰 PnL: 🟢 $15.50
-
-📡 `@vip_signals`
-   📈 4 buys | 📉 2 sells
-   🎯 Win Rate: 50%
-   💰 PnL: 🔴 -$2.30
-
-📝 *Manual Trades:* 3
-                            </div>
+                            <div class="bot-message">╔══════════════════╗
+║📋 CHANNEL ANALYTICS║
+╚══════════════════╝
+📡 @crypto_signals | 8 buys/6 sells | Win: 67% | PnL: 🟢 $15.50
+📡 @vip_signals | 4 buys/2 sells | Win: 50% | PnL: 🔴 -$2.30
+📝 Manual Trades: 3</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SUB-SECTION: By Token View -->
                 <h3>By Token View</h3>
                 <div class="step-with-preview">
                     <div>
                         <p>Shows performance breakdown per token:</p>
-                        <ul>
-                            <li>Token address (truncated)</li>
-                            <li>Current holdings</li>
-                            <li>USD value</li>
-                            <li>Market cap (when available)</li>
-                            <li>Trade history for that token</li>
-                        </ul>
+                        <ul><li>Token address (truncated)</li><li>Current holdings</li><li>USD value</li><li>Market cap (when available)</li><li>Trade history for that token</li></ul>
                     </div>
                     <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
+                        <div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-╔═══════════════════════════╗
-║    🪙 TOKEN BREAKDOWN    ║
-╚═══════════════════════════╝
-
-📌 *HOLDING NOW:*
-
-🪙 `GNL7MQ...pump`
-   📦 12,096.07 | 💵 $24.19
-   📊 MC: $67,384
-
-📜 *TRADE HISTORY:*
-
-🪙 `8xKp7Y...IoP`
-   3 buys | 2 sells
-   🔴 -$8.50
-
-🪙 `3b8nQw...pump`
-   1 buy | 1 sell
-   🟢 +$12.30
-                            </div>
+                            <div class="bot-message">╔══════════════════╗
+║ 🪙 TOKEN BREAKDOWN║
+╚══════════════════╝
+📌 HOLDING: 🪙 GNL7MQ...pump | 12,096.07 | $24.19 | MC: $67,384
+📜 HISTORY: 🪙 8xKp7Y...IoP | 3 buys/2 sells | 🔴 -$8.50
+🪙 3b8nQw...pump | 1 buy/1 sell | 🟢 +$12.30</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SUB-SECTION: Overall Stats -->
                 <h3>Overall Stats View</h3>
                 <div class="step-with-preview">
                     <div>
                         <h4>Comprehensive trading statistics:</h4>
-                        <ul>
-                            <li>Total SOL balance across all wallets</li>
-                            <li>Total trades executed</li>
-                            <li>Buy vs Sell count</li>
-                            <li><strong>Win Rate %</strong></li>
-                            <li><strong>Total P&L</strong></li>
-                            <li>Number of wallets used</li>
-                        </ul>
+                        <ul><li>Total SOL balance across all wallets</li><li>Total trades executed</li><li>Buy vs Sell count</li><li><strong>Win Rate %</strong></li><li><strong>Total P&L</strong></li><li>Number of wallets used</li></ul>
                     </div>
                     <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
+                        <div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-╔═══════════════════════════╗
-║    📊 OVERALL STATS      ║
-╚═══════════════════════════╝
-
-┌─────────────────────────┐
-│ 💰 Total SOL: 0.0570    │
-│ 📈 Total Trades: 17     │
-│ 🟢 Buys: 12             │
-│ 🔴 Sells: 5             │
-│ 🎯 Win Rate: 60%        │
-│ 💵 Total PnL: $14.20    │
-│ 💼 Wallets: 2           │
-└─────────────────────────┘
-                            </div>
+                            <div class="bot-message">╔══════════════════╗
+║ 📊 OVERALL STATS ║
+╚══════════════════╝
+💰 Total SOL: 0.0570 | 📈 Trades: 17
+🟢 Buys: 12 | 🔴 Sells: 5
+🎯 Win Rate: 60% | 💵 PnL: $14.20 | 💼 Wallets: 2</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SECTION 4: P&L Calculation -->
                 <h2>How P&L is Calculated</h2>
                 <div class="card-grid">
-                    <div class="card">
-                        <div class="card-icon">📊</div>
-                        <div class="card-title">For Active Positions</div>
-                        <div class="card-desc">P&L % = (Current Price - Entry Price) / Entry Price × 100<br><br>Entry price is recorded from the transaction when you bought.</div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">📉</div>
-                        <div class="card-title">For Closed Trades</div>
-                        <div class="card-desc">P&L SOL = (Exit Price × Amount) - (Entry Price × Amount)<br><br>Both buy and sell prices are recorded from on-chain data.</div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🔄</div>
-                        <div class="card-title">Real-Time Prices</div>
-                        <div class="card-desc">Prices fetched from Jupiter API and DexScreener for accurate current valuations.</div>
-                    </div>
+                    <div class="card"><div class="card-icon">📊</div><div class="card-title">For Active Positions</div><div class="card-desc">P&L % = (Current Price - Entry Price) / Entry Price × 100. Entry price recorded from buy transaction.</div></div>
+                    <div class="card"><div class="card-icon">📉</div><div class="card-title">For Closed Trades</div><div class="card-desc">P&L SOL = (Exit Price × Amount) - (Entry Price × Amount). Both prices from on-chain data.</div></div>
+                    <div class="card"><div class="card-icon">🔄</div><div class="card-title">Real-Time Prices</div><div class="card-desc">Prices fetched from Jupiter API and DexScreener for accurate current valuations.</div></div>
                 </div>
 
-                <!-- SECTION 5: Auto-Refresh -->
                 <h2>Auto-Refresh System</h2>
                 <div class="step-with-preview">
                     <div>
-                        <div class="callout callout-success">
-                            <div class="callout-title">Every 5 Minutes</div>
-                            <p>GHOSTwire automatically updates your pinned portfolio message. No action needed!</p>
-                        </div>
+                        <div class="callout callout-success"><div class="callout-title">Every 5 Minutes</div><p>GHOSTwire automatically updates your pinned portfolio message. No action needed!</p></div>
                         <h4>What gets refreshed:</h4>
-                        <ul>
-                            <li>Token balances (via ATA checks)</li>
-                            <li>Current prices</li>
-                            <li>P&L percentages</li>
-                            <li>Total portfolio value</li>
-                        </ul>
+                        <ul><li>Token balances (via ATA checks)</li><li>Current prices</li><li>P&L percentages</li><li>Total portfolio value</li></ul>
                     </div>
                     <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
+                        <div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-📊 *Portfolio* (updated 14:37)
-
+                            <div class="bot-message">📊 *Portfolio* (updated 14:37)
 • *LUCY* — 12,096.07 ($26.50) 🟢+58.3%
 • *DOGE* — 5,000.00 ($7.20) 🔴-25.0%
-
-💰 SOL: 0.0450 SOL | 💎 $48.15
-
-📈 Buy  📉 Sell
-🔄 Refresh
-                            </div>
-                            <div class="bot-message" style="border-color: #ffc107; font-size: 10px;">
-🔄 Portfolio refreshed automatically (5 min interval)
-                            </div>
+💰 SOL: 0.0450 SOL | 💎 $48.15</div>
+                            <div class="bot-message" style="border-color:#ffc107;font-size:10px;">🔄 Portfolio refreshed automatically (5 min interval)</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SECTION 6: Manual Refresh -->
                 <h2>Manual Refresh</h2>
                 <p>You can manually refresh anytime by clicking the <strong>Refresh</strong> button in any portfolio view.</p>
 
                 <div class="step-with-preview">
                     <div>
                         <h4>Why manual refresh?</h4>
-                        <ul>
-                            <li>Immediately see new purchases</li>
-                            <li>Check updated P&L after price moves</li>
-                            <li>Verify sell transactions completed</li>
-                            <li>Force sync after manual transfers</li>
-                        </ul>
+                        <ul><li>Immediately see new purchases</li><li>Check updated P&L after price moves</li><li>Verify sell transactions completed</li><li>Force sync after manual transfers</li></ul>
                     </div>
                     <div class="bot-preview">
-                        <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
-                            <span>@ghowr_bot</span>
-                        </div>
-                        <div class="bot-preview-body">
-                            <div class="bot-message">
-✅ Positions Refreshed!
-
-Updated 3 positions.
-                            </div>
-                        </div>
+                        <div class="bot-preview-header"><span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span><span>@ghowr_bot</span></div>
+                        <div class="bot-preview-body"><div class="bot-message">✅ Positions Refreshed! Updated 3 positions.</div></div>
                     </div>
                 </div>
 
-                <!-- SECTION 7: Position Sync Logic -->
                 <div class="callout callout-info">
                     <div class="callout-title">Position Sync Logic</div>
                     <p>GHOSTwire always checks your actual wallet balance on-chain:</p>
-                    <ul style="margin-top: 8px; margin-left: 20px;">
+                    <ul style="margin-top:8px;margin-left:20px;">
                         <li>Checks Associated Token Account (ATA) for each token</li>
                         <li>If balance is 0 → position is closed automatically</li>
                         <li>If balance decreased → amount updated (partial sell)</li>
                         <li>If balance increased → amount updated (additional buy)</li>
                     </ul>
-                    <div class="fee-breakdown" style="margin-top: 12px;">
+                    <div class="fee-breakdown" style="margin-top:12px;">
                         <code>✅ Updated GNL7MQSz... = 12,096.0700 (on-chain)</code><br>
                         <code>🗑️ GNL7MQSz... closed (0 balance)</code>
                     </div>
                 </div>
 
-                <!-- SECTION 8: Portfolio Summary -->
                 <h2>Portfolio Summary</h2>
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">$44.69</div>
-                        <div class="stat-label">Portfolio Value</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">3</div>
-                        <div class="stat-label">Active Tokens</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">+45.2%</div>
-                        <div class="stat-label">Best Performer</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">60%</div>
-                        <div class="stat-label">Win Rate</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-number">$44.69</div><div class="stat-label">Portfolio Value</div></div>
+                    <div class="stat-card"><div class="stat-number">3</div><div class="stat-label">Active Tokens</div></div>
+                    <div class="stat-card"><div class="stat-number">+45.2%</div><div class="stat-label">Best Performer</div></div>
+                    <div class="stat-card"><div class="stat-number">60%</div><div class="stat-label">Win Rate</div></div>
                 </div>
 
-                <!-- FAQ -->
                 <h2>Portfolio FAQ</h2>
-                
-                <div class="callout callout-info">
-                    <div class="callout-title">Why doesn't my position show up immediately after buying?</div>
-                    <p>Positions are saved immediately, but the pinned message refreshes every 5 minutes. Click <strong>Refresh</strong> to see it instantly.</p>
-                </div>
-                
-                <div class="callout callout-info">
-                    <div class="callout-title">How is my total portfolio value calculated?</div>
-                    <p>Total = SOL balance + (sum of all token amounts × current price). Prices are fetched from Jupiter API and DexScreener.</p>
-                </div>
-                
-                <div class="callout callout-info">
-                    <div class="callout-title">Can I see P&L for tokens bought outside GHOSTwire?</div>
-                    <p>Yes! Use <strong>Refresh</strong> to sync your wallet. The bot detects all tokens in your wallet, not just those bought through the bot.</p>
-                </div>
-                
-                <div class="callout callout-info">
-                    <div class="callout-title">What happens to positions when I sell partially?</div>
-                    <p>The bot updates the position amount. You'll see the reduced balance in your portfolio, and the sell is recorded in trade history with P&L.</p>
-                </div>
+                <div class="callout callout-info"><div class="callout-title">Why doesn't my position show up immediately?</div><p>Positions are saved immediately, but the pinned message refreshes every 5 minutes. Click <strong>Refresh</strong> to see it instantly.</p></div>
+                <div class="callout callout-info"><div class="callout-title">How is total portfolio value calculated?</div><p>Total = SOL balance + (sum of all token amounts × current price). Prices from Jupiter API and DexScreener.</p></div>
+                <div class="callout callout-info"><div class="callout-title">Can I see P&L for tokens bought outside GHOSTwire?</div><p>Yes! Use <strong>Refresh</strong> to sync your wallet. The bot detects all tokens in your wallet.</p></div>
+                <div class="callout callout-info"><div class="callout-title">What happens to positions when I sell partially?</div><p>The bot updates the position amount. You'll see reduced balance and sell recorded in trade history.</p></div>
 
                 <div class="page-footer">
                     <div class="footer-nav">
@@ -1200,13 +497,13 @@ Updated 3 positions.
 
     <script>
         function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
+            var savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
-            const toggleBtn = document.getElementById('theme-toggle');
+            var toggleBtn = document.getElementById('theme-toggle');
             if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => {
-                    const current = document.documentElement.getAttribute('data-theme');
-                    const next = current === 'dark' ? 'light' : 'dark';
+                toggleBtn.addEventListener('click', function() {
+                    var current = document.documentElement.getAttribute('data-theme');
+                    var next = current === 'dark' ? 'light' : 'dark';
                     document.documentElement.setAttribute('data-theme', next);
                     localStorage.setItem('theme', next);
                     toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️';
@@ -1216,82 +513,42 @@ Updated 3 positions.
         }
 
         function initSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const menuBtn = document.getElementById('mobile-menu-btn');
-            const overlay = document.getElementById('sidebar-overlay');
-            
-            if (menuBtn && sidebar) {
-                menuBtn.addEventListener('click', () => {
-                    sidebar.classList.toggle('open');
-                    if (overlay) overlay.style.display = 'block';
-                });
-            }
-            
-            if (overlay) {
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('open');
-                    overlay.style.display = 'none';
-                });
-            }
+            var sidebar = document.getElementById('sidebar');
+            var menuBtn = document.getElementById('mobile-menu-btn');
+            var overlay = document.getElementById('sidebar-overlay');
+            function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+            function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; }
+            if (menuBtn) menuBtn.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            sidebar.querySelectorAll('.sidebar-link').forEach(function(link) { link.addEventListener('click', function() { if (window.innerWidth <= 1024) closeSidebar(); }); });
+            window.addEventListener('resize', function() { if (window.innerWidth > 1024) closeSidebar(); });
         }
 
         function initSearch() {
-            const searchBox = document.getElementById('search-box');
-            if (!searchBox) return;
-            
-            const searchData = [
-                { title: 'Overview', url: '/index.html' },
-                { title: 'Quick Start', url: '/getting-started.html' },
-                { title: 'Wallet Setup', url: '/wallet.html' },
-                { title: 'Channel Monitoring', url: '/channels.html' },
-                { title: 'Buying & Selling', url: '/trading.html' },
-                { title: 'Portfolio Tracking', url: '/portfolio.html' },
-                { title: 'Transfers', url: '/transfers.html' },
-                { title: 'Settings', url: '/settings.html' },
-                { title: 'Private Channels', url: '/private-channels.html' },
-                { title: 'Referral System', url: '/referrals.html' },
-                { title: 'Fee System', url: '/fees.html' },
-                { title: 'FAQ', url: '/faq.html' },
-                { title: 'Commands', url: '/commands.html' },
+            var searchBox = document.getElementById('search-box');
+            var searchResults = document.getElementById('search-results');
+            if (!searchBox || !searchResults) return;
+            var searchData = [
+                { title: 'Overview', url: '/index.html' }, { title: 'Quick Start', url: '/getting-started.html' },
+                { title: 'Wallet Setup', url: '/wallet.html' }, { title: 'Channel Monitoring', url: '/channels.html' },
+                { title: 'Buying & Selling', url: '/trading.html' }, { title: 'Portfolio Tracking', url: '/portfolio.html' },
+                { title: 'Transfers', url: '/transfers.html' }, { title: 'Settings', url: '/settings.html' },
+                { title: 'Private Channels', url: '/private-channels.html' }, { title: 'Referral System', url: '/referrals.html' },
+                { title: 'Fee System', url: '/fees.html' }, { title: 'FAQ', url: '/faq.html' }, { title: 'Commands', url: '/commands.html' }
             ];
-            
-            let dropdown = null;
-            
-            searchBox.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                
-                if (!dropdown) {
-                    dropdown = document.createElement('div');
-                    dropdown.id = 'search-results';
-                    searchBox.parentElement.style.position = 'relative';
-                    searchBox.parentElement.appendChild(dropdown);
-                }
-                
-                if (query) {
-                    const results = searchData.filter(d => d.title.toLowerCase().includes(query));
-                    if (results.length > 0) {
-                        dropdown.innerHTML = results.map(r => `<a href="${r.url}">${r.title}</a>`).join('');
-                        dropdown.style.display = 'block';
-                    } else {
-                        dropdown.style.display = 'none';
-                    }
-                } else {
-                    dropdown.style.display = 'none';
-                }
+            searchBox.addEventListener('input', function(e) {
+                var query = e.target.value.toLowerCase().trim();
+                if (query.length > 0) {
+                    var results = searchData.filter(function(d) { return d.title.toLowerCase().indexOf(query) !== -1; });
+                    if (results.length > 0) { var html = ''; results.forEach(function(r) { html += '<a href="'+r.url+'">'+r.title+'</a>'; }); searchResults.innerHTML = html; searchResults.style.display = 'block'; }
+                    else { searchResults.innerHTML = '<div style="padding:12px;color:var(--text-tertiary);font-size:0.85rem;">No results</div>'; searchResults.style.display = 'block'; }
+                } else { searchResults.style.display = 'none'; }
             });
-            
-            document.addEventListener('click', (e) => {
-                if (dropdown && !searchBox.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
+            document.addEventListener('click', function(e) { if (!searchBox.contains(e.target) && !searchResults.contains(e.target)) searchResults.style.display = 'none'; });
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { searchResults.style.display = 'none'; searchBox.blur(); } });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            initSidebar();
-            initSearch();
-        });
+        document.addEventListener('DOMContentLoaded', function() { initTheme(); initSidebar(); initSearch(); });
     </script>
 </body>
 </html>

@@ -6,443 +6,163 @@
     <title>Commands - GHOSTwire</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-tertiary: #1a1a26;
-            --bg-card: #1e1e2e;
-            --bg-code: #1a1a2e;
-            --accent-primary: #6719ff;
-            --accent-secondary: #8a4dff;
+            --bg-primary: #0a0a0f; --bg-secondary: #12121a; --bg-tertiary: #1a1a26;
+            --bg-card: #1e1e2e; --bg-code: #1a1a2e;
+            --accent-primary: #6719ff; --accent-secondary: #8a4dff;
             --accent-gradient: linear-gradient(135deg, #6719ff, #8a4dff);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b8;
-            --text-tertiary: #6b6b80;
-            --border-primary: #2a2a40;
-            --border-secondary: #1e1e30;
-            --success: #4ecca3;
-            --warning: #ffc107;
+            --text-primary: #ffffff; --text-secondary: #a0a0b8; --text-tertiary: #6b6b80;
+            --border-primary: #2a2a40; --border-secondary: #1e1e30;
+            --success: #4ecca3; --warning: #ffc107;
             --sidebar-width: 280px;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --bg-tertiary: #f0f1f3;
-            --bg-card: #ffffff;
-            --bg-code: #f4f4f5;
-            --text-primary: #1a1a2e;
-            --text-secondary: #4a4a6a;
-            --text-tertiary: #8a8aa0;
-            --border-primary: #e5e5ea;
-            --border-secondary: #f0f0f5;
+            --bg-primary: #ffffff; --bg-secondary: #f8f9fa; --bg-tertiary: #f0f1f3;
+            --bg-card: #ffffff; --bg-code: #f4f4f5;
+            --text-primary: #1a1a2e; --text-secondary: #4a4a6a; --text-tertiary: #8a8aa0;
+            --border-primary: #e5e5ea; --border-secondary: #f0f0f5;
         }
 
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-        }
+        html, body { overflow-x: hidden; width: 100%; }
 
         body {
-            font-family: var(--font-sans);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            font-size: 16px;
+            font-family: var(--font-sans); background: var(--bg-primary);
+            color: var(--text-primary); line-height: 1.6; font-size: 16px;
         }
 
-        .page-wrapper {
-            display: flex;
-            min-height: 100vh;
-            width: 100%;
-            overflow-x: hidden;
-        }
+        .page-wrapper { display: flex; min-height: 100vh; width: 100%; position: relative; }
 
         /* Sidebar */
         .sidebar {
-            width: var(--sidebar-width);
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border-primary);
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            overflow-y: auto;
-            z-index: 100;
-            transition: transform 0.3s ease;
+            width: var(--sidebar-width); min-width: var(--sidebar-width);
+            background: var(--bg-secondary); border-right: 1px solid var(--border-primary);
+            position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto;
+            z-index: 1000; transition: transform 0.3s ease; display: flex; flex-direction: column;
         }
-
-        .sidebar-header {
-            padding: 24px 20px;
-            border-bottom: 1px solid var(--border-primary);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #6719ff, #8a4dff);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-icon svg { width: 20px; height: 20px; }
-        .logo-text { 
-            background: linear-gradient(135deg, #6719ff, #8a4dff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .sidebar-nav {
-            padding: 16px 0;
-        }
-
-        .sidebar-section {
-            margin-bottom: 8px;
-        }
-
-        .sidebar-section-title {
-            padding: 8px 20px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-tertiary);
-            font-weight: 600;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 20px;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-            border-left: 2px solid transparent;
-            font-size: 0.85rem;
-            text-decoration: none;
-        }
-
-        .sidebar-link:hover {
-            color: var(--text-primary);
-            background: var(--bg-tertiary);
-        }
-
-        .sidebar-link.active {
-            color: var(--accent-primary);
-            background: rgba(103, 25, 255, 0.1);
-            border-left-color: var(--accent-primary);
-        }
-
-        .sidebar-link .icon {
-            font-size: 1rem;
-            width: 20px;
-            text-align: center;
-        }
+        .sidebar-header { padding: 24px 20px; border-bottom: 1px solid var(--border-primary); }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #6719ff, #8a4dff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .logo-text { background: linear-gradient(135deg, #6719ff, #8a4dff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; letter-spacing: 1px; }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .sidebar-section { margin-bottom: 8px; }
+        .sidebar-section-title { padding: 8px 20px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); font-weight: 600; }
+        .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: var(--text-secondary); transition: all 0.2s; border-left: 2px solid transparent; font-size: 0.85rem; text-decoration: none; }
+        .sidebar-link:hover { color: var(--text-primary); background: var(--bg-tertiary); }
+        .sidebar-link.active { color: var(--accent-primary); background: rgba(103, 25, 255, 0.1); border-left-color: var(--accent-primary); }
+        .sidebar-link .icon { font-size: 1rem; width: 20px; text-align: center; }
+        .sidebar-footer { padding: 20px; border-top: 1px solid var(--border-primary); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; }
+        .sidebar-footer a { color: var(--text-tertiary); text-decoration: none; }
+        .sidebar-footer a:hover { color: var(--accent-primary); }
 
         /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 40px 60px;
-            min-height: 100vh;
-            width: calc(100% - var(--sidebar-width));
-            overflow-x: hidden;
-        }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px 60px; min-height: 100vh; width: calc(100% - var(--sidebar-width)); }
+        .content-container { max-width: 850px; width: 100%; }
 
-        .content-container {
-            max-width: 850px;
-            width: 100%;
-        }
-
-        /* Typography */
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-top: 32px;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-            border-bottom: 2px solid var(--accent-primary);
-            display: inline-block;
-            padding-bottom: 4px;
-        }
-
-        h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-top: 24px;
-            margin-bottom: 12px;
-            color: var(--accent-primary);
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--text-secondary);
-        }
-
-        code {
-            font-family: var(--font-mono);
-            font-size: 0.85em;
-            background: var(--bg-code);
-            padding: 4px 8px;
-            border-radius: 6px;
-            color: #a67cff;
-        }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; color: var(--text-primary); }
+        h2 { font-size: 1.5rem; font-weight: 600; margin-top: 32px; margin-bottom: 16px; color: var(--text-primary); border-bottom: 2px solid var(--accent-primary); display: inline-block; padding-bottom: 4px; }
+        h3 { font-size: 1.2rem; font-weight: 600; margin-top: 24px; margin-bottom: 12px; color: var(--accent-primary); }
+        p { margin-bottom: 16px; color: var(--text-secondary); }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg-code); padding: 4px 8px; border-radius: 6px; color: #a67cff; }
 
         /* Top Navigation */
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-            margin-bottom: 40px;
-            border-bottom: 1px solid var(--border-primary);
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .search-box {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
-            padding: 10px 16px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            width: 280px;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-
-        .theme-toggle {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            color: var(--text-primary);
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; margin-bottom: 40px; border-bottom: 1px solid var(--border-primary); flex-wrap: wrap; gap: 16px; }
+        .search-wrapper { position: relative; flex: 1; max-width: 300px; min-width: 200px; }
+        .search-box { background: var(--bg-tertiary); border: 1px solid var(--border-primary); border-radius: 8px; padding: 10px 16px; color: var(--text-primary); font-size: 0.9rem; width: 100%; }
+        .search-box:focus { outline: none; border-color: var(--accent-primary); }
+        .search-results-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 8px; margin-top: 4px; max-height: 300px; overflow-y: auto; z-index: 500; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .search-results-dropdown a { display: block; padding: 10px 14px; color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; border-bottom: 1px solid var(--border-secondary); }
+        .search-results-dropdown a:last-child { border-bottom: none; }
+        .search-results-dropdown a:hover { background: var(--bg-tertiary); color: var(--text-primary); text-decoration: none; }
+        .top-nav-actions { display: flex; align-items: center; gap: 12px; }
+        .theme-toggle { background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-primary); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; white-space: nowrap; }
+        .open-bot-btn { padding: 8px 16px; background: var(--accent-gradient); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.85rem; white-space: nowrap; }
+        .open-bot-btn:hover { opacity: 0.9; text-decoration: none; }
 
         /* Command Table */
-        .command-section {
-            margin: 24px 0;
-        }
-
-        .command-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--bg-card);
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 16px 0;
-        }
-
-        .command-table th {
-            text-align: left;
-            padding: 12px 16px;
-            background: var(--bg-tertiary);
-            color: var(--accent-primary);
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-
-        .command-table td {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border-secondary);
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .command-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .command-code {
-            font-family: var(--font-mono);
-            color: #a67cff;
-            font-weight: 500;
-        }
+        .command-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 12px; overflow: hidden; margin: 16px 0; border: 1px solid var(--border-primary); }
+        .command-table th { text-align: left; padding: 12px 16px; background: var(--bg-tertiary); color: var(--accent-primary); font-weight: 600; font-size: 0.85rem; }
+        .command-table td { padding: 12px 16px; border-bottom: 1px solid var(--border-secondary); color: var(--text-secondary); font-size: 0.85rem; }
+        .command-table tr:last-child td { border-bottom: none; }
+        .command-code { font-family: var(--font-mono); color: #a67cff; font-weight: 500; }
+        .callout-box { margin-top: 12px; padding: 12px 16px; background: var(--bg-tertiary); border-radius: 8px; border: 1px solid var(--border-primary); }
 
         /* Card Grid */
-        .card-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 24px 0;
-        }
+        .card-grid { display: flex; flex-wrap: wrap; gap: 20px; margin: 24px 0; }
+        .card { flex: 1; min-width: 200px; background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 12px; padding: 20px; text-align: center; }
+        .card-icon { font-size: 2rem; margin-bottom: 12px; }
+        .card-title { font-weight: 600; margin-bottom: 8px; }
+        .card-desc { color: var(--text-secondary); font-size: 0.8rem; }
 
-        .card {
-            flex: 1;
-            min-width: 200px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
+        ul { color: var(--text-secondary); padding-left: 20px; margin-bottom: 16px; }
+        li { margin-bottom: 6px; font-size: 0.9rem; }
 
-        .card-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
+        .page-footer { margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border-primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .footer-nav { display: flex; gap: 20px; flex-wrap: wrap; }
+        .footer-nav a { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--border-primary); border-radius: 8px; text-decoration: none; color: var(--text-secondary); font-size: 0.85rem; }
+        .footer-nav a:hover { border-color: #6719ff; color: #6719ff; text-decoration: none; }
 
-        .card-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+        /* Sidebar Overlay */
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+        .sidebar-overlay.active { display: block; }
 
-        .card-desc {
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
+        /* Mobile Menu Button */
+        .mobile-menu-btn { display: none; position: fixed; top: 16px; left: 16px; z-index: 1100; background: var(--bg-card); border: 1px solid var(--border-primary); color: var(--text-primary); padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 1.2rem; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
 
-        /* Page Footer */
-        .page-footer {
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid var(--border-primary);
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .footer-nav {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-nav a {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .footer-nav a:hover {
-            border-color: #6719ff;
-            color: #6719ff;
-        }
-
-        /* Mobile */
-        .mobile-menu-btn {
-            display: none;
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            z-index: 200;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            color: var(--text-primary);
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        #search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
-            margin-top: 4px;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-
-        #search-results a {
-            display: block;
-            padding: 10px 16px;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-secondary);
-            text-decoration: none;
-        }
-
-        #search-results a:hover {
-            background: var(--bg-tertiary);
-        }
-
+        /* Responsive */
         @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 20px;
-                width: 100%;
-            }
-            .mobile-menu-btn {
-                display: block;
-            }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0 !important; padding: 20px !important; width: 100% !important; }
+            .mobile-menu-btn { display: flex !important; }
+            .sidebar-overlay.active { display: block; }
+            .top-nav { padding-left: 60px !important; padding-top: 8px !important; }
         }
 
         @media (max-width: 768px) {
-            .top-nav {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .search-box {
-                width: 100%;
-            }
-            .command-table th, .command-table td {
-                padding: 8px 12px;
-            }
+            .main-content { padding: 16px !important; }
+            .top-nav { flex-direction: column; align-items: stretch; padding-left: 60px !important; padding-top: 8px !important; gap: 10px; }
+            .search-wrapper { max-width: 100%; width: 100%; order: 1; }
+            .top-nav-actions { order: 2; justify-content: flex-end; }
+            .command-table th, .command-table td { padding: 8px 12px; font-size: 0.78rem; }
+            .card-grid { flex-direction: column; }
+            .card { min-width: 100%; }
             h1 { font-size: 1.6rem; }
             h2 { font-size: 1.3rem; }
+            .footer-nav { flex-direction: column; width: 100%; }
+            .footer-nav a { justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .main-content { padding: 12px !important; }
+            .top-nav { padding-left: 56px !important; padding-top: 6px !important; gap: 8px; }
+            .mobile-menu-btn { top: 12px; left: 12px; width: 40px; height: 40px; }
+            .command-table { font-size: 0.75rem; }
+        }
+
+        @media (min-width: 1025px) {
+            .mobile-menu-btn { display: none !important; }
+            .top-nav { padding-left: 0 !important; }
         }
     </style>
 </head>
 <body>
-    <div id="sidebar-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;"></div>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     
     <div class="page-wrapper">
-        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">☰</button>
         
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-    <a href="/index.html" class="logo">
-        <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
-        <span class="logo-text">GHOSTwire</span>
-    </a>
-</div>
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon">👻</div>
+                    <span class="logo-text">GHOSTwire</span>
+                </a>
+            </div>
             <nav class="sidebar-nav">
                 <div class="sidebar-section">
                     <div class="sidebar-section-title">Getting Started</div>
@@ -458,13 +178,13 @@
                     <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
                 </div>
                 <div class="sidebar-section">
-    <div class="sidebar-section-title">Configuration</div>
-    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
-    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
-    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
-    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
-    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
-</div>
+                    <div class="sidebar-section-title">Configuration</div>
+                    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+                    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+                    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+                    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+                    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+                </div>
                 <div class="sidebar-section">
                     <div class="sidebar-section-title">Resources</div>
                     <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
@@ -480,128 +200,58 @@
         <main class="main-content">
             <div class="content-container">
                 <div class="top-nav">
-                    <div style="position: relative;">
+                    <div class="search-wrapper">
                         <input type="text" class="search-box" id="search-box" placeholder="🔍 Search documentation...">
+                        <div class="search-results-dropdown" id="search-results"></div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 16px;">
-                        <a href="https://t.me/ghowr_bot" target="_blank" style="padding: 8px 16px; background: linear-gradient(135deg, #6719ff, #8a4dff); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">👻 Open Bot</a>
-                        <button class="theme-toggle" id="theme-toggle">🌙</button>
+                    <div class="top-nav-actions">
+                        <a href="https://t.me/ghowr_bot" target="_blank" class="open-bot-btn">👻 Open Bot</a>
+                        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
                     </div>
                 </div>
 
                 <h1>⌨️ Command Reference</h1>
                 <p>All available commands for GHOSTwire. Use these commands directly in Telegram.</p>
 
-                <!-- Quick Stats -->
                 <div class="card-grid">
-                    <div class="card">
-                        <div class="card-icon">👻</div>
-                        <div class="card-title">/start</div>
-                        <div class="card-desc">Launch bot and main menu</div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">❓</div>
-                        <div class="card-title">/help</div>
-                        <div class="card-desc">Show help message</div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">💰</div>
-                        <div class="card-title">/balance</div>
-                        <div class="card-desc">Quick SOL balance check</div>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">📊</div>
-                        <div class="card-title">/positions</div>
-                        <div class="card-desc">View active positions</div>
-                    </div>
+                    <div class="card"><div class="card-icon">👻</div><div class="card-title">/start</div><div class="card-desc">Launch bot and main menu</div></div>
+                    <div class="card"><div class="card-icon">❓</div><div class="card-title">/help</div><div class="card-desc">Show help message</div></div>
+                    <div class="card"><div class="card-icon">💰</div><div class="card-title">/balance</div><div class="card-desc">Quick SOL balance check</div></div>
+                    <div class="card"><div class="card-icon">📊</div><div class="card-title">/positions</div><div class="card-desc">View active positions</div></div>
                 </div>
 
-                <!-- Basic Commands -->
-                <div class="command-section">
-                    <h2>📋 Basic Commands</h2>
-                    <table class="command-table">
-                        <tr>
-                            <th>Command</th>
-                            <th>Description</th>
-                        </tr>
-                        <tr>
-                            <td><code class="command-code">/start</code></td>
-                            <td>Start the bot and show main menu</td>
-                        </tr>
-                        <tr>
-                            <td><code class="command-code">/help</code></td>
-                            <td>Display help information</td>
-                        </tr>
-                        <tr>
-                            <td><code class="command-code">/cancel</code></td>
-                            <td>Cancel current operation and return to main menu</td>
-                        </tr>
-                    </table>
-                </div>
+                <h2>📋 Basic Commands</h2>
+                <table class="command-table">
+                    <tr><th>Command</th><th>Description</th></tr>
+                    <tr><td><code class="command-code">/start</code></td><td>Start the bot and show main menu</td></tr>
+                    <tr><td><code class="command-code">/help</code></td><td>Display help information</td></tr>
+                    <tr><td><code class="command-code">/cancel</code></td><td>Cancel current operation and return to main menu</td></tr>
+                </table>
 
-                <!-- Trading Commands -->
-                <div class="command-section">
-                    <h2>📈 Trading Commands</h2>
-                    <table class="command-table">
-                        <tr>
-                            <th>Command</th>
-                            <th>Description</th>
-                        </tr>
-                        <tr>
-                            <td><code class="command-code">/balance</code></td>
-                            <td>Check SOL balance across all wallets</td>
-                        </tr>
-                        <tr>
-                            <td><code class="command-code">/positions</code></td>
-                            <td>View all active positions with P&L</td>
-                        </tr>
-                        <tr>
-                            <td><code class="command-code">/channels</code></td>
-                            <td>List all monitored channels</td>
-                        </tr>
-                        <tr>
-                            <td><code class="command-code">/removechannel</code></td>
-                            <td>Remove a monitored channel</td>
-                        </tr>
-                    </table>
-                </div>
+                <h2>📈 Trading Commands</h2>
+                <table class="command-table">
+                    <tr><th>Command</th><th>Description</th></tr>
+                    <tr><td><code class="command-code">/balance</code></td><td>Check SOL balance across all wallets</td></tr>
+                    <tr><td><code class="command-code">/positions</code></td><td>View all active positions with P&L</td></tr>
+                    <tr><td><code class="command-code">/channels</code></td><td>List all monitored channels</td></tr>
+                    <tr><td><code class="command-code">/removechannel</code></td><td>Remove a monitored channel</td></tr>
+                </table>
 
-                <!-- Referral Commands -->
-                <div class="command-section">
-                    <h2>🔗 Referral Commands</h2>
-                    <table class="command-table">
-                        <tr>
-                            <th>Command</th>
-                            <th>Description</th>
-                        </tr>
-                        <tr>
-                            <td><code class="command-code">/referral</code></td>
-                            <td>Show your referral link and earnings stats</td>
-                        </tr>
-                    </table>
-                </div>
+                <h2>🔗 Referral Commands</h2>
+                <table class="command-table">
+                    <tr><th>Command</th><th>Description</th></tr>
+                    <tr><td><code class="command-code">/referral</code></td><td>Show your referral link and earnings stats</td></tr>
+                </table>
 
-                <!-- Private Channel Commands -->
-                <div class="command-section">
-                    <h2>🔒 Private Channel Commands</h2>
-                    <table class="command-table">
-                        <tr>
-                            <th>Command</th>
-                            <th>Description</th>
-                        </tr>
-                        <tr>
-                            <td><code class="command-code">/setapi ID HASH PHONE</code></td>
-                            <td>Set Telegram API credentials for private channels</td>
-                        </tr>
-                    </table>
-                    <div class="callout" style="margin-top: 12px; padding: 12px 16px; background: var(--bg-tertiary); border-radius: 8px;">
-                        <strong>📌 Example:</strong> <code>/setapi 12345678 abc123def +1234567890</code>
-                    </div>
-                </div>
+                <h2>🔒 Private Channel Commands</h2>
+                <table class="command-table">
+                    <tr><th>Command</th><th>Description</th></tr>
+                    <tr><td><code class="command-code">/setapi ID HASH PHONE</code></td><td>Set Telegram API credentials for private channels</td></tr>
+                </table>
+                <div class="callout-box"><strong>📌 Example:</strong> <code>/setapi 12345678 abc123def +1234567890</code></div>
 
-                <!-- Command Usage Tips -->
                 <h2>💡 Tips</h2>
-                <ul style="color: var(--text-secondary); padding-left: 20px;">
+                <ul>
                     <li>Most features are accessible via the <strong>inline menu buttons</strong> — no need to memorize commands!</li>
                     <li>Type <code>/cancel</code> anytime to exit the current operation</li>
                     <li>Commands are <strong>case-insensitive</strong> — <code>/START</code> works the same as <code>/start</code></li>
@@ -619,13 +269,13 @@
 
     <script>
         function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
+            var savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
-            const toggleBtn = document.getElementById('theme-toggle');
+            var toggleBtn = document.getElementById('theme-toggle');
             if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => {
-                    const current = document.documentElement.getAttribute('data-theme');
-                    const next = current === 'dark' ? 'light' : 'dark';
+                toggleBtn.addEventListener('click', function() {
+                    var current = document.documentElement.getAttribute('data-theme');
+                    var next = current === 'dark' ? 'light' : 'dark';
                     document.documentElement.setAttribute('data-theme', next);
                     localStorage.setItem('theme', next);
                     toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️';
@@ -635,82 +285,42 @@
         }
 
         function initSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const menuBtn = document.getElementById('mobile-menu-btn');
-            const overlay = document.getElementById('sidebar-overlay');
-            
-            if (menuBtn && sidebar) {
-                menuBtn.addEventListener('click', () => {
-                    sidebar.classList.toggle('open');
-                    if (overlay) overlay.style.display = 'block';
-                });
-            }
-            
-            if (overlay) {
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('open');
-                    overlay.style.display = 'none';
-                });
-            }
+            var sidebar = document.getElementById('sidebar');
+            var menuBtn = document.getElementById('mobile-menu-btn');
+            var overlay = document.getElementById('sidebar-overlay');
+            function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+            function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; }
+            if (menuBtn) menuBtn.addEventListener('click', openSidebar);
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            sidebar.querySelectorAll('.sidebar-link').forEach(function(link) { link.addEventListener('click', function() { if (window.innerWidth <= 1024) closeSidebar(); }); });
+            window.addEventListener('resize', function() { if (window.innerWidth > 1024) closeSidebar(); });
         }
 
         function initSearch() {
-            const searchBox = document.getElementById('search-box');
-            if (!searchBox) return;
-            
-            const searchData = [
-                { title: 'Overview', url: '/index.html' },
-                { title: 'Quick Start', url: '/getting-started.html' },
-                { title: 'Wallet Setup', url: '/wallet.html' },
-                { title: 'Channel Monitoring', url: '/channels.html' },
-                { title: 'Buying & Selling', url: '/trading.html' },
-                { title: 'Portfolio Tracking', url: '/portfolio.html' },
-                { title: 'Transfers', url: '/transfers.html' },
-                { title: 'Settings', url: '/settings.html' },
-                { title: 'Private Channels', url: '/private-channels.html' },
-                { title: 'Referral System', url: '/referrals.html' },
-                { title: 'Fee System', url: '/fees.html' },
-                { title: 'FAQ', url: '/faq.html' },
-                { title: 'Commands', url: '/commands.html' },
+            var searchBox = document.getElementById('search-box');
+            var searchResults = document.getElementById('search-results');
+            if (!searchBox || !searchResults) return;
+            var searchData = [
+                { title: 'Overview', url: '/index.html' }, { title: 'Quick Start', url: '/getting-started.html' },
+                { title: 'Wallet Setup', url: '/wallet.html' }, { title: 'Channel Monitoring', url: '/channels.html' },
+                { title: 'Buying & Selling', url: '/trading.html' }, { title: 'Portfolio Tracking', url: '/portfolio.html' },
+                { title: 'Transfers', url: '/transfers.html' }, { title: 'Settings', url: '/settings.html' },
+                { title: 'Private Channels', url: '/private-channels.html' }, { title: 'Referral System', url: '/referrals.html' },
+                { title: 'Fee System', url: '/fees.html' }, { title: 'FAQ', url: '/faq.html' }, { title: 'Commands', url: '/commands.html' }
             ];
-            
-            let dropdown = null;
-            
-            searchBox.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                
-                if (!dropdown) {
-                    dropdown = document.createElement('div');
-                    dropdown.id = 'search-results';
-                    searchBox.parentElement.style.position = 'relative';
-                    searchBox.parentElement.appendChild(dropdown);
-                }
-                
-                if (query) {
-                    const results = searchData.filter(d => d.title.toLowerCase().includes(query));
-                    if (results.length > 0) {
-                        dropdown.innerHTML = results.map(r => `<a href="${r.url}"><strong>${r.title}</strong></a>`).join('');
-                        dropdown.style.display = 'block';
-                    } else {
-                        dropdown.style.display = 'none';
-                    }
-                } else {
-                    dropdown.style.display = 'none';
-                }
+            searchBox.addEventListener('input', function(e) {
+                var query = e.target.value.toLowerCase().trim();
+                if (query.length > 0) {
+                    var results = searchData.filter(function(d) { return d.title.toLowerCase().indexOf(query) !== -1; });
+                    if (results.length > 0) { var html = ''; results.forEach(function(r) { html += '<a href="'+r.url+'">'+r.title+'</a>'; }); searchResults.innerHTML = html; searchResults.style.display = 'block'; }
+                    else { searchResults.innerHTML = '<div style="padding:12px;color:var(--text-tertiary);font-size:0.85rem;">No results</div>'; searchResults.style.display = 'block'; }
+                } else { searchResults.style.display = 'none'; }
             });
-            
-            document.addEventListener('click', (e) => {
-                if (dropdown && !searchBox.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
+            document.addEventListener('click', function(e) { if (!searchBox.contains(e.target) && !searchResults.contains(e.target)) searchResults.style.display = 'none'; });
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { searchResults.style.display = 'none'; searchBox.blur(); } });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            initSidebar();
-            initSearch();
-        });
+        document.addEventListener('DOMContentLoaded', function() { initTheme(); initSidebar(); initSearch(); });
     </script>
 </body>
 </html>

@@ -60,16 +60,17 @@
             font-size: 15px;
         }
 
-        /* Layout */
         .page-wrapper {
             display: flex;
             min-height: 100vh;
             width: 100%;
+            position: relative;
         }
 
         /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
             background: var(--bg-secondary);
             border-right: 1px solid var(--border-primary);
             position: fixed;
@@ -77,8 +78,10 @@
             left: 0;
             bottom: 0;
             overflow-y: auto;
-            z-index: 100;
+            z-index: 1000;
             transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar-header {
@@ -94,19 +97,14 @@
         }
 
         .logo-icon {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             background: linear-gradient(135deg, #6719ff, #8a4dff);
-            border-radius: 8px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .logo-icon svg {
-            width: 16px;
-            height: 16px;
-            stroke: white;
+            font-size: 18px;
         }
 
         .logo-text {
@@ -117,6 +115,7 @@
         }
 
         .sidebar-nav {
+            flex: 1;
             padding: 20px 0;
         }
 
@@ -160,6 +159,23 @@
             text-align: center;
         }
 
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-primary);
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            text-align: center;
+        }
+
+        .sidebar-footer a {
+            color: var(--text-tertiary);
+            text-decoration: none;
+        }
+
+        .sidebar-footer a:hover {
+            color: var(--accent-primary);
+        }
+
         /* Main Content */
         .main-content {
             flex: 1;
@@ -175,53 +191,15 @@
             width: 100%;
         }
 
-        /* Typography */
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            letter-spacing: -0.01em;
-            color: var(--text-primary);
-        }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.01em; color: var(--text-primary); }
+        h2 { font-size: 1.3rem; font-weight: 600; margin-top: 40px; margin-bottom: 16px; color: var(--text-primary); }
+        h3 { font-size: 1rem; font-weight: 600; margin-top: 24px; margin-bottom: 12px; color: var(--text-primary); }
+        h4 { font-size: 0.9rem; font-weight: 600; margin-top: 16px; margin-bottom: 8px; color: var(--text-primary); }
 
-        h2 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-top: 40px;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-        }
+        p { margin-bottom: 16px; color: var(--text-secondary); line-height: 1.7; }
 
-        h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-top: 24px;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
-        h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-top: 16px;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        a {
-            color: var(--accent-primary);
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
+        a { color: var(--accent-primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
 
         code {
             font-family: var(--font-mono);
@@ -239,6 +217,14 @@
             align-items: center;
             padding: 0 0 32px 0;
             gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex: 1;
+            max-width: 300px;
+            min-width: 200px;
         }
 
         .search-box {
@@ -248,7 +234,7 @@
             padding: 8px 14px;
             color: var(--text-primary);
             font-size: 0.85rem;
-            width: 220px;
+            width: 100%;
             transition: all 0.2s;
         }
 
@@ -261,6 +247,46 @@
             color: var(--text-tertiary);
         }
 
+        .search-results-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            margin-top: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 500;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .search-results-dropdown a {
+            display: block;
+            padding: 10px 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border-secondary);
+            transition: all 0.2s;
+        }
+
+        .search-results-dropdown a:last-child { border-bottom: none; }
+
+        .search-results-dropdown a:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .top-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .theme-toggle {
             background: var(--bg-tertiary);
             border: 1px solid var(--border-primary);
@@ -269,6 +295,7 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 0.9rem;
+            white-space: nowrap;
         }
 
         .open-bot-btn {
@@ -280,12 +307,10 @@
             font-weight: 600;
             font-size: 0.85rem;
             border: none;
+            white-space: nowrap;
         }
 
-        .open-bot-btn:hover {
-            opacity: 0.9;
-            text-decoration: none;
-        }
+        .open-bot-btn:hover { opacity: 0.9; text-decoration: none; }
 
         /* Callouts */
         .callout {
@@ -296,32 +321,12 @@
             background: var(--bg-card);
         }
 
-        .callout-info {
-            border-color: #6719ff;
-            background: rgba(103, 25, 255, 0.05);
-        }
+        .callout-info { border-color: #6719ff; background: rgba(103, 25, 255, 0.05); }
+        .callout-warning { border-color: #ffc107; background: rgba(255, 193, 7, 0.05); }
+        .callout-danger { border-color: #e94560; background: rgba(233, 69, 96, 0.05); }
+        .callout-success { border-color: #4ecca3; background: rgba(78, 204, 163, 0.05); }
 
-        .callout-warning {
-            border-color: #ffc107;
-            background: rgba(255, 193, 7, 0.05);
-        }
-
-        .callout-danger {
-            border-color: #e94560;
-            background: rgba(233, 69, 96, 0.05);
-        }
-
-        .callout-success {
-            border-color: #4ecca3;
-            background: rgba(78, 204, 163, 0.05);
-        }
-
-        .callout-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
+        .callout-title { font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
         .callout-info .callout-title { color: #6719ff; }
         .callout-warning .callout-title { color: #ffc107; }
         .callout-danger .callout-title { color: #e94560; }
@@ -347,18 +352,12 @@
             border-bottom: 1px solid var(--border-primary);
         }
 
-        .bot-preview-header .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
+        .bot-preview-header .dot { width: 8px; height: 8px; border-radius: 50%; }
         .dot-red { background: #6719ff; }
         .dot-yellow { background: #ffc107; }
         .dot-green { background: #4ecca3; }
 
-        .bot-preview-body {
-            padding: 16px;
-        }
+        .bot-preview-body { padding: 16px; }
 
         .bot-message {
             background: var(--bg-code);
@@ -373,9 +372,7 @@
             border: 1px solid var(--border-secondary);
         }
 
-        .bot-message.success {
-            border-color: #4ecca3;
-        }
+        .bot-message.success { border-color: #4ecca3; }
 
         .bot-buttons {
             display: flex;
@@ -395,16 +392,10 @@
             transition: all 0.2s;
         }
 
-        .bot-button:hover {
-            border-color: var(--accent-primary);
-        }
+        .bot-button:hover { border-color: var(--accent-primary); }
 
         /* Steps */
-        .steps {
-            counter-reset: step;
-            list-style: none;
-            padding: 0;
-        }
+        .steps { counter-reset: step; list-style: none; padding: 0; }
 
         .step {
             counter-increment: step;
@@ -430,18 +421,9 @@
             color: white;
         }
 
-        .step-title {
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-bottom: 2px;
-        }
+        .step-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 2px; }
+        .step p { font-size: 0.8rem; margin-bottom: 0; }
 
-        .step p {
-            font-size: 0.8rem;
-            margin-bottom: 0;
-        }
-
-        /* Step with Preview */
         .step-with-preview {
             display: flex;
             flex-wrap: wrap;
@@ -449,10 +431,7 @@
             margin: 24px 0;
         }
 
-        .step-with-preview > div {
-            flex: 1;
-            min-width: 240px;
-        }
+        .step-with-preview > div { flex: 1; min-width: 240px; }
 
         /* Card Grid */
         .card-grid {
@@ -472,27 +451,10 @@
             transition: all 0.2s;
         }
 
-        .card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
-        }
-
-        .card-icon {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .card-title {
-            font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-        }
-
-        .card-desc {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            line-height: 1.5;
-        }
+        .card:hover { border-color: var(--accent-primary); transform: translateY(-2px); }
+        .card-icon { font-size: 1.5rem; margin-bottom: 10px; }
+        .card-title { font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+        .card-desc { color: var(--text-secondary); font-size: 0.75rem; line-height: 1.5; }
 
         /* Private Key Box */
         .private-key-box {
@@ -514,20 +476,9 @@
             margin: 10px 0;
         }
 
-        /* Lists */
-        ul {
-            color: var(--text-secondary);
-            padding-left: 20px;
-            margin-bottom: 16px;
-            line-height: 1.7;
-        }
+        ul { color: var(--text-secondary); padding-left: 20px; margin-bottom: 16px; line-height: 1.7; }
+        li { margin-bottom: 6px; font-size: 0.85rem; }
 
-        li {
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-        }
-
-        /* Page Footer */
         .page-footer {
             margin-top: 60px;
             padding-top: 24px;
@@ -538,11 +489,7 @@
             gap: 16px;
         }
 
-        .footer-nav {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+        .footer-nav { display: flex; gap: 20px; flex-wrap: wrap; }
 
         .footer-nav a {
             display: flex;
@@ -557,120 +504,88 @@
             font-size: 0.8rem;
         }
 
-        .footer-nav a:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-            text-decoration: none;
+        .footer-nav a:hover { border-color: var(--accent-primary); color: var(--accent-primary); text-decoration: none; }
+
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
         }
 
-        /* Mobile Menu */
+        .sidebar-overlay.active { display: block; }
+
+        /* Mobile Menu Button */
         .mobile-menu-btn {
             display: none;
             position: fixed;
             top: 16px;
             left: 16px;
-            z-index: 200;
+            z-index: 1100;
             background: var(--bg-card);
             border: 1px solid var(--border-primary);
             color: var(--text-primary);
-            padding: 10px;
+            padding: 10px 14px;
             border-radius: 8px;
             cursor: pointer;
-        }
-
-        /* Search Results */
-        #search-results {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            width: 280px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 8px;
-            margin-top: 4px;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 1000;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        }
-
-        #search-results a {
-            display: block;
-            padding: 10px 14px;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-secondary);
-            text-decoration: none;
-            font-size: 0.8rem;
-        }
-
-        #search-results a:hover {
-            background: var(--bg-tertiary);
+            font-size: 1.2rem;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 24px;
-                width: 100%;
-            }
-            .mobile-menu-btn {
-                display: block;
-            }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0 !important; padding: 20px !important; width: 100% !important; }
+            .mobile-menu-btn { display: flex !important; }
+            .sidebar-overlay.active { display: block; }
+            .top-nav { padding-left: 60px !important; padding-top: 8px !important; }
         }
 
         @media (max-width: 768px) {
-            .main-content {
-                padding: 20px;
-            }
-            .top-nav {
-                justify-content: space-between;
-                flex-wrap: wrap;
-            }
-            .search-box {
-                width: 180px;
-            }
-            .step-with-preview {
-                flex-direction: column;
-            }
-            .step-with-preview > div {
-                min-width: 100%;
-            }
-            .card-grid {
-                flex-direction: column;
-            }
-            .card {
-                min-width: 100%;
-            }
-            .footer-nav {
-                flex-direction: column;
-                width: 100%;
-            }
-            .footer-nav a {
-                justify-content: center;
-            }
+            .main-content { padding: 16px !important; }
+            .top-nav { flex-direction: column; align-items: stretch; padding-left: 60px !important; padding-top: 8px !important; gap: 10px; }
+            .search-wrapper { max-width: 100%; width: 100%; order: 1; }
+            .top-nav-actions { order: 2; justify-content: flex-end; }
+            .step-with-preview { flex-direction: column; }
+            .step-with-preview > div { min-width: 100%; }
+            .card-grid { flex-direction: column; }
+            .card { min-width: 100%; }
+            .footer-nav { flex-direction: column; width: 100%; }
+            .footer-nav a { justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .main-content { padding: 12px !important; }
+            .top-nav { padding-left: 56px !important; padding-top: 6px !important; gap: 8px; }
+            .mobile-menu-btn { top: 12px; left: 12px; width: 40px; height: 40px; }
+        }
+
+        @media (min-width: 1025px) {
+            .mobile-menu-btn { display: none !important; }
+            .top-nav { padding-left: 0 !important; }
         }
     </style>
 </head>
 <body>
-    <div id="sidebar-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;"></div>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
     
     <div class="page-wrapper">
-        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">☰</button>
         
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-    <a href="/index.html" class="logo">
-        <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
-        <span class="logo-text">GHOSTwire</span>
-    </a>
-</div>
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon">👻</div>
+                    <span class="logo-text">GHOSTwire</span>
+                </a>
+            </div>
             <nav class="sidebar-nav">
                 <div class="sidebar-section">
                     <div class="sidebar-section-title">Getting Started</div>
@@ -686,13 +601,13 @@
                     <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
                 </div>
                 <div class="sidebar-section">
-    <div class="sidebar-section-title">Configuration</div>
-    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
-    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
-    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
-    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
-    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
-</div>
+                    <div class="sidebar-section-title">Configuration</div>
+                    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+                    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+                    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+                    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+                    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+                </div>
                 <div class="sidebar-section">
                     <div class="sidebar-section-title">Resources</div>
                     <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
@@ -708,12 +623,13 @@
         <main class="main-content">
             <div class="content-container">
                 <div class="top-nav">
-                    <div style="position: relative;">
+                    <div class="search-wrapper">
                         <input type="text" class="search-box" id="search-box" placeholder="Search documentation...">
+                        <div class="search-results-dropdown" id="search-results"></div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="top-nav-actions">
                         <a href="https://t.me/ghowr_bot" target="_blank" class="open-bot-btn">👻 Open Bot</a>
-                        <button class="theme-toggle" id="theme-toggle">🌙</button>
+                        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
                     </div>
                 </div>
 
@@ -725,7 +641,6 @@
                     <p>Your wallet is mathematically derived from your Telegram ID + a secret + wallet number. The same input always produces the same wallet. No private keys are ever stored in our database — only you can access your keys via the Export feature.</p>
                 </div>
 
-                <!-- STEP 1: View Your Wallets -->
                 <h2>Step 1: View Your Wallets</h2>
                 <p>Click <strong>Wallets</strong> from the main menu to see all your wallets.</p>
 
@@ -742,34 +657,22 @@
                     </div>
                     <div class="bot-preview">
                         <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
+                            <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
                             <span>@ghowr_bot</span>
                         </div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-Your Wallets
-
+                            <div class="bot-message">Your Wallets
 W1 - 74BoTqMb...MFSL (0.0025 SOL)
-W2 - 5swz5Qhh...qFhC (0.0000 SOL)
-
-W1 (74BoTqMb...)
-W2 (5swz5Qhh...)
-
-➕ Create New Wallet
-« Back
-                            </div>
+W2 - 5swz5Qhh...qFhC (0.0000 SOL)</div>
                             <div class="bot-buttons">
                                 <div class="bot-button">W1 - View/Export</div>
                                 <div class="bot-button">W2 - View/Export</div>
-                                <div class="bot-button" style="width: 100%;">« Back</div>
+                                <div class="bot-button" style="width:100%;">« Back</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- STEP 2: Fund Your Wallet -->
                 <h2>Step 2: Fund Your Wallet</h2>
                 <p>Click <strong>Wallet</strong> to view your wallet address, then send SOL to it.</p>
 
@@ -777,47 +680,30 @@ W2 (5swz5Qhh...)
                     <div>
                         <h4>How to fund:</h4>
                         <div class="steps">
-                            <div class="step">
-                                <div class="step-title">Copy Address</div>
-                                <p>Click <strong>Copy Address</strong></p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Send SOL</div>
-                                <p>From exchange or Phantom/Backpack</p>
-                            </div>
-                            <div class="step">
-                                <div class="step-title">Verify</div>
-                                <p>Check Balance after 30 seconds</p>
-                            </div>
+                            <div class="step"><div class="step-title">Copy Address</div><p>Click <strong>Copy Address</strong></p></div>
+                            <div class="step"><div class="step-title">Send SOL</div><p>From exchange or Phantom/Backpack</p></div>
+                            <div class="step"><div class="step-title">Verify</div><p>Check Balance after 30 seconds</p></div>
                         </div>
                     </div>
                     <div class="bot-preview">
                         <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
+                            <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
                             <span>@ghowr_bot</span>
                         </div>
                         <div class="bot-preview-body">
-                            <div class="bot-message">
-W1
-
-74BoTqMbXNeaeF63wLzkKmRyn5S1NxKTdZsJznGAnMFSL
-
+                            <div class="bot-message">W1
+74BoTqMb...MFSL
 Balance: 0.002535 SOL
-Buy: 0.01 SOL
-Slippage: 10.0%
-                            </div>
+Buy: 0.01 SOL | Slippage: 10%</div>
                             <div class="bot-buttons">
                                 <div class="bot-button">📋 Copy Address</div>
-                                <div class="bot-button">🔑 Export Private Key</div>
-                                <div class="bot-button" style="width: 100%;">« Back</div>
+                                <div class="bot-button">🔑 Export Key</div>
+                                <div class="bot-button" style="width:100%;">« Back</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- STEP 3: Export Private Key (MASKED) -->
                 <h2>Step 3: Export Private Key</h2>
                 <p>Need to import your wallet into Phantom? Click <strong>Export Private Key</strong>.</p>
 
@@ -825,128 +711,69 @@ Slippage: 10.0%
                     <div>
                         <div class="callout callout-danger">
                             <div class="callout-title">SECURITY WARNING</div>
-                            <p>Your private key gives FULL access to your wallet. Never share it with anyone. Delete the message after saving.</p>
-                        </div>
-                        <h4>To import into Phantom:</h4>
-                        <div class="steps">
-                            <div class="step"><div class="step-title">Copy Key</div><p>Copy the base58 private key</p></div>
-                            <div class="step"><div class="step-title">Open Phantom</div><p>Go to Settings → Add Wallet</p></div>
-                            <div class="step"><div class="step-title">Import</div><p>Select "Import Private Key" → Paste</p></div>
+                            <p>Your private key gives FULL access to your wallet. Never share it. Delete after saving.</p>
                         </div>
                     </div>
                     <div class="bot-preview">
                         <div class="bot-preview-header">
-                            <span class="dot dot-red"></span>
-                            <span class="dot dot-yellow"></span>
-                            <span class="dot dot-green"></span>
+                            <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
                             <span>@ghowr_bot</span>
                         </div>
                         <div class="bot-preview-body">
                             <div class="bot-message private-key-box">
-# PRIVATE KEY
-
-Wallet: W1
-
-<div class="sensitive-placeholder">
-••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-YOUR PRIVATE KEY WILL APPEAR HERE (Masked for documentation)
-••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-</div>
-
-⚠️ IMPORTANT:
-• Derived from Telegram ID
-• NEVER stored on servers
-• Delete this after saving!
-
-Public: 74BoTqMbXNeaeF63wLzkKmRyn5S1NxKTdZsJznGAnMFSL
+# PRIVATE KEY - W1
+<div class="sensitive-placeholder">••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+YOUR PRIVATE KEY WILL APPEAR HERE
+••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••</div>
+⚠️ NEVER stored on servers | Delete after saving!
+Public: 74BoTqMb...MFSL
                             </div>
                             <div class="bot-buttons">
                                 <div class="bot-button">🗑️ Delete Message</div>
-                                <div class="bot-button" style="width: 100%;">« Back</div>
+                                <div class="bot-button" style="width:100%;">« Back</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- STEP 4: Create New Wallet -->
                 <h2>Step 4: Create Additional Wallets</h2>
                 <p>You can have up to 5 wallets. Click <strong>Create New Wallet</strong> from the wallets list.</p>
 
-                <div class="step-with-preview">
-                    <div>
-                        <h4>Why use multiple wallets?</h4>
-                        <ul>
-                            <li><strong>Risk Segregation:</strong> Separate high-risk from conservative trades</li>
-                            <li><strong>Channel Segmentation:</strong> Different wallets for different signal channels</li>
-                            <li><strong>Strategy Testing:</strong> Test new settings on a small wallet first</li>
-                        </ul>
+                <div class="bot-preview">
+                    <div class="bot-preview-header">
+                        <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                        <span>@ghowr_bot</span>
                     </div>
-                    <div>
-                        <div class="bot-preview">
-                            <div class="bot-preview-header">
-                                <span class="dot dot-red"></span>
-                                <span class="dot dot-yellow"></span>
-                                <span class="dot dot-green"></span>
-                                <span>@ghowr_bot</span>
-                            </div>
-                            <div class="bot-preview-body">
-                                <div class="bot-message" style="border-color: #4ecca3;">
-✅ W3 created!
-
+                    <div class="bot-preview-body">
+                        <div class="bot-message success">✅ W3 created!
 Address: Gpd4SG2W...LNwK
-
-Fund this wallet to start trading.
-                                </div>
-                                <div class="bot-buttons">
-                                    <div class="bot-button" style="width: 100%;">« Back</div>
-                                </div>
-                            </div>
-                        </div>
+Fund this wallet to start trading.</div>
+                        <div class="bot-buttons"><div class="bot-button" style="width:100%;">« Back</div></div>
                     </div>
                 </div>
 
-                <!-- Multi-Wallet Strategies -->
                 <h2>Multi-Wallet Strategies</h2>
                 <div class="card-grid">
                     <div class="card">
                         <div class="card-icon">🚀</div>
                         <div class="card-title">W1 - Conservative</div>
-                        <div class="card-desc">0.005 SOL buys, 5% slippage, 30% take profit — for established tokens and blue chips.</div>
+                        <div class="card-desc">0.005 SOL buys, 5% slippage, 30% take profit — for established tokens.</div>
                     </div>
                     <div class="card">
                         <div class="card-icon">⚡</div>
                         <div class="card-title">W2 - Aggressive</div>
-                        <div class="card-desc">0.025 SOL buys, 15% slippage, 100%+ take profit — for meme coins and high-risk plays.</div>
+                        <div class="card-desc">0.025 SOL buys, 15% slippage, 100%+ take profit — for meme coins.</div>
                     </div>
                     <div class="card">
                         <div class="card-icon">🤖</div>
                         <div class="card-title">W3 - Auto Only</div>
-                        <div class="card-desc">0.01 SOL buys, 10% slippage, auto-sell at 50% — fully automated from high-signal channels.</div>
+                        <div class="card-desc">0.01 SOL buys, 10% slippage, auto-sell at 50% — fully automated.</div>
                     </div>
                 </div>
 
-                <!-- Security Section -->
                 <div class="callout callout-warning">
                     <div class="callout-title">Security First</div>
-                    <p>GHOSTwire <strong>NEVER</strong> stores private keys in any database — they are derived on-demand. Only YOU can access your private key via the Export feature. Use a dedicated trading wallet — never use your main exchange wallet.</p>
-                </div>
-
-                <!-- FAQ -->
-                <h2>Wallet FAQ</h2>
-                
-                <div class="callout callout-info">
-                    <div class="callout-title">How do I import my GHOSTwire wallet into Phantom?</div>
-                    <p>Click <strong>Export Private Key</strong> → Copy the base58 private key → Open Phantom → Add Wallet → Import Private Key → Paste.</p>
-                </div>
-                
-                <div class="callout callout-info">
-                    <div class="callout-title">Can I have more than 5 wallets?</div>
-                    <p>Currently max 5 wallets per user (W1, W2, W3, W4, W5).</p>
-                </div>
-                
-                <div class="callout callout-warning">
-                    <div class="callout-title">Can someone else access my wallet if they know my Telegram ID?</div>
-                    <p>No! The derivation uses a secret <code>WALLET_DERIVATION_SECRET</code> that only the bot operator knows. Without this secret, no one can derive your wallet.</p>
+                    <p>GHOSTwire <strong>NEVER</strong> stores private keys in any database — they are derived on-demand. Use a dedicated trading wallet — never use your main exchange wallet.</p>
                 </div>
 
                 <div class="page-footer">
@@ -961,13 +788,13 @@ Fund this wallet to start trading.
 
     <script>
         function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
+            var savedTheme = localStorage.getItem('theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
-            const toggleBtn = document.getElementById('theme-toggle');
+            var toggleBtn = document.getElementById('theme-toggle');
             if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => {
-                    const current = document.documentElement.getAttribute('data-theme');
-                    const next = current === 'dark' ? 'light' : 'dark';
+                toggleBtn.addEventListener('click', function() {
+                    var current = document.documentElement.getAttribute('data-theme');
+                    var next = current === 'dark' ? 'light' : 'dark';
                     document.documentElement.setAttribute('data-theme', next);
                     localStorage.setItem('theme', next);
                     toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️';
@@ -977,30 +804,42 @@ Fund this wallet to start trading.
         }
 
         function initSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const menuBtn = document.getElementById('mobile-menu-btn');
-            const overlay = document.getElementById('sidebar-overlay');
+            var sidebar = document.getElementById('sidebar');
+            var menuBtn = document.getElementById('mobile-menu-btn');
+            var overlay = document.getElementById('sidebar-overlay');
             
-            if (menuBtn && sidebar) {
-                menuBtn.addEventListener('click', () => {
-                    sidebar.classList.toggle('open');
-                    if (overlay) overlay.style.display = 'block';
-                });
+            function openSidebar() {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
             }
             
-            if (overlay) {
-                overlay.addEventListener('click', () => {
-                    sidebar.classList.remove('open');
-                    overlay.style.display = 'none';
-                });
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
             }
+            
+            if (menuBtn) { menuBtn.addEventListener('click', openSidebar); }
+            if (overlay) { overlay.addEventListener('click', closeSidebar); }
+            
+            sidebar.querySelectorAll('.sidebar-link').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 1024) { closeSidebar(); }
+                });
+            });
+            
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 1024) { closeSidebar(); }
+            });
         }
 
         function initSearch() {
-            const searchBox = document.getElementById('search-box');
-            if (!searchBox) return;
+            var searchBox = document.getElementById('search-box');
+            var searchResults = document.getElementById('search-results');
+            if (!searchBox || !searchResults) return;
             
-            const searchData = [
+            var searchData = [
                 { title: 'Overview', url: '/index.html' },
                 { title: 'Quick Start', url: '/getting-started.html' },
                 { title: 'Wallet Setup', url: '/wallet.html' },
@@ -1013,42 +852,35 @@ Fund this wallet to start trading.
                 { title: 'Referral System', url: '/referrals.html' },
                 { title: 'Fee System', url: '/fees.html' },
                 { title: 'FAQ', url: '/faq.html' },
-                { title: 'Commands', url: '/commands.html' },
+                { title: 'Commands', url: '/commands.html' }
             ];
             
-            let dropdown = null;
-            
-            searchBox.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                
-                if (!dropdown) {
-                    dropdown = document.createElement('div');
-                    dropdown.id = 'search-results';
-                    searchBox.parentElement.style.position = 'relative';
-                    searchBox.parentElement.appendChild(dropdown);
-                }
-                
-                if (query) {
-                    const results = searchData.filter(d => d.title.toLowerCase().includes(query));
+            searchBox.addEventListener('input', function(e) {
+                var query = e.target.value.toLowerCase().trim();
+                if (query.length > 0) {
+                    var results = searchData.filter(function(d) { return d.title.toLowerCase().indexOf(query) !== -1; });
                     if (results.length > 0) {
-                        dropdown.innerHTML = results.map(r => `<a href="${r.url}">${r.title}</a>`).join('');
-                        dropdown.style.display = 'block';
+                        var html = '';
+                        results.forEach(function(r) { html += '<a href="' + r.url + '">' + r.title + '</a>'; });
+                        searchResults.innerHTML = html;
+                        searchResults.style.display = 'block';
                     } else {
-                        dropdown.style.display = 'none';
+                        searchResults.innerHTML = '<div style="padding:12px;color:var(--text-tertiary);font-size:0.85rem;">No results</div>';
+                        searchResults.style.display = 'block';
                     }
-                } else {
-                    dropdown.style.display = 'none';
-                }
+                } else { searchResults.style.display = 'none'; }
             });
             
-            document.addEventListener('click', (e) => {
-                if (dropdown && !searchBox.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                }
+            document.addEventListener('click', function(e) {
+                if (!searchBox.contains(e.target) && !searchResults.contains(e.target)) { searchResults.style.display = 'none'; }
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') { searchResults.style.display = 'none'; searchBox.blur(); }
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
             initTheme();
             initSidebar();
             initSearch();
