@@ -4,38 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ - GHOSTwire</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo.png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg-primary: #0a0a0f; --bg-secondary: #12121a; --bg-tertiary: #1a1a26;
-            --bg-card: #1e1e2e; --bg-code: #1a1a2e;
+            --bg-primary: #0a0a0f; --bg-secondary: #0f0f15; --bg-tertiary: #15151d;
+            --bg-card: #1a1a24; --bg-code: #0d0d12;
             --accent-primary: #6719ff; --accent-secondary: #8a4dff;
             --accent-gradient: linear-gradient(135deg, #6719ff, #8a4dff);
-            --text-primary: #ffffff; --text-secondary: #a0a0b8; --text-tertiary: #6b6b80;
-            --border-primary: #2a2a40; --border-secondary: #1e1e30;
+            --text-primary: #ffffff; --text-secondary: #a0a0b0; --text-tertiary: #6e6e80;
+            --border-primary: #22222e; --border-secondary: #1a1a22;
             --success: #4ecca3; --warning: #ffc107;
             --sidebar-width: 280px;
+            --max-content-width: 900px;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         [data-theme="light"] {
-            --bg-primary: #ffffff; --bg-secondary: #f8f9fa; --bg-tertiary: #f0f1f3;
-            --bg-card: #ffffff; --bg-code: #f4f4f5;
-            --text-primary: #1a1a2e; --text-secondary: #4a4a6a; --text-tertiary: #8a8aa0;
-            --border-primary: #e5e5ea; --border-secondary: #f0f0f5;
+            --bg-primary: #ffffff; --bg-secondary: #f8f8fa; --bg-tertiary: #f0f0f2;
+            --bg-card: #ffffff; --bg-code: #f5f5f7;
+            --text-primary: #1a1a2e; --text-secondary: #5a5a6e; --text-tertiary: #8a8a9e;
+            --border-primary: #e0e0e8; --border-secondary: #ececf0;
         }
 
         html, body { overflow-x: hidden; width: 100%; }
 
         body {
             font-family: var(--font-sans); background: var(--bg-primary);
-            color: var(--text-primary); line-height: 1.6; font-size: 16px;
+            color: var(--text-primary); line-height: 1.6; font-size: 15px;
         }
 
-        .page-wrapper { display: flex; min-height: 100vh; width: 100%; position: relative; }
+        .page-wrapper { display: flex; min-height: 100vh; width: 100%; position: relative; justify-content: center; }
 
         /* Sidebar */
         .sidebar {
@@ -44,37 +51,87 @@
             position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto;
             z-index: 1000; transition: transform 0.3s ease; display: flex; flex-direction: column;
         }
-        .sidebar-header { padding: 24px 20px; border-bottom: 1px solid var(--border-primary); }
+        .sidebar-header { padding: 28px 24px; border-bottom: 1px solid var(--border-primary); }
         .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #6719ff, #8a4dff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .logo-text { background: linear-gradient(135deg, #6719ff, #8a4dff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; letter-spacing: 1px; }
-        .sidebar-nav { flex: 1; padding: 16px 0; }
-        .sidebar-section { margin-bottom: 8px; }
-        .sidebar-section-title { padding: 8px 20px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); font-weight: 600; }
-        .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: var(--text-secondary); transition: all 0.2s; border-left: 2px solid transparent; font-size: 0.85rem; text-decoration: none; }
+        .logo-text { font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; color: var(--text-primary); }
+        .sidebar-nav { flex: 1; padding: 20px 0; }
+        .sidebar-section { margin-bottom: 24px; }
+        .sidebar-section-title { padding: 6px 24px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); font-weight: 700; }
+        .sidebar-link { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            padding: 8px 24px; 
+            color: var(--text-secondary); 
+            transition: all 0.2s; 
+            font-size: 0.85rem; 
+            text-decoration: none;
+            border-left: 2px solid transparent;
+        }
         .sidebar-link:hover { color: var(--text-primary); background: var(--bg-tertiary); }
-        .sidebar-link.active { color: var(--accent-primary); background: rgba(103, 25, 255, 0.1); border-left-color: var(--accent-primary); }
-        .sidebar-link .icon { font-size: 1rem; width: 20px; text-align: center; }
-        .sidebar-footer { padding: 20px; border-top: 1px solid var(--border-primary); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; }
+        .sidebar-link.active { 
+            color: var(--accent-primary); 
+            background: rgba(103, 25, 255, 0.06);
+            border-left-color: var(--accent-primary);
+        }
+        .sidebar-link .icon { font-size: 0.95rem; width: 24px; text-align: center; }
+        .sidebar-footer { padding: 20px 24px; border-top: 1px solid var(--border-primary); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; }
         .sidebar-footer a { color: var(--text-tertiary); text-decoration: none; }
         .sidebar-footer a:hover { color: var(--accent-primary); }
 
-        /* Main Content */
-        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px 60px; min-height: 100vh; width: calc(100% - var(--sidebar-width)); }
-        .content-container { max-width: 850px; width: 100%; }
+        /* Main Content - Centered */
+        .main-content { 
+            flex: 1; 
+            margin-left: var(--sidebar-width); 
+            padding: 48px 64px; 
+            min-height: 100vh; 
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+        }
+        .content-container { 
+            max-width: var(--max-content-width); 
+            width: 100%; 
+        }
 
-        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; color: var(--text-primary); }
-        h2 { font-size: 1.5rem; font-weight: 600; margin-top: 32px; margin-bottom: 16px; color: var(--text-primary); border-bottom: 2px solid var(--accent-primary); display: inline-block; padding-bottom: 4px; }
-        p { margin-bottom: 16px; color: var(--text-secondary); line-height: 1.6; }
-        a { color: var(--accent-primary); text-decoration: none; }
-        a:hover { color: var(--accent-secondary); }
-        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg-code); padding: 2px 6px; border-radius: 4px; color: #a67cff; }
+        h1 { 
+            font-size: 2.2rem; 
+            font-weight: 800; 
+            margin-bottom: 20px; 
+            letter-spacing: -0.02em; 
+            color: var(--text-primary); 
+        }
+        h2 { 
+            font-size: 1.4rem; 
+            font-weight: 700; 
+            margin-top: 40px; 
+            margin-bottom: 16px; 
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            border-bottom: 2px solid var(--accent-primary);
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+        h3 { font-size: 1.1rem; font-weight: 600; margin-top: 28px; margin-bottom: 12px; color: var(--accent-primary); }
+        p { margin-bottom: 16px; color: var(--text-secondary); line-height: 1.8; }
+        a { color: var(--accent-primary); text-decoration: none; } 
+        a:hover { text-decoration: underline; }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg-code); padding: 2px 8px; border-radius: 4px; color: #a67cff; }
 
         /* Top Navigation */
-        .top-nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; margin-bottom: 40px; border-bottom: 1px solid var(--border-primary); flex-wrap: wrap; gap: 16px; }
-        .search-wrapper { position: relative; flex: 1; max-width: 300px; min-width: 200px; }
-        .search-box { background: var(--bg-tertiary); border: 1px solid var(--border-primary); border-radius: 8px; padding: 10px 16px; color: var(--text-primary); font-size: 0.9rem; width: 100%; }
+        .top-nav { 
+            display: flex; 
+            justify-content: flex-end; 
+            align-items: center; 
+            padding: 0 0 32px 0; 
+            gap: 16px; 
+            flex-wrap: wrap; 
+        }
+        .search-wrapper { position: relative; flex: 1; max-width: 280px; min-width: 160px; }
+        .search-box { background: var(--bg-tertiary); border: 1px solid var(--border-primary); border-radius: 8px; padding: 8px 14px; color: var(--text-primary); font-size: 0.85rem; width: 100%; transition: all 0.2s; }
         .search-box:focus { outline: none; border-color: var(--accent-primary); }
+        .search-box::placeholder { color: var(--text-tertiary); }
         .search-results-dropdown { position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 8px; margin-top: 4px; max-height: 300px; overflow-y: auto; z-index: 500; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .search-results-dropdown a { display: block; padding: 10px 14px; color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; border-bottom: 1px solid var(--border-secondary); }
         .search-results-dropdown a:last-child { border-bottom: none; }
@@ -86,19 +143,66 @@
 
         /* FAQ Accordion */
         .faq-category { margin-bottom: 30px; }
-        .faq-category h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 16px; color: var(--accent-primary); }
-        .faq-item { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
-        .faq-question { padding: 16px 20px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; color: var(--text-primary); }
+        .faq-category h3 { 
+            font-size: 1.2rem; 
+            font-weight: 700; 
+            margin-bottom: 16px; 
+            color: var(--accent-primary);
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-primary);
+        }
+        .faq-item { 
+            background: var(--bg-card); 
+            border: 1px solid var(--border-primary); 
+            border-radius: 12px; 
+            margin-bottom: 12px; 
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+        .faq-item:hover { border-color: rgba(103, 25, 255, 0.2); }
+        .faq-item.open { border-color: var(--accent-primary); }
+        .faq-question { 
+            padding: 16px 20px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            transition: background 0.2s; 
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
         .faq-question:hover { background: var(--bg-tertiary); }
-        .faq-question .arrow { font-size: 1.2rem; transition: transform 0.2s; color: var(--accent-primary); }
+        .faq-question .arrow { 
+            font-size: 0.8rem; 
+            transition: transform 0.3s ease; 
+            color: var(--accent-primary);
+            background: rgba(103, 25, 255, 0.08);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
         .faq-item.open .faq-question .arrow { transform: rotate(90deg); }
-        .faq-answer { padding: 0 20px; max-height: 0; overflow: hidden; transition: all 0.3s ease; color: var(--text-secondary); border-top: none; }
-        .faq-item.open .faq-answer { padding: 0 20px 16px 20px; max-height: 500px; border-top: 1px solid var(--border-secondary); }
+        .faq-answer { 
+            padding: 0 20px; 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: all 0.3s ease; 
+            color: var(--text-secondary); 
+            border-top: none;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .faq-item.open .faq-answer { 
+            padding: 0 20px 16px 20px; 
+            max-height: 500px; 
+            border-top: 1px solid var(--border-secondary); 
+        }
 
-        .page-footer { margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border-primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .page-footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border-primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
         .footer-nav { display: flex; gap: 20px; flex-wrap: wrap; }
-        .footer-nav a { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--border-primary); border-radius: 8px; text-decoration: none; color: var(--text-secondary); font-size: 0.85rem; }
-        .footer-nav a:hover { border-color: #6719ff; color: #6719ff; text-decoration: none; }
+        .footer-nav a { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--border-primary); border-radius: 8px; text-decoration: none; color: var(--text-secondary); font-size: 0.8rem; }
+        .footer-nav a:hover { border-color: var(--accent-primary); color: var(--accent-primary); text-decoration: none; }
 
         /* Sidebar Overlay */
         .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
@@ -111,7 +215,7 @@
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0 !important; padding: 20px !important; width: 100% !important; }
+            .main-content { margin-left: 0 !important; padding: 20px !important; }
             .mobile-menu-btn { display: flex !important; }
             .sidebar-overlay.active { display: block; }
             .top-nav { padding-left: 60px !important; padding-top: 8px !important; }
@@ -122,16 +226,20 @@
             .top-nav { flex-direction: column; align-items: stretch; padding-left: 60px !important; padding-top: 8px !important; gap: 10px; }
             .search-wrapper { max-width: 100%; width: 100%; order: 1; }
             .top-nav-actions { order: 2; justify-content: flex-end; }
-            h1 { font-size: 1.6rem; }
-            h2 { font-size: 1.3rem; }
             .footer-nav { flex-direction: column; width: 100%; }
             .footer-nav a { justify-content: center; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.3rem; }
+            .faq-question { font-size: 0.9rem; padding: 14px 16px; }
+            .faq-answer { font-size: 0.85rem; }
         }
 
         @media (max-width: 480px) {
             .main-content { padding: 12px !important; }
             .top-nav { padding-left: 56px !important; padding-top: 6px !important; gap: 8px; }
             .mobile-menu-btn { top: 12px; left: 12px; width: 40px; height: 40px; }
+            .faq-question { font-size: 0.85rem; padding: 12px 14px; }
+            .faq-answer { font-size: 0.8rem; }
         }
 
         @media (min-width: 1025px) {
@@ -148,51 +256,55 @@
         
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-        <a href="/index.html" class="logo">
-            <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
-            <span class="logo-text">GHOSTwire</span>
-        </a>
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
+                    <span class="logo-text">GHOSTwire</span>
+                </a>
+            </div>
+           <nav class="sidebar-nav">
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Getting Started</div>
+        <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
+        <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
     </div>
-            <nav class="sidebar-nav">
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Getting Started</div>
-                    <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
-                    <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Core Features</div>
-                    <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
-                    <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
-                    <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
-                    <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
-                    <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Configuration</div>
-                    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
-                    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
-                    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
-                    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
-                    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Resources</div>
-                    <a href="/faq.html" class="sidebar-link active"><span class="icon">❓</span> FAQ</a>
-                    <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
-                </div>
-            </nav>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Ecosystem</div>
+        <a href="/token-utility.html" class="sidebar-link"><span class="icon">🪙</span> Token Utility</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Core Features</div>
+        <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
+        <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
+        <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
+        <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
+        <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Configuration</div>
+        <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+        <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+        <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+        <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+        <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Resources</div>
+        <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
+        <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
+    </div>
+</nav>
             <div class="sidebar-footer">
-    <p>© 2026 GHOSTwire</p>
-    <p><a href="https://t.me/ghowr_bot" target="_blank">@ghowr_bot</a></p>
-    <p style="margin-top: 4px;"><a href="https://www.ghostwirebot.tech/" target="_blank" style="color: var(--accent-primary);">🌐 ghostwirebot.tech</a></p>
-</div>
+                <p>© 2026 GHOSTwire</p>
+                <p><a href="https://t.me/ghowr_bot" target="_blank">@ghowr_bot</a></p>
+                <p style="margin-top: 4px;"><a href="https://www.ghostwirebot.tech/" target="_blank" style="color: var(--accent-primary);">🌐 ghostwirebot.tech</a></p>
+            </div>
         </aside>
         
         <main class="main-content">
             <div class="content-container">
                 <div class="top-nav">
                     <div class="search-wrapper">
-                        <input type="text" class="search-box" id="search-box" placeholder="🔍 Search documentation...">
+                        <input type="text" class="search-box" id="search-box" placeholder="Search documentation...">
                         <div class="search-results-dropdown" id="search-results"></div>
                     </div>
                     <div class="top-nav-actions">
@@ -206,47 +318,110 @@
 
                 <div class="faq-category">
                     <h3>🚀 Getting Started</h3>
-                    <div class="faq-item"><div class="faq-question">How do I start using GHOSTwire?<span class="arrow">▶</span></div><div class="faq-answer">Simply open <code>@ghowr_bot</code> on Telegram and send <code>/start</code>. Your W1 wallet is created automatically. Fund it with SOL and start trading!</div></div>
-                    <div class="faq-item"><div class="faq-question">Is my private key stored anywhere?<span class="arrow">▶</span></div><div class="faq-answer"><strong>No.</strong> GHOSTwire uses <strong>derived wallets</strong> — your private key is mathematically derived from your Telegram ID + a secret. It's never stored in any database.</div></div>
-                    <div class="faq-item"><div class="faq-question">Do I need to create a wallet manually?<span class="arrow">▶</span></div><div class="faq-answer">No. When you first run <code>/start</code>, GHOSTwire automatically creates your W1 wallet. You can create up to 5 wallets from the Wallets menu.</div></div>
+                    <div class="faq-item">
+                        <div class="faq-question">How do I start using GHOSTwire?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Simply open <code>@ghowr_bot</code> on Telegram and send <code>/start</code>. Your W1 wallet is created automatically. Fund it with SOL and start trading!</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Is my private key stored anywhere?<span class="arrow">▶</span></div>
+                        <div class="faq-answer"><strong>No.</strong> GHOSTwire uses <strong>derived wallets</strong> — your private key is mathematically derived from your Telegram ID + a secret. It's never stored in any database.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Do I need to create a wallet manually?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">No. When you first run <code>/start</code>, GHOSTwire automatically creates your W1 wallet. You can create up to 5 wallets from the Wallets menu.</div>
+                    </div>
                 </div>
 
                 <div class="faq-category">
                     <h3>📈 Trading</h3>
-                    <div class="faq-item"><div class="faq-question">How do I buy a token?<span class="arrow">▶</span></div><div class="faq-answer">Click <strong>📈 Buy Token</strong>, then send the token address or DexScreener URL. Review and confirm. The bot executes via Jupiter API.</div></div>
-                    <div class="faq-item"><div class="faq-question">How do I sell my tokens?<span class="arrow">▶</span></div><div class="faq-answer">Click <strong>📉 Sell Token</strong>, select the token, choose percentage (100%, 50%, 25%, 10%) or custom amount. Confirm to sell.</div></div>
-                    <div class="faq-item"><div class="faq-question">What is auto-snipe?<span class="arrow">▶</span></div><div class="faq-answer">Auto-snipe automatically buys tokens when contract addresses are detected in your monitored Telegram channels.</div></div>
-                    <div class="faq-item"><div class="faq-question">What is auto-sell?<span class="arrow">▶</span></div><div class="faq-answer">Auto-sell automatically sells your position when profit reaches your target %. Set Take Profit in Settings.</div></div>
-                    <div class="faq-item"><div class="faq-question">Why didn't my buy go through?<span class="arrow">▶</span></div><div class="faq-answer">Common reasons: insufficient SOL, daily limit reached, 48h cooldown on held tokens, or slippage too low.</div></div>
+                    <div class="faq-item">
+                        <div class="faq-question">How do I buy a token?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Click <strong>📈 Buy Token</strong>, then send the token address or DexScreener URL. Review and confirm. The bot executes via Jupiter API.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">How do I sell my tokens?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Click <strong>📉 Sell Token</strong>, select the token, choose percentage (100%, 50%, 25%, 10%) or custom amount. Confirm to sell.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">What is auto-snipe?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Auto-snipe automatically buys tokens when contract addresses are detected in your monitored Telegram channels.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">What is auto-sell?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Auto-sell automatically sells your position when profit reaches your target %. Set Take Profit in Settings.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Why didn't my buy go through?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Common reasons: insufficient SOL, daily limit reached, 48h cooldown on held tokens, or slippage too low.</div>
+                    </div>
                 </div>
 
                 <div class="faq-category">
                     <h3>💼 Wallets</h3>
-                    <div class="faq-item"><div class="faq-question">How many wallets can I have?<span class="arrow">▶</span></div><div class="faq-answer">Up to <strong>5 wallets</strong> (W1-W5). Each has independent settings for buy amount, slippage, and take profit.</div></div>
-                    <div class="faq-item"><div class="faq-question">How do I export my private key?<span class="arrow">▶</span></div><div class="faq-answer">Go to <strong>💼 Wallets</strong> → Select wallet → <strong>🔑 Export Private Key</strong>. Never share this key!</div></div>
-                    <div class="faq-item"><div class="faq-question">Can I import my existing Solana wallet?<span class="arrow">▶</span></div><div class="faq-answer">Yes. Use <strong>🔒 Add Private</strong> from the wallet menu to import an existing private key.</div></div>
+                    <div class="faq-item">
+                        <div class="faq-question">How many wallets can I have?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Up to <strong>5 wallets</strong> (W1-W5). Each has independent settings for buy amount, slippage, and take profit.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">How do I export my private key?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Go to <strong>💼 Wallets</strong> → Select wallet → <strong>🔑 Export Private Key</strong>. Never share this key!</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Can I import my existing Solana wallet?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Yes. Use <strong>🔒 Add Private</strong> from the wallet menu to import an existing private key.</div>
+                    </div>
                 </div>
 
                 <div class="faq-category">
                     <h3>🔒 Private Channels</h3>
-                    <div class="faq-item"><div class="faq-question">How do I monitor private channels?<span class="arrow">▶</span></div><div class="faq-answer">Complete <strong>🔐 TG Auth</strong> first. Then add channel via <strong>➕ Add Channel → 🔒 Private</strong> with channel ID.</div></div>
-                    <div class="faq-item"><div class="faq-question">How do I get a private channel ID?<span class="arrow">▶</span></div><div class="faq-answer">Forward a message from the channel to <code>@userinfobot</code>. It replies with the ID.</div></div>
-                    <div class="faq-item"><div class="faq-question">Do I need to disable 2FA?<span class="arrow">▶</span></div><div class="faq-answer">Temporarily disable for easiest setup, then re-enable. Or connect with 2FA by entering your password.</div></div>
+                    <div class="faq-item">
+                        <div class="faq-question">How do I monitor private channels?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Complete <strong>🔐 TG Auth</strong> first. Then add channel via <strong>➕ Add Channel → 🔒 Private</strong> with channel ID.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">How do I get a private channel ID?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Forward a message from the channel to <code>@userinfobot</code>. It replies with the ID.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Do I need to disable 2FA?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Temporarily disable for easiest setup, then re-enable. Or connect with 2FA by entering your password.</div>
+                    </div>
                 </div>
 
                 <div class="faq-category">
                     <h3>💰 Fees & Referrals</h3>
-                    <div class="faq-item"><div class="faq-question">What is the trading fee?<span class="arrow">▶</span></div><div class="faq-answer"><strong>0.5%</strong> per trade (buy and sell). Shown in every transaction notification.</div></div>
-                    <div class="faq-item"><div class="faq-question">How do I earn from referrals?<span class="arrow">▶</span></div><div class="faq-answer">Share your referral link from <strong>🔗 Referral</strong> menu. Earn <strong>20% of their trading fees</strong> forever.</div></div>
-                    <div class="faq-item"><div class="faq-question">How do I withdraw referral earnings?<span class="arrow">▶</span></div><div class="faq-answer">Contact the bot admin to withdraw accumulated referral commissions.</div></div>
+                    <div class="faq-item">
+                        <div class="faq-question">What is the trading fee?<span class="arrow">▶</span></div>
+                        <div class="faq-answer"><strong>0.1%</strong> per trade (buy and sell). Shown in every transaction notification.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">How do I earn from referrals?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Share your referral link from <strong>🔗 Referral</strong> menu. Earn <strong>20% of their trading fees</strong> forever.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">How do I withdraw referral earnings?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Contact the bot admin to withdraw accumulated referral commissions.</div>
+                    </div>
                 </div>
 
                 <div class="faq-category">
                     <h3>🔧 Technical</h3>
-                    <div class="faq-item"><div class="faq-question">Is GHOSTwire safe?<span class="arrow">▶</span></div><div class="faq-answer">Yes. Derived wallets, no private key storage, trades via Jupiter API. Use a dedicated trading wallet.</div></div>
-                    <div class="faq-item"><div class="faq-question">What if the bot goes offline?<span class="arrow">▶</span></div><div class="faq-answer">Missed signals won't process. Your funds remain safe in your wallet. Bot runs 24/7.</div></div>
-                    <div class="faq-item"><div class="faq-question">Can I use on multiple devices?<span class="arrow">▶</span></div><div class="faq-answer">Yes. GHOSTwire is a Telegram bot — access from any device with Telegram.</div></div>
-                    <div class="faq-item"><div class="faq-question">How do I get support?<span class="arrow">▶</span></div><div class="faq-answer">Contact the bot admin via Telegram. Include screenshots and error messages if possible.</div></div>
+                    <div class="faq-item">
+                        <div class="faq-question">Is GHOSTwire safe?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Yes. Derived wallets, no private key storage, trades via Jupiter API. Use a dedicated trading wallet.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">What if the bot goes offline?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Missed signals won't process. Your funds remain safe in your wallet. Bot runs 24/7.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Can I use on multiple devices?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Yes. GHOSTwire is a Telegram bot — access from any device with Telegram.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">How do I get support?<span class="arrow">▶</span></div>
+                        <div class="faq-answer">Contact the bot admin via Telegram. Include screenshots and error messages if possible.</div>
+                    </div>
                 </div>
 
                 <div class="page-footer">

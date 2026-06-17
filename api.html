@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram API Setup - GHOSTwire</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/logo.png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,14 +22,15 @@
             --text-primary: #ffffff; --text-secondary: #a0a0b0; --text-tertiary: #6e6e80;
             --border-primary: #22222e; --border-secondary: #1a1a22;
             --success: #4ecca3; --warning: #ffc107; --danger: #e94560;
-            --sidebar-width: 260px;
+            --sidebar-width: 280px;
+            --max-content-width: 900px;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         [data-theme="light"] {
-            --bg-primary: #ffffff; --bg-secondary: #fafafa; --bg-tertiary: #f0f0f0;
-            --bg-card: #ffffff; --bg-code: #f5f5f5;
+            --bg-primary: #ffffff; --bg-secondary: #f8f8fa; --bg-tertiary: #f0f0f2;
+            --bg-card: #ffffff; --bg-code: #f5f5f7;
             --text-primary: #1a1a2e; --text-secondary: #5a5a6e; --text-tertiary: #8a8a9e;
             --border-primary: #e0e0e8; --border-secondary: #ececf0;
         }
@@ -35,46 +42,99 @@
             color: var(--text-primary); line-height: 1.6; font-size: 15px;
         }
 
-        .page-wrapper { display: flex; min-height: 100vh; width: 100%; position: relative; }
+        .page-wrapper { 
+            display: flex; 
+            min-height: 100vh; 
+            width: 100%; 
+            position: relative;
+            justify-content: center;
+        }
 
         /* Sidebar */
         .sidebar {
-            width: var(--sidebar-width); min-width: var(--sidebar-width);
-            background: var(--bg-secondary); border-right: 1px solid var(--border-primary);
-            position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto;
-            z-index: 1000; transition: transform 0.3s ease; display: flex; flex-direction: column;
+            width: var(--sidebar-width); 
+            min-width: var(--sidebar-width);
+            background: var(--bg-secondary); 
+            border-right: 1px solid var(--border-primary);
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            bottom: 0; 
+            overflow-y: auto;
+            z-index: 1000; 
+            transition: transform 0.3s ease; 
+            display: flex; 
+            flex-direction: column;
         }
-        .sidebar-header { padding: 24px 20px; border-bottom: 1px solid var(--border-primary); }
+        .sidebar-header { padding: 28px 24px; border-bottom: 1px solid var(--border-primary); }
         .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #6719ff, #8a4dff); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
         .logo-text { font-weight: 700; font-size: 1rem; letter-spacing: 0.5px; color: var(--text-primary); }
         .sidebar-nav { flex: 1; padding: 20px 0; }
         .sidebar-section { margin-bottom: 24px; }
-        .sidebar-section-title { padding: 6px 20px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); font-weight: 600; }
-        .sidebar-link { display: flex; align-items: center; gap: 10px; padding: 8px 20px; color: var(--text-secondary); transition: all 0.2s; font-size: 0.85rem; text-decoration: none; }
+        .sidebar-section-title { padding: 6px 24px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-tertiary); font-weight: 700; }
+        .sidebar-link { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            padding: 8px 24px; 
+            color: var(--text-secondary); 
+            transition: all 0.2s; 
+            font-size: 0.85rem; 
+            text-decoration: none;
+            border-left: 2px solid transparent;
+        }
         .sidebar-link:hover { color: var(--text-primary); background: var(--bg-tertiary); }
-        .sidebar-link.active { color: var(--accent-primary); background: rgba(103, 25, 255, 0.08); }
+        .sidebar-link.active { 
+            color: var(--accent-primary); 
+            background: rgba(103, 25, 255, 0.06);
+            border-left-color: var(--accent-primary);
+        }
         .sidebar-link .icon { font-size: 0.95rem; width: 24px; text-align: center; }
-        .sidebar-footer { padding: 20px; border-top: 1px solid var(--border-primary); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; }
+        .sidebar-footer { padding: 20px 24px; border-top: 1px solid var(--border-primary); font-size: 0.7rem; color: var(--text-tertiary); text-align: center; }
         .sidebar-footer a { color: var(--text-tertiary); text-decoration: none; }
         .sidebar-footer a:hover { color: var(--accent-primary); }
 
-        /* Main Content */
-        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 48px 64px; min-height: 100vh; width: calc(100% - var(--sidebar-width)); background: var(--bg-primary); }
-        .content-container { max-width: 800px; width: 100%; }
+        /* Main Content - Centered */
+        .main-content { 
+            flex: 1; 
+            margin-left: var(--sidebar-width); 
+            padding: 48px 64px; 
+            min-height: 100vh; 
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+        }
+        .content-container { 
+            max-width: var(--max-content-width); 
+            width: 100%; 
+        }
 
-        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 20px; color: var(--text-primary); }
-        h2 { font-size: 1.3rem; font-weight: 600; margin-top: 40px; margin-bottom: 16px; color: var(--text-primary); }
-        h3 { font-size: 1rem; font-weight: 600; margin-top: 24px; margin-bottom: 12px; color: var(--text-primary); }
-        h4 { font-size: 0.9rem; font-weight: 600; margin-top: 16px; margin-bottom: 8px; color: var(--text-primary); }
-        p { margin-bottom: 16px; color: var(--text-secondary); line-height: 1.7; }
+        h1 { 
+            font-size: 2.2rem; 
+            font-weight: 800; 
+            margin-bottom: 20px; 
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+        h2 { 
+            font-size: 1.4rem; 
+            font-weight: 700; 
+            margin-top: 40px; 
+            margin-bottom: 16px; 
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+        h3 { font-size: 1.1rem; font-weight: 600; margin-top: 28px; margin-bottom: 12px; color: var(--text-primary); }
+        h4 { font-size: 0.95rem; font-weight: 600; margin-top: 16px; margin-bottom: 8px; color: var(--text-primary); }
+        p { margin-bottom: 16px; color: var(--text-secondary); line-height: 1.8; }
         a { color: var(--accent-primary); text-decoration: none; }
         a:hover { text-decoration: underline; }
-        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg-code); padding: 2px 6px; border-radius: 4px; color: #a67cff; }
+        code { font-family: var(--font-mono); font-size: 0.85em; background: var(--bg-code); padding: 2px 8px; border-radius: 4px; color: #a67cff; }
 
         /* Top Navigation */
         .top-nav { display: flex; justify-content: flex-end; align-items: center; padding: 0 0 32px 0; gap: 16px; flex-wrap: wrap; }
-        .search-wrapper { position: relative; flex: 1; max-width: 300px; min-width: 200px; }
+        .search-wrapper { position: relative; flex: 1; max-width: 280px; min-width: 160px; }
         .search-box { background: var(--bg-tertiary); border: 1px solid var(--border-primary); border-radius: 8px; padding: 8px 14px; color: var(--text-primary); font-size: 0.85rem; width: 100%; transition: all 0.2s; }
         .search-box:focus { outline: none; border-color: var(--accent-primary); }
         .search-box::placeholder { color: var(--text-tertiary); }
@@ -110,20 +170,25 @@
         .bot-button:hover { border-color: var(--accent-primary); }
 
         /* Steps */
-        .step-with-preview { display: flex; flex-wrap: wrap; gap: 24px; margin: 24px 0; }
-        .step-with-preview > div { flex: 1; min-width: 240px; }
+        .step-with-preview { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 24px; 
+            margin: 24px 0; 
+        }
+        .step-with-preview > div { min-width: 0; }
         .steps { counter-reset: step; list-style: none; padding: 0; }
         .step { counter-increment: step; position: relative; padding-left: 40px; margin-bottom: 16px; }
         .step::before { content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; color: white; }
         .step-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 2px; }
-        .step p { font-size: 0.8rem; margin-bottom: 0; }
+        .step p { fontSize: 0.8rem; margin-bottom: 0; }
 
         /* Info Box */
         .info-box { background: rgba(103, 25, 255, 0.08); border-left: 3px solid #6719ff; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
-        .code-block { background: var(--bg-code); border-radius: 8px; padding: 12px; font-family: var(--font-mono); font-size: 0.7rem; overflow-x: auto; white-space: pre-wrap; word-break: break-word; border: 1px solid var(--border-secondary); margin: 16px 0; }
+        .code-block { background: var(--bg-code); border-radius: 8px; padding: 12px 16px; font-family: var(--font-mono); font-size: 0.75rem; overflow-x: auto; white-space: pre-wrap; word-break: break-word; border: 1px solid var(--border-secondary); margin: 16px 0; line-height: 1.8; color: var(--text-secondary); }
         .screenshot-placeholder { background: var(--bg-tertiary); border: 1px solid var(--border-primary); border-radius: 10px; padding: 20px; text-align: center; margin: 16px 0; }
 
-        ul { color: var(--text-secondary); padding-left: 20px; margin-bottom: 16px; line-height: 1.7; }
+        ul { color: var(--text-secondary); padding-left: 20px; margin-bottom: 16px; line-height: 1.8; }
         li { margin-bottom: 6px; font-size: 0.85rem; }
 
         .page-footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border-primary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
@@ -142,7 +207,7 @@
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0 !important; padding: 20px !important; width: 100% !important; }
+            .main-content { margin-left: 0 !important; padding: 20px !important; }
             .mobile-menu-btn { display: flex !important; }
             .sidebar-overlay.active { display: block; }
             .top-nav { padding-left: 60px !important; padding-top: 8px !important; }
@@ -153,7 +218,7 @@
             .top-nav { flex-direction: column; align-items: stretch; padding-left: 60px !important; padding-top: 8px !important; gap: 10px; }
             .search-wrapper { max-width: 100%; width: 100%; order: 1; }
             .top-nav-actions { order: 2; justify-content: flex-end; }
-            .step-with-preview { flex-direction: column; }
+            .step-with-preview { grid-template-columns: 1fr; }
             .step-with-preview > div { min-width: 100%; }
             .footer-nav { flex-direction: column; width: 100%; }
             .footer-nav a { justify-content: center; }
@@ -179,44 +244,48 @@
         
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-        <a href="/index.html" class="logo">
-            <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
-            <span class="logo-text">GHOSTwire</span>
-        </a>
-    </div>
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon" style="background-image: url('assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
+                    <span class="logo-text">GHOSTwire</span>
+                </a>
+            </div>
             <nav class="sidebar-nav">
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Getting Started</div>
-                    <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
-                    <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Core Features</div>
-                    <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
-                    <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
-                    <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
-                    <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
-                    <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Configuration</div>
-                    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
-                    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
-                    <a href="/api.html" class="sidebar-link active"><span class="icon">🔑</span> Telegram API</a>
-                    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
-                    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Resources</div>
-                    <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
-                    <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
-                </div>
-            </nav>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Getting Started</div>
+        <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
+        <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Ecosystem</div>
+        <a href="/token-utility.html" class="sidebar-link"><span class="icon">🪙</span> Token Utility</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Core Features</div>
+        <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
+        <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
+        <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
+        <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
+        <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Configuration</div>
+        <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+        <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+        <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+        <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+        <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Resources</div>
+        <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
+        <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
+    </div>
+</nav>
             <div class="sidebar-footer">
-    <p>© 2026 GHOSTwire</p>
-    <p><a href="https://t.me/ghowr_bot" target="_blank">@ghowr_bot</a></p>
-    <p style="margin-top: 4px;"><a href="https://www.ghostwirebot.tech/" target="_blank" style="color: var(--accent-primary);">🌐 ghostwirebot.tech</a></p>
-</div>
+                <p>© 2026 GHOSTwire</p>
+                <p><a href="https://t.me/ghowr_bot" target="_blank">@ghowr_bot</a></p>
+                <p style="margin-top: 4px;"><a href="https://www.ghostwirebot.tech/" target="_blank" style="color: var(--accent-primary);">🌐 ghostwirebot.tech</a></p>
+            </div>
         </aside>
         
         <main class="main-content">

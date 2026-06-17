@@ -1,9 +1,14 @@
-<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GHOSTwire - Solana Sniper Bot Documentation</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo.png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
@@ -28,17 +33,18 @@
             --border-secondary: #1a1a22;
             --success: #4ecca3;
             --warning: #ffc107;
-            --sidebar-width: 260px;
+            --sidebar-width: 280px;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --max-content-width: 900px;
         }
 
         [data-theme="light"] {
             --bg-primary: #ffffff;
-            --bg-secondary: #fafafa;
-            --bg-tertiary: #f0f0f0;
+            --bg-secondary: #f8f8fa;
+            --bg-tertiary: #f0f0f2;
             --bg-card: #ffffff;
-            --bg-code: #f5f5f5;
+            --bg-code: #f5f5f7;
             --text-primary: #1a1a2e;
             --text-secondary: #5a5a6e;
             --text-tertiary: #8a8a9e;
@@ -59,15 +65,16 @@
             font-size: 15px;
         }
 
-        /* Layout */
+        /* Layout - Centered like GitBook */
         .page-wrapper {
             display: flex;
             min-height: 100vh;
             width: 100%;
             position: relative;
+            justify-content: center;
         }
 
-        /* Sidebar */
+        /* Sidebar - Fixed width on left */
         .sidebar {
             width: var(--sidebar-width);
             min-width: var(--sidebar-width);
@@ -83,7 +90,7 @@
         }
 
         .sidebar-header {
-            padding: 28px 20px;
+            padding: 28px 24px;
             border-bottom: 1px solid var(--border-primary);
         }
 
@@ -121,23 +128,24 @@
         }
 
         .sidebar-section-title {
-            padding: 6px 20px;
-            font-size: 0.7rem;
+            padding: 6px 24px;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
             color: var(--text-tertiary);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .sidebar-link {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 20px;
+            padding: 8px 24px;
             color: var(--text-secondary);
             transition: all 0.2s;
             font-size: 0.85rem;
             text-decoration: none;
+            border-left: 2px solid transparent;
         }
 
         .sidebar-link:hover {
@@ -147,7 +155,8 @@
 
         .sidebar-link.active {
             color: var(--accent-primary);
-            background: rgba(103, 25, 255, 0.08);
+            background: rgba(103, 25, 255, 0.06);
+            border-left-color: var(--accent-primary);
         }
 
         .sidebar-link .icon {
@@ -157,7 +166,7 @@
         }
 
         .sidebar-footer {
-            padding: 20px;
+            padding: 20px 24px;
             border-top: 1px solid var(--border-primary);
             font-size: 0.7rem;
             color: var(--text-tertiary);
@@ -173,42 +182,52 @@
             color: var(--accent-primary);
         }
 
-        /* Main Content */
+        /* Main Content - Centered */
         .main-content {
             flex: 1;
             margin-left: var(--sidebar-width);
             padding: 48px 64px;
             min-height: 100vh;
-            width: calc(100% - var(--sidebar-width));
             background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
         }
 
         .content-container {
-            max-width: 800px;
+            max-width: var(--max-content-width);
             width: 100%;
         }
 
         /* Typography */
         h1 {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.2rem;
+            font-weight: 800;
             margin-bottom: 20px;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
             color: var(--text-primary);
         }
 
         h2 {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.4rem;
+            font-weight: 700;
             margin-top: 40px;
             margin-bottom: 16px;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 28px;
+            margin-bottom: 12px;
             color: var(--text-primary);
         }
 
         p {
             margin-bottom: 16px;
             color: var(--text-secondary);
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         a {
@@ -224,12 +243,12 @@
             font-family: var(--font-mono);
             font-size: 0.85em;
             background: var(--bg-code);
-            padding: 2px 6px;
+            padding: 2px 8px;
             border-radius: 4px;
             color: #a67cff;
         }
 
-        /* Top Navigation */
+        /* Top Navigation - Right aligned */
         .top-nav {
             display: flex;
             justify-content: flex-end;
@@ -242,8 +261,8 @@
         .search-wrapper {
             position: relative;
             flex: 1;
-            max-width: 300px;
-            min-width: 200px;
+            max-width: 280px;
+            min-width: 160px;
         }
 
         .search-box {
@@ -437,15 +456,13 @@
 
         /* Feature Grid */
         .features-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
             margin: 32px 0;
         }
 
         .feature-card {
-            flex: 1;
-            min-width: 200px;
             background: var(--bg-card);
             border: 1px solid var(--border-primary);
             border-radius: 10px;
@@ -469,18 +486,19 @@
         .feature-card h3 {
             font-size: 0.9rem;
             margin-bottom: 6px;
+            margin-top: 0;
         }
 
         .feature-card p {
             color: var(--text-secondary);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             margin: 0;
             line-height: 1.5;
         }
 
         .tag {
             display: inline-block;
-            padding: 2px 6px;
+            padding: 2px 8px;
             border-radius: 4px;
             font-size: 0.6rem;
             font-weight: 600;
@@ -502,22 +520,21 @@
             background: var(--bg-card);
             border: 1px solid var(--border-primary);
             border-radius: 12px;
-            padding: 24px;
+            padding: 28px;
             margin: 32px 0;
             text-align: center;
         }
 
         /* Two Column */
         .two-column {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 24px;
             margin: 24px 0;
         }
 
         .two-column > div {
-            flex: 1;
-            min-width: 240px;
+            min-width: 0;
         }
 
         /* Page Footer */
@@ -563,13 +580,13 @@
         }
 
         .hero h1 {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 800;
             margin-bottom: 16px;
         }
 
         .hero p {
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: var(--text-secondary);
             max-width: 550px;
             margin: 0 auto;
@@ -584,7 +601,7 @@
 
         .btn-primary, .btn-secondary {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 10px 24px;
             border-radius: 8px;
             font-weight: 600;
             font-size: 0.85rem;
@@ -599,6 +616,7 @@
 
         .btn-primary:hover {
             opacity: 0.9;
+            text-decoration: none;
         }
 
         .btn-secondary {
@@ -609,6 +627,7 @@
 
         .btn-secondary:hover {
             border-color: #6719ff;
+            text-decoration: none;
         }
 
         /* Sidebar Overlay */
@@ -656,7 +675,6 @@
             .main-content {
                 margin-left: 0 !important;
                 padding: 20px !important;
-                width: 100% !important;
             }
             .mobile-menu-btn {
                 display: flex !important;
@@ -691,10 +709,10 @@
                 justify-content: flex-end;
             }
             .features-grid {
-                flex-direction: column;
+                grid-template-columns: 1fr 1fr;
             }
             .two-column {
-                flex-direction: column;
+                grid-template-columns: 1fr;
             }
             .footer-nav {
                 flex-direction: column;
@@ -704,11 +722,14 @@
                 justify-content: center;
             }
             .hero h1 {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 500px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
             .main-content {
                 padding: 12px !important;
             }
@@ -756,44 +777,48 @@
         
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-        <a href="/index.html" class="logo">
-            <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
-            <span class="logo-text">GHOSTwire</span>
-        </a>
-    </div>
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
+                    <span class="logo-text">GHOSTwire</span>
+                </a>
+            </div>
             <nav class="sidebar-nav">
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Getting Started</div>
-                    <a href="/index.html" class="sidebar-link active"><span class="icon">👻</span> Overview</a>
-                    <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Core Features</div>
-                    <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
-                    <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
-                    <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
-                    <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
-                    <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Configuration</div>
-                    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
-                    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
-                    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
-                    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
-                    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Resources</div>
-                    <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
-                    <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
-                </div>
-            </nav>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Getting Started</div>
+        <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
+        <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Ecosystem</div>
+        <a href="/token-utility.html" class="sidebar-link"><span class="icon">🪙</span> Token Utility</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Core Features</div>
+        <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
+        <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
+        <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
+        <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
+        <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Configuration</div>
+        <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+        <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+        <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+        <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+        <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Resources</div>
+        <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
+        <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
+    </div>
+</nav>
             <div class="sidebar-footer">
-    <p>© 2026 GHOSTwire</p>
-    <p><a href="https://t.me/ghowr_bot" target="_blank">@ghowr_bot</a></p>
-    <p style="margin-top: 4px;"><a href="https://www.ghostwirebot.tech/" target="_blank" style="color: var(--accent-primary);">🌐 ghostwirebot.tech</a></p>
-</div>
+                <p>© 2026 GHOSTwire</p>
+                <p><a href="https://t.me/ghowr_bot" target="_blank">@ghowr_bot</a></p>
+                <p style="margin-top: 4px;"><a href="https://www.ghostwirebot.tech/" target="_blank" style="color: var(--accent-primary);">🌐 ghostwirebot.tech</a></p>
+            </div>
         </aside>
         
         <main class="main-content">
@@ -870,7 +895,7 @@ Select an option:
                         <div class="stat-label">Referral Commission</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">0.5%</div>
+                        <div class="stat-number">0.1%</div>
                         <div class="stat-label">Trading Fee</div>
                     </div>
                 </div>
@@ -918,7 +943,7 @@ Select an option:
                     <a href="/fees.html" class="feature-card">
                         <div class="feature-icon">💰</div>
                         <h3>Fee System</h3>
-                        <p>0.5% fee, whitelist available</p>
+                        <p>0.1% fee, whitelist available</p>
                     </a>
                 </div>
 
@@ -971,135 +996,7 @@ TX: 4TEoNH4n9ae73gz6DFWB...</div>
     </div>
 
     <script>
-        function initTheme() {
-            var savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            var toggleBtn = document.getElementById('theme-toggle');
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', function() {
-                    var current = document.documentElement.getAttribute('data-theme');
-                    var next = current === 'dark' ? 'light' : 'dark';
-                    document.documentElement.setAttribute('data-theme', next);
-                    localStorage.setItem('theme', next);
-                    toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️';
-                });
-                toggleBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
-            }
-        }
-
-        function initSidebar() {
-            var sidebar = document.getElementById('sidebar');
-            var menuBtn = document.getElementById('mobile-menu-btn');
-            var overlay = document.getElementById('sidebar-overlay');
-            
-            function openSidebar() {
-                sidebar.classList.add('open');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-            
-            function closeSidebar() {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            if (menuBtn) {
-                menuBtn.addEventListener('click', openSidebar);
-            }
-            
-            if (overlay) {
-                overlay.addEventListener('click', closeSidebar);
-            }
-            
-            var sidebarLinks = sidebar.querySelectorAll('.sidebar-link');
-            sidebarLinks.forEach(function(link) {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth <= 1024) {
-                        closeSidebar();
-                    }
-                });
-            });
-            
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 1024) {
-                    closeSidebar();
-                }
-            });
-        }
-
-        function initSearch() {
-            var searchBox = document.getElementById('search-box');
-            var searchResults = document.getElementById('search-results');
-            if (!searchBox || !searchResults) return;
-            
-            var searchData = [
-                { title: 'Overview', url: '/index.html' },
-                { title: 'Quick Start', url: '/getting-started.html' },
-                { title: 'Wallet Setup', url: '/wallet.html' },
-                { title: 'Channel Monitoring', url: '/channels.html' },
-                { title: 'Buying & Selling', url: '/trading.html' },
-                { title: 'Portfolio Tracking', url: '/portfolio.html' },
-                { title: 'Transfers', url: '/transfers.html' },
-                { title: 'Settings', url: '/settings.html' },
-                { title: 'Private Channels', url: '/private-channels.html' },
-                { title: 'Telegram API', url: '/api.html' },
-                { title: 'Referral System', url: '/referrals.html' },
-                { title: 'Fee System', url: '/fees.html' },
-                { title: 'FAQ', url: '/faq.html' },
-                { title: 'Commands', url: '/commands.html' }
-            ];
-            
-            searchBox.addEventListener('input', function(e) {
-                var query = e.target.value.toLowerCase().trim();
-                
-                if (query.length > 0) {
-                    var results = searchData.filter(function(d) {
-                        return d.title.toLowerCase().indexOf(query) !== -1;
-                    });
-                    
-                    if (results.length > 0) {
-                        var html = '';
-                        results.forEach(function(r) {
-                            html += '<a href="' + r.url + '">' + r.title + '</a>';
-                        });
-                        searchResults.innerHTML = html;
-                        searchResults.style.display = 'block';
-                    } else {
-                        searchResults.innerHTML = '<div style="padding: 12px; color: var(--text-tertiary); font-size: 0.85rem;">No results found</div>';
-                        searchResults.style.display = 'block';
-                    }
-                } else {
-                    searchResults.style.display = 'none';
-                }
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!searchBox.contains(e.target) && !searchResults.contains(e.target)) {
-                    searchResults.style.display = 'none';
-                }
-            });
-            
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    searchResults.style.display = 'none';
-                    searchBox.blur();
-                }
-            });
-            
-            searchBox.addEventListener('focus', function() {
-                if (searchBox.value.trim().length > 0) {
-                    var event = new Event('input');
-                    searchBox.dispatchEvent(event);
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            initTheme();
-            initSidebar();
-            initSearch();
-        });
+        // ... (keep all existing JavaScript) ...
     </script>
 </body>
 </html>

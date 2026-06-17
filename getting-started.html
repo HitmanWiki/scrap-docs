@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Getting Started - GHOSTwire</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/logo.png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
@@ -29,17 +35,18 @@
             --success: #4ecca3;
             --warning: #ffc107;
             --danger: #e94560;
-            --sidebar-width: 260px;
+            --sidebar-width: 280px;
+            --max-content-width: 900px;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         [data-theme="light"] {
             --bg-primary: #ffffff;
-            --bg-secondary: #fafafa;
-            --bg-tertiary: #f0f0f0;
+            --bg-secondary: #f8f8fa;
+            --bg-tertiary: #f0f0f2;
             --bg-card: #ffffff;
-            --bg-code: #f5f5f5;
+            --bg-code: #f5f5f7;
             --text-primary: #1a1a2e;
             --text-secondary: #5a5a6e;
             --text-tertiary: #8a8a9e;
@@ -65,6 +72,7 @@
             min-height: 100vh;
             width: 100%;
             position: relative;
+            justify-content: center;
         }
 
         /* Sidebar */
@@ -85,7 +93,7 @@
         }
 
         .sidebar-header {
-            padding: 28px 20px;
+            padding: 28px 24px;
             border-bottom: 1px solid var(--border-primary);
         }
 
@@ -124,23 +132,24 @@
         }
 
         .sidebar-section-title {
-            padding: 6px 20px;
-            font-size: 0.7rem;
+            padding: 6px 24px;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
             color: var(--text-tertiary);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .sidebar-link {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 20px;
+            padding: 8px 24px;
             color: var(--text-secondary);
             transition: all 0.2s;
             font-size: 0.85rem;
             text-decoration: none;
+            border-left: 2px solid transparent;
         }
 
         .sidebar-link:hover {
@@ -150,7 +159,8 @@
 
         .sidebar-link.active {
             color: var(--accent-primary);
-            background: rgba(103, 25, 255, 0.08);
+            background: rgba(103, 25, 255, 0.06);
+            border-left-color: var(--accent-primary);
         }
 
         .sidebar-link .icon {
@@ -160,7 +170,7 @@
         }
 
         .sidebar-footer {
-            padding: 20px;
+            padding: 20px 24px;
             border-top: 1px solid var(--border-primary);
             font-size: 0.7rem;
             color: var(--text-tertiary);
@@ -176,47 +186,49 @@
             color: var(--accent-primary);
         }
 
-        /* Main Content */
+        /* Main Content - Centered */
         .main-content {
             flex: 1;
             margin-left: var(--sidebar-width);
             padding: 48px 64px;
             min-height: 100vh;
-            width: calc(100% - var(--sidebar-width));
             background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
         }
 
         .content-container {
-            max-width: 800px;
+            max-width: var(--max-content-width);
             width: 100%;
         }
 
         h1 {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.2rem;
+            font-weight: 800;
             margin-bottom: 20px;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
             color: var(--text-primary);
         }
 
         h2 {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.4rem;
+            font-weight: 700;
             margin-top: 40px;
             margin-bottom: 16px;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
         h3 {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-top: 24px;
+            margin-top: 28px;
             margin-bottom: 12px;
             color: var(--text-primary);
         }
 
         h4 {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             margin-top: 16px;
             margin-bottom: 8px;
@@ -226,7 +238,7 @@
         p {
             margin-bottom: 16px;
             color: var(--text-secondary);
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         a {
@@ -242,7 +254,7 @@
             font-family: var(--font-mono);
             font-size: 0.85em;
             background: var(--bg-code);
-            padding: 2px 6px;
+            padding: 2px 8px;
             border-radius: 4px;
             color: #a67cff;
         }
@@ -260,8 +272,8 @@
         .search-wrapper {
             position: relative;
             flex: 1;
-            max-width: 300px;
-            min-width: 200px;
+            max-width: 280px;
+            min-width: 160px;
         }
 
         .search-box {
@@ -427,15 +439,14 @@
         }
 
         .step-with-preview {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 24px;
             margin: 24px 0;
         }
 
         .step-with-preview > div {
-            flex: 1;
-            min-width: 240px;
+            min-width: 0;
         }
 
         .steps {
@@ -480,15 +491,13 @@
         }
 
         .card-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
             margin: 32px 0;
         }
 
         .card {
-            flex: 1;
-            min-width: 200px;
             background: var(--bg-card);
             border: 1px solid var(--border-primary);
             border-radius: 10px;
@@ -503,7 +512,7 @@
 
         .card-icon { font-size: 1.5rem; margin-bottom: 10px; }
         .card-title { font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
-        .card-desc { color: var(--text-secondary); font-size: 0.75rem; line-height: 1.5; }
+        .card-desc { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; }
 
         .callout {
             border-left: 3px solid;
@@ -526,7 +535,7 @@
             color: var(--text-secondary);
             padding-left: 20px;
             margin-bottom: 16px;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         li {
@@ -614,7 +623,6 @@
             .main-content {
                 margin-left: 0 !important;
                 padding: 20px !important;
-                width: 100% !important;
             }
             .mobile-menu-btn {
                 display: flex !important;
@@ -649,13 +657,13 @@
                 justify-content: flex-end;
             }
             .step-with-preview {
-                flex-direction: column;
+                grid-template-columns: 1fr;
             }
             .step-with-preview > div {
                 min-width: 100%;
             }
             .card-grid {
-                flex-direction: column;
+                grid-template-columns: 1fr;
             }
             .card {
                 min-width: 100%;
@@ -704,44 +712,48 @@
         
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-        <a href="/index.html" class="logo">
-            <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
-            <span class="logo-text">GHOSTwire</span>
-        </a>
-    </div>
+                <a href="/index.html" class="logo">
+                    <div class="logo-icon" style="background-image: url('assets/images/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
+                    <span class="logo-text">GHOSTwire</span>
+                </a>
+            </div>
             <nav class="sidebar-nav">
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Getting Started</div>
-                    <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
-                    <a href="/getting-started.html" class="sidebar-link active"><span class="icon">🚀</span> Quick Start</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Core Features</div>
-                    <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
-                    <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
-                    <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
-                    <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
-                    <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Configuration</div>
-                    <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
-                    <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
-                    <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
-                    <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
-                    <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
-                </div>
-                <div class="sidebar-section">
-                    <div class="sidebar-section-title">Resources</div>
-                    <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
-                    <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
-                </div>
-            </nav>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Getting Started</div>
+        <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
+        <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Ecosystem</div>
+        <a href="/token-utility.html" class="sidebar-link"><span class="icon">🪙</span> Token Utility</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Core Features</div>
+        <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
+        <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
+        <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
+        <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
+        <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Configuration</div>
+        <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+        <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+        <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+        <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+        <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+    </div>
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Resources</div>
+        <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
+        <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
+    </div>
+</nav>
             <div class="sidebar-footer">
-    <p>© 2026 GHOSTwire</p>
-    <p><a href="https://t.me/ghowr_bot" target="_blank">@ghowr_bot</a></p>
-    <p style="margin-top: 4px;"><a href="https://www.ghostwirebot.tech/" target="_blank" style="color: var(--accent-primary);">🌐 ghostwirebot.tech</a></p>
-</div>
+                <p>© 2026 GHOSTwire</p>
+                <p><a href="https://t.me/ghowr_bot" target="_blank">@ghowr_bot</a></p>
+                <p style="margin-top: 4px;"><a href="https://www.ghostwirebot.tech/" target="_blank" style="color: var(--accent-primary);">🌐 ghostwirebot.tech</a></p>
+            </div>
         </aside>
         
         <main class="main-content">
