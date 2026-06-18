@@ -264,7 +264,7 @@
         
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="/index.html" class="logo">
+                <a href="/" class="logo">
                     <div class="logo-icon" style="background-image: url('/assets/images/logo.png'); background-size: cover; background-position: center; width: 32px; height: 32px; border-radius: 50%;"></div>
                     <span class="logo-text">GHOSTwire</span>
                 </a>
@@ -272,33 +272,33 @@
            <nav class="sidebar-nav">
     <div class="sidebar-section">
         <div class="sidebar-section-title">Getting Started</div>
-        <a href="/index.html" class="sidebar-link"><span class="icon">👻</span> Overview</a>
-        <a href="/getting-started.html" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
+        <a href="/" class="sidebar-link"><span class="icon">👻</span> Overview</a>
+        <a href="/getting-started" class="sidebar-link"><span class="icon">🚀</span> Quick Start</a>
     </div>
     <div class="sidebar-section">
         <div class="sidebar-section-title">Ecosystem</div>
-        <a href="/token-utility.html" class="sidebar-link"><span class="icon">🪙</span> Token Utility</a>
+        <a href="/token-utility" class="sidebar-link"><span class="icon">🪙</span> Token Utility</a>
     </div>
     <div class="sidebar-section">
         <div class="sidebar-section-title">Core Features</div>
-        <a href="/wallet.html" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
-        <a href="/channels.html" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
-        <a href="/trading.html" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
-        <a href="/portfolio.html" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
-        <a href="/transfers.html" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
+        <a href="/wallet" class="sidebar-link"><span class="icon">💼</span> Wallet Setup</a>
+        <a href="/channels" class="sidebar-link"><span class="icon">📡</span> Channel Monitoring</a>
+        <a href="/trading" class="sidebar-link"><span class="icon">📈</span> Buying & Selling</a>
+        <a href="/portfolio" class="sidebar-link"><span class="icon">📊</span> Portfolio Tracking</a>
+        <a href="/transfers" class="sidebar-link"><span class="icon">💸</span> Transfers</a>
     </div>
     <div class="sidebar-section">
         <div class="sidebar-section-title">Configuration</div>
-        <a href="/settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
-        <a href="/private-channels.html" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
-        <a href="/api.html" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
-        <a href="/referrals.html" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
-        <a href="/fees.html" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
+        <a href="/settings" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+        <a href="/private-channels" class="sidebar-link"><span class="icon">🔒</span> Private Channels</a>
+        <a href="/api" class="sidebar-link"><span class="icon">🔑</span> Telegram API</a>
+        <a href="/referrals" class="sidebar-link"><span class="icon">🔗</span> Referral System</a>
+        <a href="/fees" class="sidebar-link"><span class="icon">💰</span> Fee System</a>
     </div>
     <div class="sidebar-section">
         <div class="sidebar-section-title">Resources</div>
-        <a href="/faq.html" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
-        <a href="/commands.html" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
+        <a href="/faq" class="sidebar-link"><span class="icon">❓</span> FAQ</a>
+        <a href="/commands" class="sidebar-link"><span class="icon">⌨️</span> Commands</a>
     </div>
 </nav>
             <div class="sidebar-footer">
@@ -471,7 +471,7 @@
                 <div class="callout callout-info"><div class="callout-title">Do I pay fees for transfers?</div><p>Only standard Solana gas fees (~0.000005 SOL). No additional bot fees.</p></div>
                 <div class="callout callout-info"><div class="callout-title">What happens to my positions after transferring tokens?</div><p>Tokens transferred to another wallet won't show in source wallet's positions. Click Refresh.</p></div>
 
-                <div class="page-footer"><div class="footer-nav"><a href="/portfolio.html">← Portfolio Tracking</a><a href="/settings.html">Settings →</a></div></div>
+                <div class="page-footer"><div class="footer-nav"><a href="/portfolio">← Portfolio Tracking</a><a href="/settings">Settings →</a></div></div>
             </div>
         </main>
     </div>
@@ -479,7 +479,7 @@
     <script>
         function initTheme() { var savedTheme = localStorage.getItem('theme') || 'dark'; document.documentElement.setAttribute('data-theme', savedTheme); var toggleBtn = document.getElementById('theme-toggle'); if (toggleBtn) { toggleBtn.addEventListener('click', function() { var current = document.documentElement.getAttribute('data-theme'); var next = current === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next); toggleBtn.textContent = next === 'dark' ? '🌙' : '☀️'; }); toggleBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️'; } }
         function initSidebar() { var sidebar = document.getElementById('sidebar'); var menuBtn = document.getElementById('mobile-menu-btn'); var overlay = document.getElementById('sidebar-overlay'); function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow = 'hidden'; } function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow = ''; } if (menuBtn) menuBtn.addEventListener('click', openSidebar); if (overlay) overlay.addEventListener('click', closeSidebar); sidebar.querySelectorAll('.sidebar-link').forEach(function(link) { link.addEventListener('click', function() { if (window.innerWidth <= 1024) closeSidebar(); }); }); window.addEventListener('resize', function() { if (window.innerWidth > 1024) closeSidebar(); }); }
-        function initSearch() { var searchBox = document.getElementById('search-box'); var searchResults = document.getElementById('search-results'); if (!searchBox || !searchResults) return; var searchData = [{ title: 'Overview', url: '/index.html' }, { title: 'Quick Start', url: '/getting-started.html' }, { title: 'Wallet Setup', url: '/wallet.html' }, { title: 'Channel Monitoring', url: '/channels.html' }, { title: 'Buying & Selling', url: '/trading.html' }, { title: 'Portfolio Tracking', url: '/portfolio.html' }, { title: 'Transfers', url: '/transfers.html' }, { title: 'Settings', url: '/settings.html' }, { title: 'Private Channels', url: '/private-channels.html' }, { title: 'Referral System', url: '/referrals.html' }, { title: 'Fee System', url: '/fees.html' }, { title: 'FAQ', url: '/faq.html' }, { title: 'Commands', url: '/commands.html' }]; searchBox.addEventListener('input', function(e) { var query = e.target.value.toLowerCase().trim(); if (query.length > 0) { var results = searchData.filter(function(d) { return d.title.toLowerCase().indexOf(query) !== -1; }); if (results.length > 0) { var html = ''; results.forEach(function(r) { html += '<a href="'+r.url+'">'+r.title+'</a>'; }); searchResults.innerHTML = html; searchResults.style.display = 'block'; } else { searchResults.innerHTML = '<div style="padding:12px;color:var(--text-tertiary);font-size:0.85rem;">No results</div>'; searchResults.style.display = 'block'; } } else { searchResults.style.display = 'none'; } }); document.addEventListener('click', function(e) { if (!searchBox.contains(e.target) && !searchResults.contains(e.target)) searchResults.style.display = 'none'; }); document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { searchResults.style.display = 'none'; searchBox.blur(); } }); }
+        function initSearch() { var searchBox = document.getElementById('search-box'); var searchResults = document.getElementById('search-results'); if (!searchBox || !searchResults) return; var searchData = [{ title: 'Overview', url: '/' }, { title: 'Quick Start', url: '/getting-started' }, { title: 'Wallet Setup', url: '/wallet' }, { title: 'Channel Monitoring', url: '/channels' }, { title: 'Buying & Selling', url: '/trading' }, { title: 'Portfolio Tracking', url: '/portfolio' }, { title: 'Transfers', url: '/transfers' }, { title: 'Settings', url: '/settings' }, { title: 'Private Channels', url: '/private-channels' }, { title: 'Referral System', url: '/referrals' }, { title: 'Fee System', url: '/fees' }, { title: 'FAQ', url: '/faq' }, { title: 'Commands', url: '/commands' }]; searchBox.addEventListener('input', function(e) { var query = e.target.value.toLowerCase().trim(); if (query.length > 0) { var results = searchData.filter(function(d) { return d.title.toLowerCase().indexOf(query) !== -1; }); if (results.length > 0) { var html = ''; results.forEach(function(r) { html += '<a href="'+r.url+'">'+r.title+'</a>'; }); searchResults.innerHTML = html; searchResults.style.display = 'block'; } else { searchResults.innerHTML = '<div style="padding:12px;color:var(--text-tertiary);font-size:0.85rem;">No results</div>'; searchResults.style.display = 'block'; } } else { searchResults.style.display = 'none'; } }); document.addEventListener('click', function(e) { if (!searchBox.contains(e.target) && !searchResults.contains(e.target)) searchResults.style.display = 'none'; }); document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { searchResults.style.display = 'none'; searchBox.blur(); } }); }
         document.addEventListener('DOMContentLoaded', function() { initTheme(); initSidebar(); initSearch(); });
     </script>
 </body>

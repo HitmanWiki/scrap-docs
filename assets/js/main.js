@@ -48,7 +48,7 @@ function initActiveLink() {
     
     links.forEach(link => {
         if (link.getAttribute('href') === currentPath || 
-            (currentPath === '/' && link.getAttribute('href') === '/index')) {
+            (currentPath === '/' && link.getAttribute('href') === '/')) {
             link.classList.add('active');
         }
     });
